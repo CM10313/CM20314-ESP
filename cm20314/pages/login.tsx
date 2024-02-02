@@ -19,7 +19,7 @@ const LoginForm: React.FC = () => {
     //handle user login
 };
 const handleSignupRedirect=()=>{
-  router.push('/signup');
+  router.push('/register');
 }
 const isMobile = useMediaQuery('(max-width:1000px)')
 return (
