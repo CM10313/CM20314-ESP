@@ -24,6 +24,9 @@ const RegisterForm: React.FC = () => {
     const handleLoginRedirect=()=>{
     router.push('/login');
     }
+    const handleReset=()=>{
+        setUserType(UserType.none);
+    }
     const isMobile = useMediaQuery('(max-width:1000px)')
     //need a way to go back to start of input sequence
     // ethics and professor types
@@ -31,7 +34,7 @@ const RegisterForm: React.FC = () => {
         <>
        <div
       style={{
-       
+       height:'810px',
         background: 'linear-gradient(to right, #FFFFFF, #9F9F9F)'
       }}
     >
@@ -76,7 +79,7 @@ const RegisterForm: React.FC = () => {
                     </Grid>
                 )}
                 <Grid item xs={isMobile?12:8} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
-                {userType == UserType.student?<Box sx={{display:'flex',padding:8}}><RegisterStudent handleLoginRedirect={handleLoginRedirect}></RegisterStudent></Box>:null}
+                {userType == UserType.student?<Box sx={{display:'flex',padding:8}}><RegisterStudent handleLoginRedirect={handleLoginRedirect} handleReset={handleReset}></RegisterStudent></Box>:null}
                 </Grid>
         </Grid>
       

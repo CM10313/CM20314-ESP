@@ -39,12 +39,13 @@ export default function BoxedNumber({
   const handlePageMove = (direction: PageMoveDirection): void => {
     let pageValue = activePage + direction;
 
-    if (pageValue < 0 || pageValue >= React.Children.count(children)) {
+    if (pageValue < 0 || pageValue >= React.Children.count(children)+1) {
       return;
     }
     setActivePage(pageValue);
   };
-
+  const isLastPage = ((activePage+1) == React.Children.count(children)+1)
+  const isFirstPage = ((activePage) == 0)
   return (
     <Box
       sx={{
@@ -62,21 +63,7 @@ export default function BoxedNumber({
           <Box sx={{padding:0.5,display: 'flex', justifyContent: 'center'}}>{React.Children.toArray(children)[activePage]}</Box>
           
         </Grid>
-        <Grid item xs={12}>
-        <Grid container spacing={2} sx={{ height: '100%' }}>
-            <Grid item xs={12}>
-            </Grid>
-            <Grid item xs={4} sx={{ display:'flex',justifyContent:'center'}}>
-            <Button onClick={()=>handlePageMove(-1)}><ArrowBackIosIcon></ArrowBackIosIcon></Button>
-            </Grid>
-            <Grid item xs={4} sx={{ display:'flex',justifyContent:'center',mt:3}}>
-            <Typography>{`${activePage + 1}/${React.Children.count(children)}`}</Typography>
-            </Grid>
-            <Grid item xs={4}  sx={{ display:'flex',justifyContent:'center',alignContent:'center'}}>
-            <Button onClick={()=>handlePageMove(+1)}><ArrowForwardIosIcon></ArrowForwardIosIcon></Button>
-            </Grid>
-        </Grid>
-        {(activePage+1) == React.Children.count(children) ? (
+        {isLastPage ? (
             <Button
               variant={'contained'}
               sx={{
@@ -93,10 +80,20 @@ export default function BoxedNumber({
               Submit
             </Button>
           ) : null}
-          
-          
-        
-
+        <Grid item xs={12}>
+        <Grid container spacing={2} sx={{ height: '100%' }}>
+            <Grid item xs={12}>
+            </Grid>
+            <Grid item xs={4} sx={{ display:'flex',justifyContent:'center'}}>
+            <Button variant='contained' onClick={()=>handlePageMove(-1)} sx={{backgroundColor:'#0B254A',width:'200px',height:'55px',borderRadius:'10px'}}>{isFirstPage?'START':'PREV'}</Button>
+            </Grid>
+            <Grid item xs={4} sx={{ display:'flex',justifyContent:'center',mt:3}}>
+            <Typography>{`${activePage + 1}/${React.Children.count(children)+1}`}</Typography>
+            </Grid>
+            <Grid item xs={4}  sx={{ display:'flex',justifyContent:'center',alignContent:'center'}}>
+            <Button variant='contained' onClick={()=>handlePageMove(+1)} sx={{backgroundColor:'#0B254A',width:'200px',height:'55px',borderRadius:'10px'}}>{isLastPage?'END':'NEXT'} </Button>
+            </Grid>
+        </Grid>
         </Grid>
       </Grid>
     </Box>
