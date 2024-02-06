@@ -178,7 +178,6 @@ return (
 
                     <Button onClick={handleLoginRedirect} variant={'contained'}sx={{whiteSpace:'nowrap',overflow:'auto',width:'60%',height:'55px',backgroundColor:'#0B254A',borderRadius:'10px'}} type="submit">
 
-                  
                         Login
                     </Button>
             </Grid>
