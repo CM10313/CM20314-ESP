@@ -6,9 +6,11 @@ import { TextField, Button, Grid, Typography, Box, useMediaQuery, FormControl, F
 import { useRouter } from 'next/router';
 import BoxedNumber from '../Components/FormDialogue';
 import RegisterStudent from '../Components/RegisterStudent';
+import RegisterResearcher from '../Components/RegisterResearcher';
+import RegisterEthics from '../Components/RegisterEthics';
 enum UserType{
     student = "Student",
-    professor = "Professor",
+    researcher = "Researcher",
     ethicsBoard = "Ethics Board",
     none = "null"
   }
@@ -126,7 +128,7 @@ const RegisterForm: React.FC = () => {
                                 onChange={(e) => setUserType(e.target.value as UserType)}
                                 >
                                 <FormControlLabel value={UserType.student} control={<Radio />} label="Student" />
-                                <FormControlLabel value={UserType.professor} control={<Radio />} label="Professor" />
+                                <FormControlLabel value={UserType.researcher} control={<Radio />} label="Researcher" />
                                 <FormControlLabel value={UserType.ethicsBoard} control={<Radio />} label="Ethics Board" />
                                 <FormControlLabel value={UserType.none} control={<Radio />} label="None" />
                             </RadioGroup>
@@ -138,6 +140,12 @@ const RegisterForm: React.FC = () => {
                         :null}
                 {userType == UserType.student?<Grid item xs={isMobile?12:8} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
                 <Box sx={{display:'flex',padding:8}}><RegisterStudent handleLoginRedirect={handleLoginRedirect} handleReset={handleReset}></RegisterStudent></Box>
+                </Grid>:null}
+                {userType == UserType.researcher?<Grid item xs={isMobile?12:8} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
+                <Box sx={{display:'flex',padding:8}}><RegisterResearcher handleLoginRedirect={handleLoginRedirect} handleReset={handleReset}></RegisterResearcher></Box>
+                </Grid>:null}
+                {userType == UserType.ethicsBoard?<Grid item xs={isMobile?12:8} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
+                <Box sx={{display:'flex',padding:8}}><RegisterEthics handleLoginRedirect={handleLoginRedirect} handleReset={handleReset}></RegisterEthics></Box>
                 </Grid>:null}
         </Grid>
       
