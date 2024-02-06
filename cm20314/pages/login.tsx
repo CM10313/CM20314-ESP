@@ -22,6 +22,7 @@ const handleSignupRedirect=()=>{
   router.push('/register');
 }
 
+
 const handleLoginRedirect = () => {
   router.push('/researchHome');
 }
