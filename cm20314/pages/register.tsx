@@ -6,9 +6,11 @@ import { TextField, Button, Grid, Typography, Box, useMediaQuery, FormControl, F
 import { useRouter } from 'next/router';
 import BoxedNumber from '../Components/FormDialogue';
 import RegisterStudent from '../Components/RegisterStudent';
+import RegisterResearcher from '../Components/RegisterResearcher';
+import RegisterEthics from '../Components/RegisterEthics';
 enum UserType{
     student = "Student",
-    professor = "Professor",
+    researcher = "Researcher",
     ethicsBoard = "Ethics Board",
     none = "null"
   }
@@ -38,28 +40,12 @@ const RegisterForm: React.FC = () => {
         background: 'linear-gradient(to right, #FFFFFF, #9F9F9F)'
       }}
     >
-        {userType == UserType.none?
-            <FormControl component="fieldset">
-                <FormLabel component="legend">User Type</FormLabel>
-                <RadioGroup
-                    aria-label="user-type"
-                    name="user-type"
-                    value={userType}
-                    onChange={(e) => setUserType(e.target.value as UserType)}
-                    >
-                    <FormControlLabel value={UserType.student} control={<Radio />} label="Student" />
-                    <FormControlLabel value={UserType.professor} control={<Radio />} label="Professor" />
-                    <FormControlLabel value={UserType.ethicsBoard} control={<Radio />} label="Ethics Board" />
-                    <FormControlLabel value={UserType.none} control={<Radio />} label="None" />
-                </RadioGroup>
-            </FormControl>
-        :null}
         <Grid
                 container
                 rowSpacing={4}
                 columnSpacing={2}
                 justifyContent="center"
-                sx={{display:'flex',width:'100%'}}
+                sx={{display:'flex',width:'100%',height:'810px'}}
                 > 
                 
                 {!isMobile && (
@@ -68,7 +54,28 @@ const RegisterForm: React.FC = () => {
                     xs={4}
                     sx={{ display: 'flex', justifyContent: 'center', height: '100%', width: '100%' }}
                     >
-                    <Box sx={{height:'100%',width:'500px',overflow: 'hidden'}}>
+                    <Box sx={{height:'100%',width:'500px',overflow: 'hidden'}}><Box
+          sx={{
+            
+            height: '0px',
+            width: '50vw',
+            
+            position: 'relative', // Set position relative for absolute positioning of the triangle
+          }}
+        >
+          <div
+            className="triangle"
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              width: 0,
+              height: 0,
+              borderTop: '300px solid #0B254A', // Set the height of the triangle
+              borderRight: '25vw solid transparent', // Set the base of the triangle
+            }}
+          ></div>
+        </Box>
                     <Image
                         src="/images/studyhall.jpeg"
                         alt="Students studying"
@@ -76,11 +83,70 @@ const RegisterForm: React.FC = () => {
                         height={776}
                     />
                     </Box>
+                    
                     </Grid>
                 )}
-                <Grid item xs={isMobile?12:8} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
-                {userType == UserType.student?<Box sx={{display:'flex',padding:8}}><RegisterStudent handleLoginRedirect={handleLoginRedirect} handleReset={handleReset}></RegisterStudent></Box>:null}
-                </Grid>
+                    {userType == UserType.none?
+                    <Grid
+                    item
+                    xs={8}
+                    sx={{ display: 'flex', justifyContent: 'center', height: '100%', width: '100%',alignItems:'center' }}
+                    ><Box
+                    sx={{
+                      width: '500px',
+                      height: '500px',
+                      backgroundColor: '#F6F6F6',
+                      border: '1px solid grey',
+                      boxShadow: '10px 10px 10px 10px rgba(0, 0, 0, 0.5)',
+                      overflow: 'hidden',
+                      display: 'flex', justifyContent: 'center',
+                    }}
+                  >
+                    <Grid
+                container
+                rowSpacing={0}
+                columnSpacing={2}
+                justifyContent="center"
+                sx={{display:'flex',width:'100%'}}
+                > 
+                <Grid
+                item
+                xs={12}
+                sx={{ display: 'flex', justifyContent: 'center', height: '50%', width: '100%',alignItems:'center'}}
+                ><Typography fontSize={20}>Please select the type of user you would like to be</Typography></Grid>
+                <Grid
+                item
+                xs={12}
+                sx={{ display: 'flex', justifyContent: 'left', height: '50%', width: '100%',mb:2,ml:2}}
+                >
+                        <FormControl component="fieldset">
+                            <FormLabel component="legend">User Type</FormLabel>
+                            <RadioGroup
+                                aria-label="user-type"
+                                name="user-type"
+                                value={userType}
+                                onChange={(e) => setUserType(e.target.value as UserType)}
+                                >
+                                <FormControlLabel value={UserType.student} control={<Radio />} label="Student" />
+                                <FormControlLabel value={UserType.researcher} control={<Radio />} label="Researcher" />
+                                <FormControlLabel value={UserType.ethicsBoard} control={<Radio />} label="Ethics Board" />
+                                <FormControlLabel value={UserType.none} control={<Radio />} label="None" />
+                            </RadioGroup>
+                        </FormControl>
+                        </Grid>
+                        </Grid>
+                        </Box>
+                        </Grid>
+                        :null}
+                {userType == UserType.student?<Grid item xs={isMobile?12:8} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
+                <Box sx={{display:'flex',padding:8}}><RegisterStudent handleLoginRedirect={handleLoginRedirect} handleReset={handleReset}></RegisterStudent></Box>
+                </Grid>:null}
+                {userType == UserType.researcher?<Grid item xs={isMobile?12:8} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
+                <Box sx={{display:'flex',padding:8}}><RegisterResearcher handleLoginRedirect={handleLoginRedirect} handleReset={handleReset}></RegisterResearcher></Box>
+                </Grid>:null}
+                {userType == UserType.ethicsBoard?<Grid item xs={isMobile?12:8} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
+                <Box sx={{display:'flex',padding:8}}><RegisterEthics handleLoginRedirect={handleLoginRedirect} handleReset={handleReset}></RegisterEthics></Box>
+                </Grid>:null}
         </Grid>
       
        

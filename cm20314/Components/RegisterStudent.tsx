@@ -7,6 +7,7 @@ import validatePassword from "../Utils/ValidatePassword";
 import validatePhoneNumber from "../Utils/ValidatePhoneNumber";
 import validateUsername from "../Utils/ValidateUsername";
 import { useBankInfoState,BankInfoState } from "../State/BankInfo";
+import FormDialogue from "./FormDialogue";
 
 interface RegisterStudentProps {
     handleLoginRedirect:() => void;
@@ -122,7 +123,7 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
     
     return(
         <>
-        <BoxedNumber width={500} height={600} currentPage={0} onFormSubmit={()=>handleLoginRedirect()}>
+        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={()=>handleLoginRedirect()}>
         <Box>
             {/* username and password*/}
             <Grid
@@ -697,7 +698,25 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                 </Grid>   
             </Grid>
         </Box>
-        </BoxedNumber>
+        <Box>
+        <Grid
+                    container
+                    rowSpacing={0}
+                    columnSpacing={1}
+                    sx={{display:'flex',justifyContent:'center',width:'100%'}}
+                    > 
+                    <Grid item xs={12} sx={{display:'flex',justifyContent:'start',alignItems:'center'}}>
+                        <Box sx={{display:'flex',alignItems:'center',height:'100px'}}><Typography fontSize={24}>Warning !</Typography></Box>
+                    </Grid>
+                    <Grid item xs={12} sx={{display:'flex',justifyContent:'start',alignItems:'center',backgroundColor:'#D4DBE2'}}>
+                        <Box sx={{display:'flex',alignItems:'center',height:'100px'}}><Typography fontSize={16}>When you sumibt this form your data will be saved to our database </Typography></Box>
+                    </Grid>
+                    <Grid item xs={12} sx={{display:'flex',justifyContent:'start',alignItems:'center',backgroundColor:'#D4DBE2'}}>
+                        <Box sx={{display:'flex',alignItems:'center',height:'100px'}}><Typography fontSize={16}>You can alter your stored data or delete it at any point once you have registered</Typography></Box>
+                    </Grid>
+        </Grid>
+        </Box>
+        </FormDialogue>
         </>
     );
 
