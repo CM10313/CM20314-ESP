@@ -22,9 +22,11 @@ const handleSignupRedirect=()=>{
   router.push('/register');
 }
 
+
 const handleLoginRedirect = () => {
   router.push('/researchHome');
 }
+
 
 const isMobile = useMediaQuery('(max-width:1000px)')
 return (
@@ -173,7 +175,10 @@ return (
             container
             rowSpacing={0} sx={{justifyContent:'center',textAlign:'center'}}>
             <Grid item xs={12}>
+
                     <Button onClick={handleLoginRedirect} variant={'contained'}sx={{whiteSpace:'nowrap',overflow:'auto',width:'60%',height:'55px',backgroundColor:'#0B254A',borderRadius:'10px'}} type="submit">
+
+                  
                         Login
                     </Button>
             </Grid>
