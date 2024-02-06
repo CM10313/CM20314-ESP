@@ -38,7 +38,7 @@ export default function Navbar() {
             }}
           >
             <span>John Doe</span>
-            <StarIcon />
+            <StarIcon data-testid="star-icon" />
           </Box>
         </Grid>
       </Grid>
