@@ -6,7 +6,7 @@ import Navbar from '../Components/Navbar';
 export default function researchHome(){
 
     return (
-        <Container maxWidth="xl" style={{margin:'0'}}>
+        <Container maxWidth="xl">
             <Navbar />
             <TriangleBackground />
             <h1> Some content here</h1>   
