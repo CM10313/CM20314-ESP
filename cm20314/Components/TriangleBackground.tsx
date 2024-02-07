@@ -5,18 +5,18 @@ import { Container, Box } from '@mui/material';
 export default function TriangleBackground(){
 
     return (
-        <Container maxWidth="xl" 
+        <Box maxWidth="xl" 
             style = {{
                 margin: '0 !important',
                 position: 'absolute', 
-                width: '97vw',   
+                width: '30vw',   
                 borderWidth: "45vh 35vw",
                 borderStyle: "solid",
                 borderColor: "white lightgrey white grey",
                 zIndex: '-1',
                 opacity: '20%'
             }}>  
-        </Container>
+        </Box>
 
     )
 }

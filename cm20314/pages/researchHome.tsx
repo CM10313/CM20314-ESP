@@ -1,17 +1,22 @@
-import { Container } from '@mui/material';
+import { Container, Box, Grid, Card } from '@mui/material';
 import TriangleBackground from '../Components/TriangleBackground';
-import Navbar from '../Components/Navbar';
-
+import Navbar from '../Components/navbar';
+import { useEffect } from 'react';
+import Cards from '../Components/detailCards';
 
 export default function researchHome(){
 
+    useEffect(() => {
+        document.body.style.margin = '0';
+        document.body.style.padding = '0';
+    }, []);
+
     return (
-        <Container maxWidth="xl">
+        <Box maxWidth="xl">
             <Navbar />
             <TriangleBackground />
-            <h1> Some content here</h1>   
-            <h1> This is some more content </h1>   
-        </Container>
+            <Cards />
+        </Box>
 
     )
 }
