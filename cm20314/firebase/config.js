@@ -24,6 +24,6 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 
 let analytics;
-if (firebaseConfig.measurementId) {
+if (typeof window !== 'undefined' && firebaseConfig.measurementId) {
   analytics = getAnalytics(app);
 }
