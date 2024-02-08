@@ -28,6 +28,7 @@ const handleSignupRedirect=()=>{
 const handleLoginRedirect = async () => {
   try {
     await signIn(username, password);
+    //check account type then push research/ethics/participant home page
     router.push('/researchHome');
   } catch (error) {
     console.error("Login Failed:", (error as Error).message);
