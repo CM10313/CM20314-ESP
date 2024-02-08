@@ -3,9 +3,11 @@ import Image from 'next/image';
 
 import { TextField, Button, Grid, Typography, Box, useMediaQuery } from '@mui/material';
 
-
+import {signIn} from '../firebase/auth';
 
 import { useRouter } from 'next/router';
+
+
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -23,8 +25,13 @@ const handleSignupRedirect=()=>{
 }
 
 
-const handleLoginRedirect = () => {
-  router.push('/researchHome');
+const handleLoginRedirect = async () => {
+  try {
+    await signIn(username, password);
+    router.push('/researchHome');
+  } catch (error) {
+    console.error("Login Failed:", (error as Error).message);
+  }
 }
 
 
