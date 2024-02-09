@@ -15,7 +15,7 @@ jobs:
     steps:
 
       - name: Change working directory
-        run: cd /cm20314
+        run: cd ../cm20314
 
       - name: Checkout code
         uses: actions/checkout@v2
