@@ -18,7 +18,7 @@ jobs:
       - name: List contents of current directory
         run: ls
       - name: Change working directory
-        run: cd ../CM20314-ESP/cm20314
+        run: cd CM20314-ESP/cm20314
 
       - name: Checkout code
         uses: actions/checkout@v2
