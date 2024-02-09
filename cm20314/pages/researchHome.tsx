@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 import TriangleBackground from '../Components/TriangleBackground';
-import Navbar from '../Components/Navbar';
+import Navbar from '../Components/navbar';
 
 
 export default function researchHome(){
