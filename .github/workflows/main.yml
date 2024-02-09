@@ -25,4 +25,4 @@ jobs:
         run: npm ci ## docs say generally faster than install
 
       - name: Run Jest tests
-        run: npx test -- --coverage
+        run: npx jest -- --coverage
