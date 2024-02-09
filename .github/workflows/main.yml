@@ -1,10 +1,10 @@
-name: 
+name: Run jest tests
 
 on:
   push:
     branches:
       - '*'  # Trigger on all branches
-      
+
 jobs:
   test:
     runs-on: ubuntu-latest
