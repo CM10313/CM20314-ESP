@@ -36,6 +36,12 @@ then finally run:
 ``` bash
 git push origin ticket-name
 ```
+### How to know what code to write
+When you select a ticket to write there ma be comments or images attached to serve as guidance on what to write.
+You should also refer to these resources:
+-  [Figma](https://www.figma.com/file/5RthuqsT4QzNR3maPdg5CA/Research-App?type=design&node-id=0-1&mode=design&t=I0rWUtuWNupNARRd-0) - Use to ensure UI matches expected design
+- [D2 Specification](https://computingservices-my.sharepoint.com/:w:/r/personal/mbm60_bath_ac_uk/_layouts/15/Doc.aspx?sourcedoc=%7B7EB65593-AE10-4A48-B356-BA67D071FBE1%7D&file=Group%204%20-%20%20Requirements%20and%20Design.docx&action=default&mobileredirect=true&DefaultItemOpen=1&web=1) - Use Class diagram as vague guide for objects/methods required to create functioning component
+
 ### Merging and testing
 Automated testing has been setup in this project using Jest, each branch should roughly correspond to a component. 
 When you have finished said component as outlined in your ticket after pushing by going to 
@@ -82,9 +88,10 @@ adding --coverage you will be able to see what percentage of your code in the fi
 - Jest
 
 ## Documentation
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Learn Next.js](https://nextjs.org/learn) 
+- [the Next.js GitHub repository](https://github.com/vercel/next.js/)
 - [React Documentation](https://react.dev/).
 - [Git Documentation](https://git-scm.com/doc).
 - [MUI Documentation](https://mui.com/material-ui/getting-started/).
+
