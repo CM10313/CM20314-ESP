@@ -1,12 +1,12 @@
 import { db } from './config'; // Assuming you export your Firestore instance as 'db' in config.js
-import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
+import { collection, setDoc, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 
 // Add a document to a collection
-const addDocument = async (collectionName, data) => {
+const addDocument = async (collectionName, data, uid) => {
   try {
-    const docRef = await addDoc(collection(db, collectionName), data);
+    const docRef = doc(db, collectionName, uid);
+    await setDoc(docRef, data);
     console.log("Document written with ID: ", docRef.id);
-    return docRef;
   } catch (e) {
     console.error("Error adding document: ", e);
   }

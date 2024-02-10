@@ -3,11 +3,51 @@ import Image from 'next/image';
 
 import { TextField, Button, Grid, Typography, Box, useMediaQuery, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 
+import { ExtraInfoState, Faculty } from '../State/UserExtraInfo';
+import { BankInfoState } from '../State/BankInfo';
+
+
 import { useRouter } from 'next/router';
 import BoxedNumber from '../Components/FormDialogue';
 import RegisterStudent from '../Components/RegisterStudent';
 import RegisterResearcher from '../Components/RegisterResearcher';
 import RegisterEthics from '../Components/RegisterEthics';
+
+import { signUp, getUID } from '../firebase/auth';
+import { addDocument } from '../firebase/firestore';
+
+export interface StudentData {
+  username: String;
+  password: String;
+  email: String;
+  organisation: String;
+  phoneNumber: Number;
+  id: Number;
+  extraLanguage: String;
+  extraInfoObj: ExtraInfoState;
+  bankInfoObj: BankInfoState;
+}
+
+export interface ResearcherData {
+  username: String;
+  password: String;
+  email: String;
+  organisation: String;
+  phoneNumber: Number;
+  id: Number;
+  department: Faculty;
+  bankInfoObj: BankInfoState;
+}
+
+export interface EthicsData {
+  username: String;
+  password: String;
+  email: String;
+  organisation: String;
+  phoneNumber: Number;
+  id: Number;
+}
+
 enum UserType{
     student = "Student",
     researcher = "Researcher",
@@ -18,13 +58,50 @@ enum UserType{
 const RegisterForm: React.FC = () => {
     const [userType, setUserType] = useState<UserType>(UserType.none);
     const router = useRouter();
+
+    const handleStudentSubmit = async (studentData: StudentData) => {
+      await signUp(studentData.email, studentData.password);
+      const {password, ...datawithoutpassword} = studentData;
+      await addDocument('users', studentData, getUID());
+      router.push('/researchHome')
+    }
+
+    const handleResearcherSubmit = async (researcherData: ResearcherData) => {
+      console.log('hello');
+      console.log(researcherData);
+      await signUp(researcherData.email, researcherData.password);
+      const {password, ...datawithoutpassword} = researcherData;
+      await addDocument('users', researcherData, getUID());
+      router.push('/researchHome');
+    }
+
+    const handleEthicsSubmit = async (ethicsData: EthicsData) => {
+      await signUp(ethicsData.email, ethicsData.password);
+      const {password, ...datawithoutpassword} = ethicsData;
+      await addDocument('users', ethicsData, getUID());
+      router.push('/researchHome')
+    }
  
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         //handle user login
+        switch (userType) {
+          case UserType.student:
+            //student register
+            await signUp()
+            break;
+          case UserType.researcher:
+            //researcher register
+            break;
+          case UserType.ethicsBoard:
+            //ethics board register
+            break;
+          default:
+            break;
+        }
     };
     const handleLoginRedirect=()=>{
-    router.push('/login');
+      router.push('/login');
     }
     const handleReset=()=>{
         setUserType(UserType.none);
@@ -139,13 +216,13 @@ const RegisterForm: React.FC = () => {
                         </Grid>
                         :null}
                 {userType == UserType.student?<Grid item xs={isMobile?12:8} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
-                <Box sx={{display:'flex',padding:8}}><RegisterStudent handleLoginRedirect={handleLoginRedirect} handleReset={handleReset}></RegisterStudent></Box>
+                <Box sx={{display:'flex',padding:8}}><RegisterStudent handleLoginRedirect={handleLoginRedirect} handleReset={handleReset} onSubmit={handleStudentSubmit}></RegisterStudent></Box>
                 </Grid>:null}
                 {userType == UserType.researcher?<Grid item xs={isMobile?12:8} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
-                <Box sx={{display:'flex',padding:8}}><RegisterResearcher handleLoginRedirect={handleLoginRedirect} handleReset={handleReset}></RegisterResearcher></Box>
+                <Box sx={{display:'flex',padding:8}}><RegisterResearcher handleLoginRedirect={handleLoginRedirect} handleReset={handleReset} onSubmit={handleResearcherSubmit}></RegisterResearcher></Box>
                 </Grid>:null}
                 {userType == UserType.ethicsBoard?<Grid item xs={isMobile?12:8} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
-                <Box sx={{display:'flex',padding:8}}><RegisterEthics handleLoginRedirect={handleLoginRedirect} handleReset={handleReset}></RegisterEthics></Box>
+                <Box sx={{display:'flex',padding:8}}><RegisterEthics handleLoginRedirect={handleLoginRedirect} handleReset={handleReset} onSubmit={handleEthicsSubmit}></RegisterEthics></Box>
                 </Grid>:null}
         </Grid>
       

@@ -6,6 +6,11 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, si
 // Get the Auth service for the initialized app
 const auth = getAuth(app);
 
+export const getUID = () => {
+  const user = auth.currentUser;
+  return user.uid;
+}
+
 // Function to create a new user with email and password
 export const signUp = async (email, password) => {
   try {
