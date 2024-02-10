@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
+# Welcom to `<<Project Name>>`
 ## Getting Started
-
-First, run the development server:
+You will need the latest version of node installed to run this.
+Once you have node configured run:
+```bash
+ npm install 
+ ```
+to intall all dependencies,
+then run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+this will then be available at [http://localhost:3000](http://localhost:3000).
+Intial loading is slow as client side rendering is enabled but hot reloads are fast, so when you make a code change you'll see it straight away.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contributing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Branches
+When contributing to this project refer to the group JIRA to see tickets available. Choose one not taken by another user and create a branch with the tickets name.
+For example
+to check you are on the main branch run:
+``` bash
+git status
+```
+then create the new branch by running:
+```bash
+git checkout -b ticket-name
+ ```
+once you have made a change run any equivalent of
+```bash 
+git add -A
+git commit -m "your commit message"
+```
+then finally run:
+``` bash
+git push origin ticket-name
+```
+### Merging and testing
+Automated testing has been setup in this project using Jest, each branch should roughly correspond to a component. 
+When you have finished said component as outlined in your ticket after pushing by going to 
+[https://github.com/CM10313/CM20314-ESP/actions], you will see tests being run on the code you pushed.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Whenever you write code you are primarly responsible for writing tests for that code.
+These will then be run with all existinf tests.
 
-## Learn More
+If the tests fail don't worry it just means you have either caused an issue to occur or you need to refactor the test to match your new component.
 
-To learn more about Next.js, take a look at the following resources:
+When merging a branch into main using the github UI to create a pull request, these tests will be triggered.
+If your code passes you will be able to merge, however if they don't you will be denied ability to merge. If you go to the problem branch and fix these issues in a new commit you will then see you are able to merge.
 
+### Guidance on testing
+
+When writing unit tests with Jest there is a general pattern to think of "AAA"
+
+Arrange -  Setup test enviroment, preparing objects,data and context required
+Act - Perform an action or operation we are aiming to test
+Assert - Verify action performed in previous step behaves as expected
+
+Use existing tests as a guide for how to do this.
+The main things we want to test are:
+- do the main components render
+- does state update correctly for input fields
+- does navigation work as expected
+- do any asnyc operations such as db writes work as expected
+
+If you cover these that should be enough.
+You can also run tests locally by using npx jest
+adding --coverage you will be able to see what percentage of your code in the file you are testing is covered by test cases, we want to aim genrally for this to be above 80%.
+
+
+## Tech stack
+### Front End
+- React
+- NextJS
+- TS
+- MUI - optional use, just simplifies basic UI components and you will see it used in the project
+## Back End
+- FireBase Auth
+- FireStore
+## Testing
+- Jest
+
+## Documentation
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [React Documentation](https://react.dev/).
+- [Git Documentation](https://git-scm.com/doc).
+- [MUI Documentation](https://mui.com/material-ui/getting-started/).
