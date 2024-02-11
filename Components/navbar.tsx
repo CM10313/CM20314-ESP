@@ -45,8 +45,7 @@ export default function Navbar() {
             }}
           >
             <span>John Doe</span>
-            <span> 4.98 <StarIcon /></span>
-            
+            <StarIcon data-testid="star-icon" />
           </Box>
         </Grid>
       </Grid>
