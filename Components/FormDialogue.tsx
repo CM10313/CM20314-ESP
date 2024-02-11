@@ -10,7 +10,7 @@ import { ReactNode, useState } from 'react';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-interface InputSliderProps {
+interface FormDialogueProps {
   width: number | string;
   height: number | string;
   currentPage: number;
@@ -24,7 +24,7 @@ export default function FormDialogue({
   currentPage,
   children,
   onFormSubmit,
-}: InputSliderProps) {
+}: FormDialogueProps) {
   const [activePage, setActivePage] = useState(currentPage);
 
   const handleFormSubmit = () => {
