@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,11 +14,6 @@ export default function RootLayout({
   }: Readonly<{
     children: React.ReactNode;
   }>) {
-
-  useEffect(() => {
-    document.body.style.margin = '0';
-    document.body.style.padding = '0';
-  }, []);
 
   return (
     <html lang="en">

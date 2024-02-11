@@ -1,13 +1,14 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import Calendar from './calendar';
+import '@testing-library/jest-dom';
 
 test('renders calendar component', () => {
-  const { getByText, queryByText, getAllByTestId } = render(<Calendar />);
+  const { getByText, getAllByTestId } = render(<Calendar />);
   
   // Check if the date is rendered
-  const novemberText = queryByText(/30th Nov/i);
-  expect(novemberText).toBeTruthy();
+  const novemberText = getByText(/30th Nov/i);
+  expect(novemberText).toBeInTheDocument();
 
   // Check if there are exactly three calendar cards
   const calendarCards = getAllByTestId('calendar-card');
@@ -21,15 +22,15 @@ test('renders calendar component', () => {
   ];
 
   cardDetails.forEach((detail, index) => {
+    const card = calendarCards[index];
     const idText = getByText(`ID: ${detail.id}`);
     const dateText = getByText(`Date: ${detail.date}`);
     const locationText = getByText(`Location: ${detail.location}`);
-    expect(idText).toBeTruthy();
-    expect(dateText).toBeTruthy();
-    expect(locationText).toBeTruthy();
+    expect(idText).toBeInTheDocument();
+    expect(dateText).toBeInTheDocument();
+    expect(locationText).toBeInTheDocument();
 
     // Check if each calendar card is clickable
-    const card = calendarCards[index];
     fireEvent.click(card);
     // Add your expectation for navigation or other functionality after clicking
   });

@@ -79,7 +79,7 @@ export default function Calendar(){
                         
                         {/* Need to think about what happens onClick */}
                         {calendarCardData.map((entry) => (
-                            <CalendarCard  event = {entry} />
+                            <CalendarCard key={entry.id} event = {entry} />
                         ))}
                     </Box>
                 </Grid>
