@@ -1,0 +1,20 @@
+name: Run jest tests
+
+on:
+  push:
+    branches:
+      - '*'  # Trigger on all branches
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm ci ## docs say generally faster than install
+
+      - name: Run Jest tests
+        run: npx jest --coverage

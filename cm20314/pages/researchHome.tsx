@@ -1,10 +1,10 @@
 import { TextField, Button, Grid, Typography, Box, useMediaQuery, Paper, styled } from '@mui/material';
-import Navbar from '../Components/navbar';
-import StudyMediumCard from '../Components/StudyMediumCard';
-import CardGrouper from '../Components/CardGrouping';
-import CardGrouping from '../Components/CardGrouping';
+import Navbar from '../../Components/navbar';
+import StudyMediumCard from '../../Components/StudyMediumCard';
+import CardGrouper from '../../Components/CardGrouping';
+import CardGrouping from '../../Components/CardGrouping';
 import { useRouter } from 'next/router';
-import AdvertCreate from '../Components/AdvertCreate';
+import AdvertCreate from '../../Components/AdvertCreate';
 import SearchIcon from '@mui/icons-material/Search';
 const ResearchHome: React.FC = () => {
     const Item = styled(Paper)(({ theme }) => ({
