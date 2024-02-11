@@ -39,7 +39,7 @@ export default function AdvertCreate({
   };
 
   const handleCreateAdvertRedirect=(targetUrl:string,data:string)=>{
-    router.push({ pathname: targetUrl, query: data });
+    router.push({ pathname: targetUrl, query: { type: data } });
   }
     return (
     

@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import BoxedNumber from "./FormDialogue";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useExtraInfoState,ExtraInfoState, Sexuality, Faculty, Religion, Anonymity, Gender, Race, HighestEducation } from "../State/UserExtraInfo";
 import validateEmail from "../Utils/ValidateEmail";
 import validatePassword from "../Utils/ValidatePassword";
@@ -21,7 +21,7 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset}:Re
     const [passwordError, setPasswordError] = useState("");
     const [orginisation, setOrginisation] = useState("");
     const [emailError, setEmailError] = useState("");
-    const [phoneNumber, setPhoneNumber]= useState(-1);
+    const [phoneNumber, setPhoneNumber]= useState("");
     const [phoneNumberError, setPhoneNumberError]= useState("");
     const [id, setId]= useState(-1);
     //defualt history object
@@ -33,43 +33,54 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset}:Re
         setDepartment(event.target.value as Faculty); // Update department state with the selected value
       };
 
-      
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-        if (validateEmail(email)) {
-          setEmailError("");
-          return
-        } else {
-          setEmailError("Invalid Email")
-        }
-      };
-      const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(e.target.value);
-        if (validateUsername(username)) {
-          setUsernameError("");
-          return
-        } else {
-          setUsernameError("Invalid Username")
-        }
-      };
-      const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validatePassword(password)) {
+            setPasswordError('');
+          } else {
+            setPasswordError('Invalid Password');
+          }
+      }, [password]);
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validateEmail(email)) {
+            setEmailError('');
+          } else {
+            setEmailError('Invalid Email');
+          }
+      }, [email]);
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validateUsername(username)) {
+            setUsernameError('');
+          } else {
+            setUsernameError('Invalid Username');
+          }
+      }, [username]);
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validatePhoneNumber(phoneNumber)) {
+            setPhoneNumberError('');
+          } else {
+            setPhoneNumberError('Invalid Phone Number');
+          }
+      }, [phoneNumber]);
+    
+    
+      const handlePasswordChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
-        if (validatePassword(password)) {
-          setPasswordError("");
-          return
-        } else {
-          setPasswordError("Invalid Password")
-        }
+      };
+      const handleEmailChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+      };
+      const handleUsernameChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        setUsername(e.target.value);
       };
       const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPhoneNumber(Number(e.target.value));
-        if (validatePhoneNumber(e.target.value)) {
-          setPhoneNumberError("");
-          return
-        } else {
-          setPhoneNumberError("Invalid Phone Number")
-        }
+        setPhoneNumber(e.target.value);
       };
+    
+    
     
     
       
