@@ -62,7 +62,7 @@ export default function Calendar(){
                             padding: "0.1em"
                         }}>
 
-                        Dont' Forget
+                        Dont`&apos;` Forget
                         < CalendarTodayTwoToneIcon sx={{color:"red", width:"1.5em", height:"auto"}} />
                     </Box>
 
