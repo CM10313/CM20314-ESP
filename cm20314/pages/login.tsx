@@ -3,17 +3,22 @@ import Image from 'next/image';
 
 import { TextField, Button, Grid, Typography, Box, useMediaQuery } from '@mui/material';
 
-import {signIn} from '../firebase/auth';
+import {signIn, getUID} from '../firebase/auth';
+
+import { fetchDocumentById } from '../firebase/firestore';
 
 import { useRouter } from 'next/router';
 
 
+
+
 const LoginForm: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameError, setUsernameError] = useState("");
+  //const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [loginError, setLoginError] = useState('');
   const router = useRouter();
   //const { isLoggedIn,setUserLoggedIn} = useContext(AuthContext);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -27,11 +32,29 @@ const handleSignupRedirect=()=>{
 
 const handleLoginRedirect = async () => {
   try {
-    await signIn(username, password);
+    await signIn(email, password);
     //check account type then push research/ethics/participant home page
-    router.push('/researchHome');
-  } catch (error) {
-    console.error("Login Failed:", (error as Error).message);
+    let doc_data = await fetchDocumentById('users', getUID());
+    let account_type = (doc_data as any).accountType
+    switch (account_type) {
+      case "participant":
+        break;
+      case "researcher":
+        router.push('/researchHome');
+        break;
+      case "ethics":
+        break;
+      default:
+        break;
+    }
+  }
+  catch (error) {
+    if (error instanceof Error){
+      setLoginError(error.message);
+    }
+    else{
+      setLoginError('An unexpected error occurred');
+    }
   }
 }
 
@@ -143,14 +166,14 @@ return (
       <Grid container spacing={2} >
         <Grid item xs={12}>
         <Grid container spacing={0} >
-        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><Box sx={{mb:usernameError ? 3: 0}}></Box>
+        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><Box sx={{mb:emailError ? 3: 0}}></Box>
                   <TextField
-                    label="Username"
+                    label="Email"
                     variant="outlined"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    error={Boolean(usernameError)}
-                    helperText={usernameError}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    error={Boolean(emailError)}
+                    helperText={emailError}
                     sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
                     
                   /></Grid>

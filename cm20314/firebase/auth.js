@@ -17,7 +17,6 @@ export const signUp = async (email, password) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     return userCredential;
   } catch (error) {
-    console.error("Error signing up:", error.message);
     throw error;
   }
 };
@@ -28,7 +27,6 @@ export const signIn = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential;
   } catch (error) {
-    console.error("Error signing in:", error.message);
     throw error;
   }
 };
@@ -38,7 +36,6 @@ export const signOutUser = async () => {
   try {
     await signOut(auth);
   } catch (error) {
-    console.error("Error signing out:", error.message);
     throw error;
   }
 };

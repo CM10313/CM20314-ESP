@@ -1,5 +1,5 @@
 import { db } from './config'; // Assuming you export your Firestore instance as 'db' in config.js
-import { collection, setDoc, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
+import { collection, setDoc, getDoc, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 
 // Add a document to a collection
 const addDocument = async (collectionName, data, uid) => {
@@ -11,6 +11,29 @@ const addDocument = async (collectionName, data, uid) => {
     console.error("Error adding document: ", e);
   }
 };
+
+// retrieve document by ID
+const fetchDocumentById = async (collectionName, documentId) => {
+  try {
+    // Use the doc() method to get a reference to the specific document
+    const docRef = doc(db, collectionName, documentId);
+    // Use the getDoc() method to fetch the document
+    const docSnapshot = await getDoc(docRef);
+
+    if (docSnapshot.exists()) {
+      // If the document exists, return its data along with the document ID
+      return { id: docSnapshot.id, ...docSnapshot.data() };
+    } else {
+      // Handle the case where the document does not exist
+      console.log("No such document!");
+      return null;
+    }
+  } catch (e) {
+    console.error("Error fetching document: ", e);
+    throw e;
+  }
+};
+
 
 // Fetch all documents from a collection
 const fetchDocuments = async (collectionName) => {
@@ -47,4 +70,4 @@ const deleteDocument = async (collectionName, docId) => {
   }
 };
 
-export { addDocument, fetchDocuments, updateDocument, deleteDocument };
+export { addDocument, fetchDocumentById, fetchDocuments, updateDocument, deleteDocument };
