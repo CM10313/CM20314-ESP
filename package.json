@@ -15,12 +15,10 @@
     "@jest/types": "^29.6.3",
     "@mui/icons-material": "^5.15.7",
     "@mui/material": "^5.15.7",
-<<<<<<< HEAD:cm20314/package.json
     "firebase": "^10.8.0",
-=======
     "chart.js": "^4.4.1",
->>>>>>> main:package.json
     "next": "^14.1.0",
+    "next-router-mock": "^0.9.12",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18"
@@ -32,6 +30,8 @@
     "@babel/preset-typescript": "^7.23.3",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.12",
     "@types/node": "^20",
     "@types/react": "^18",

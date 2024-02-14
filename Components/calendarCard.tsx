@@ -53,7 +53,9 @@ interface CalendarEvent {
                 transition: "background-color 0.3s",
                 "&:hover" : {backgroundColor: "lightgrey"}
 
-                }}>
+                }}
+                data-testid="calendar-card"
+                >
             
             <CardContent>
                 <Typography> Study {event.id} </Typography>

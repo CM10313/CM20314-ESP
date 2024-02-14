@@ -8,7 +8,7 @@ import AdvertCreate from '../Components/AdvertCreate';
 import SearchIcon from '@mui/icons-material/Search';
 import Navbar from '../Components/navbar';
 import TriangleBackground from '../Components/TriangleBackground';
-import Calendar from '../Components/calendar';
+import Calendar from '../Components/Calendar';
 const ResearchHome: React.FC = () => {
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

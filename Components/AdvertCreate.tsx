@@ -3,7 +3,7 @@ import * as React from 'react';
 import StarIcon from '@mui/icons-material/Star';
 import { ReactNode } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import router from 'next/router';
+import { useRouter as useRouterWrapper } from '../Utils/router';
 interface AdvertCreateProps {
   advertTypes: string [];
   width:number|string;
@@ -37,9 +37,9 @@ export default function AdvertCreate({
   ) => {
     setAlignment(newAlignment);
   };
-
+  const router = useRouterWrapper();
   const handleCreateAdvertRedirect=(targetUrl:string,data:string)=>{
-    router.push({ pathname: targetUrl, query: data });
+    router.push({ pathname: targetUrl, query: { type: data } });
   }
     return (
     
