@@ -44,7 +44,7 @@ export interface EthicsData {
   password: String;
   email: String;
   organisation: String;
-  phoneNumber: Number;
+  phoneNumber: String;
   id: Number;
 }
 

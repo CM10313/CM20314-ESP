@@ -14,7 +14,7 @@ describe('RegisterEthics Component', () => {
   });
   it('displays the orginisation input field', () => {
     const { getByLabelText, getByRole } = render(
-      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {} onSubmit={() => {}}} />
+      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={() => {}} />
     );
   
     // Check that the email input field is not initially present
@@ -26,7 +26,7 @@ describe('RegisterEthics Component', () => {
   });
   it('displays the phoneNumber input field', () => {
     const { getByLabelText, getByRole } = render(
-      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {} onSubmit={() => {}}} />
+      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {} }onSubmit={() => {}}/>
     );
   
     // Check that the email input field is not initially present
@@ -96,7 +96,7 @@ describe('RegisterEthics Component', () => {
     expect(passwordInput.value).toBe('newPassword');
   });
   it('updates the username state when a key is pressed in the username field', () => {
-    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}}  onSubmit={() => {}} />);
     const usernameInput = getByLabelText('Username') as HTMLInputElement; // Cast to HTMLInputElement
 
     // Simulate typing in the password field
@@ -107,7 +107,7 @@ describe('RegisterEthics Component', () => {
   });
   it('displays nothing when a correct password is entered', () => {
     const { getByLabelText, queryByText } = render(
-      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}}  onSubmit={() => {}} />
     );
     const passwordInput = getByLabelText('Password');
   
@@ -121,7 +121,7 @@ describe('RegisterEthics Component', () => {
   // Add more tests for other input fields and functionality
   it('displays email error when an incorrect email is entered', () => {
     const { getByLabelText, getByRole , getByText } = render(
-      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}}  onSubmit={() => {}}/>
     );
   
     // Check that the email input field is not initially present
@@ -138,7 +138,7 @@ describe('RegisterEthics Component', () => {
   });
   it('displays no error when a correct email is entered', () => {
     const { getByLabelText, getByRole , queryByText } = render(
-      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}}  onSubmit={() => {}}/>
     );
   
     // Check that the email input field is not initially present
@@ -155,7 +155,7 @@ describe('RegisterEthics Component', () => {
   });
   it('displays no error when a correct phone number is entered', () => {
     const { getByLabelText, getByRole , queryByText } = render(
-      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}}  onSubmit={() => {}}/>
     );
   
     // Check that the email input field is not initially present
@@ -173,7 +173,7 @@ describe('RegisterEthics Component', () => {
   
   it('updates the email state when a key is pressed in the email field', () => {
     const { getByLabelText, getByRole , getByText } = render(
-      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}}  onSubmit={() => {}}/>
     );
   
     // Check that the email input field is not initially present
@@ -191,7 +191,7 @@ describe('RegisterEthics Component', () => {
   });
   it('updates the phone number state when a key is pressed in the phone number field', () => {
     const { getByLabelText, getByRole , getByText } = render(
-      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}}  onSubmit={() => {}}/>
     );
   
     // Check that the email input field is not initially present
