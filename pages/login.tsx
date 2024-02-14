@@ -6,17 +6,18 @@ import validatePassword from '../Utils/ValidatePassword';
 import validateUsername from '../Utils/ValidateUsername';
 
 
-import {signIn} from '../firebase/auth';
+import {getUID, signIn} from '../firebase/auth';
 
 import { useRouter } from 'next/router';
+import { fetchDocumentById } from '../firebase/firestore';
 
 
 const LoginForm: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [loginError, setLoginError] = useState('');
   const router = useRouterWrapper();
   //const { isLoggedIn,setUserLoggedIn} = useContext(AuthContext);
   useEffect(() => {
@@ -27,22 +28,15 @@ const LoginForm: React.FC = () => {
         setPasswordError('Invalid Password');
       }
   }, [password]);
-  useEffect(() => {
-    // Validate the password whenever it changes
-      if (validateUsername(username)) {
-        setUsernameError('');
-      } else {
-        setUsernameError('Invalid Username');
-      }
-  }, [username]);
+ 
  
 
 
   const handlePasswordChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
-  const handleUsernameChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+  const handleEmailChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -56,11 +50,29 @@ const handleSignupRedirect=()=>{
 
 const handleLoginRedirect = async () => {
   try {
-    await signIn(username, password);
+    await signIn(email, password);
     //check account type then push research/ethics/participant home page
-    router.push('/researchHome');
-  } catch (error) {
-    console.error("Login Failed:", (error as Error).message);
+    let doc_data = await fetchDocumentById('users', getUID());
+    let account_type = (doc_data as any).accountType
+    switch (account_type) {
+      case "participant":
+        break;
+      case "researcher":
+        router.push('/researchHome');
+        break;
+      case "ethics":
+        break;
+      default:
+        break;
+    }
+  }
+  catch (error) {
+    if (error instanceof Error){
+      setLoginError(error.message);
+    }
+    else{
+      setLoginError('An unexpected error occurred');
+    }
   }
 }
 
@@ -172,14 +184,14 @@ return (
       <Grid container spacing={2} >
         <Grid item xs={12}>
         <Grid container spacing={0} >
-        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><Box sx={{mb:usernameError ? 3: 0}}></Box>
+        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><Box sx={{mb:emailError ? 3: 0}}></Box>
                   <TextField
-                    label="Username"
+                    label="Email"
                     variant="outlined"
-                    value={username}
-                    onChange={handleUsernameChange}
-                    error={Boolean(usernameError)}
-                    helperText={usernameError}
+                    value={email}
+                    onChange={handleEmailChange}
+                    error={Boolean(emailError)}
+                    helperText={emailError}
                     sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
                     
                   /></Grid>
