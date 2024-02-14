@@ -57,49 +57,69 @@ enum UserType{
 
 const RegisterForm: React.FC = () => {
     const [userType, setUserType] = useState<UserType>(UserType.none);
+    const [errorMsg, setErrorMsg] = useState('');
     const router = useRouter();
 
     const handleStudentSubmit = async (studentData: StudentData) => {
-      await signUp(studentData.email, studentData.password);
-      const {password, ...datawithoutpassword} = studentData;
-      await addDocument('users', studentData, getUID());
-      router.push('/researchHome')
+      try {
+        let accountType = 'participant';
+        await signUp(studentData.email, studentData.password);
+        const {password, ...datawithoutpassword} = studentData;
+        await addDocument('users', {...datawithoutpassword, accountType}, getUID());
+        router.push('/researchHome')
+      }
+      catch (error) {
+        if (error instanceof Error){
+          setErrorMsg(error.message);
+          console.log(error.message);
+        }
+        else{
+          setErrorMsg('An unexpected error occurred');
+          console.log('An unexpected error occurred');
+        }
+      }
     }
 
     const handleResearcherSubmit = async (researcherData: ResearcherData) => {
-      console.log('hello');
-      console.log(researcherData);
-      await signUp(researcherData.email, researcherData.password);
-      const {password, ...datawithoutpassword} = researcherData;
-      await addDocument('users', researcherData, getUID());
-      router.push('/researchHome');
+      try {
+        let accountType = 'researcher';
+        await signUp(researcherData.email, researcherData.password);
+        const {password, ...datawithoutpassword} = researcherData;
+        await addDocument('users', {...datawithoutpassword, accountType}, getUID());
+        router.push('/researchHome');
+      }
+      catch (error) {
+        if (error instanceof Error){
+          setErrorMsg(error.message);
+          console.log(error.message);
+        }
+        else{
+          setErrorMsg('An unexpected error occurred');
+          console.log('An unexpected error occurred');
+        }
+      }
     }
 
     const handleEthicsSubmit = async (ethicsData: EthicsData) => {
-      await signUp(ethicsData.email, ethicsData.password);
-      const {password, ...datawithoutpassword} = ethicsData;
-      await addDocument('users', ethicsData, getUID());
-      router.push('/researchHome')
-    }
- 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        //handle user login
-        switch (userType) {
-          case UserType.student:
-            //student register
-            await signUp()
-            break;
-          case UserType.researcher:
-            //researcher register
-            break;
-          case UserType.ethicsBoard:
-            //ethics board register
-            break;
-          default:
-            break;
+      try {
+        let accountType = 'ethics';
+        await signUp(ethicsData.email, ethicsData.password);
+        const {password, ...datawithoutpassword} = ethicsData;
+        await addDocument('users', {...datawithoutpassword, accountType}, getUID());
+        router.push('/researchHome')
+      }
+      catch (error) {
+        if (error instanceof Error){
+          setErrorMsg(error.message);
+          console.log(error.message);
         }
-    };
+        else{
+          setErrorMsg('An unexpected error occurred');
+          console.log('An unexpected error occurred');
+        }
+      }
+    }
+
     const handleLoginRedirect=()=>{
       router.push('/login');
     }

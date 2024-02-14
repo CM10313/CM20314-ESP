@@ -2,32 +2,33 @@ import React from 'react';
 import { render, fireEvent, queryByLabelText } from '@testing-library/react';
 import RegisterEthics from './RegisterEthics';
 import '@testing-library/jest-dom';
+import { EthicsData } from '../pages/register';
 describe('RegisterEthics Component', () => {
   it('renders without crashing', () => {
-    render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    render(<RegisterEthics handleLoginRedirect={() => { } } handleReset={() => { } } onSubmit={() => {}} />);
   });
 
   it('displays the username input field', () => {
-    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={() => {}}/>);
     expect(getByLabelText('Username')).toBeInTheDocument();
   });
   it('displays the username input field', () => {
-    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={() => {}} />);
     expect(getByLabelText('Orginisation')).toBeInTheDocument();
   });
   it('displays the username input field', () => {
-    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={() => {}} />);
     expect(getByLabelText('Phone Number')).toBeInTheDocument();
   });
 
   it('displays the password input field', () => {
-    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={() => {}} />);
     expect(getByLabelText('Password')).toBeInTheDocument();
   });
 
   it('displays the email input field after clicking next', () => {
     const { getByLabelText, getByRole } = render(
-      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={() => {}} />
     );
   
     // Check that the email input field is not initially present
@@ -45,7 +46,7 @@ describe('RegisterEthics Component', () => {
     
     // Render the component with the mock function
     const { getByText } = render(
-      <RegisterEthics handleLoginRedirect={() => {}} handleReset={handleResetMock} />
+      <RegisterEthics handleLoginRedirect={() => {}} handleReset={handleResetMock} onSubmit={() => {}}/>
     );
 
     // Find the button element
@@ -59,7 +60,7 @@ describe('RegisterEthics Component', () => {
   });
   // Add more tests for other input fields and functionality
   it('displays password error when an incorrect password is entered', () => {
-    const { getByLabelText, getByText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText, getByText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={() => {}}/>);
     const passwordInput = getByLabelText('Password');
 
     // Enter an incorrect password
@@ -69,7 +70,7 @@ describe('RegisterEthics Component', () => {
     expect(getByText('Invalid Password')).toBeInTheDocument();
   });
   it('updates the password state when a key is pressed in the password field', () => {
-    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={() => {}}/>);
     const passwordInput = getByLabelText('Password') as HTMLInputElement; // Cast to HTMLInputElement
 
     // Simulate typing in the password field

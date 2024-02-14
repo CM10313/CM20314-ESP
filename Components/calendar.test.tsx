@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Calendar from './Calendar';
+import Calendar from './calendar';
 import '@testing-library/jest-dom';
 
 test('renders calendar component', () => {

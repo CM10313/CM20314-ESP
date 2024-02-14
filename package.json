@@ -15,7 +15,11 @@
     "@jest/types": "^29.6.3",
     "@mui/icons-material": "^5.15.7",
     "@mui/material": "^5.15.7",
+<<<<<<< HEAD:cm20314/package.json
+    "firebase": "^10.8.0",
+=======
     "chart.js": "^4.4.1",
+>>>>>>> main:package.json
     "next": "^14.1.0",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
