@@ -8,18 +8,20 @@ import validatePhoneNumber from "../Utils/ValidatePhoneNumber";
 import validateUsername from "../Utils/ValidateUsername";
 import { useBankInfoState,BankInfoState } from "../State/BankInfo";
 import FormDialogue from "./FormDialogue";
+import {ResearcherData} from '../pages/register'
 
 interface RegisterStudentProps {
     handleLoginRedirect:() => void;
     handleReset:() => void;
+    onSubmit: (data: ResearcherData) => void;
 }
-export default function RegisterResearcher( {handleLoginRedirect,handleReset}:RegisterStudentProps){
+export default function RegisterResearcher( {handleLoginRedirect,handleReset, onSubmit}:RegisterStudentProps){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const [orginisation, setOrginisation] = useState("");
+    const [organisation, setOrginisation] = useState("");
     const [emailError, setEmailError] = useState("");
     const [phoneNumber, setPhoneNumber]= useState("");
     const [phoneNumberError, setPhoneNumberError]= useState("");
@@ -28,6 +30,17 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset}:Re
     //defualt rating
     const [department, setDepartment] = useState(Faculty.NotSpecified)
     const [bankInfoObj, setBankInfoObj] = useBankInfoState();
+
+    const handleSubmit = () => {
+        const researcherData = {
+            username, password, email,
+            organisation, phoneNumber, 
+            id, department,
+            bankInfoObj
+        };
+        onSubmit(researcherData);
+        handleLoginRedirect();
+    }
     
     const handleDepartmentChange = (event: React.ChangeEvent<{ value: Faculty }>) => {
         setDepartment(event.target.value as Faculty); // Update department state with the selected value
@@ -98,7 +111,7 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset}:Re
    
     return(
         <>
-        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={()=>handleLoginRedirect()}>
+        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={()=>handleSubmit()}>
         <Box>
             {/* username and password*/}
             <Grid
@@ -159,7 +172,7 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset}:Re
                         <TextField
                         label="Orginisation"
                         variant="outlined"
-                        value={orginisation}
+                        value={organisation}
                         onChange={(e) => setOrginisation(e.target.value)}
                         sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
                         />

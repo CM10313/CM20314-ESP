@@ -8,23 +8,34 @@ import validatePhoneNumber from "../Utils/ValidatePhoneNumber";
 import validateUsername from "../Utils/ValidateUsername";
 import { useBankInfoState,BankInfoState } from "../State/BankInfo";
 import FormDialogue from "./FormDialogue";
+import {EthicsData} from '../pages/register'
 
-interface RegisterStudentProps {
+interface RegisterEthicsProps {
     handleLoginRedirect:() => void;
     handleReset:() => void;
+    onSubmit: (data: EthicsData) => void;
 }
-export default function RegisterEthics ( {handleLoginRedirect,handleReset}:RegisterStudentProps){
+export default function RegisterEthics ( {handleLoginRedirect,handleReset, onSubmit}:RegisterEthicsProps){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const [orginisation, setOrginisation] = useState("");
+    const [organisation, setOrginisation] = useState("");
     const [emailError, setEmailError] = useState("");
     const [phoneNumber, setPhoneNumber]= useState("");
     const [phoneNumberError, setPhoneNumberError]= useState("");
     const [id, setId]= useState(-1);
 
+        const handleSubmit = () => {
+            const ethicsData = {
+                username, password, email,
+                organisation, phoneNumber, 
+                id
+            };
+            onSubmit(ethicsData);
+            handleLoginRedirect();
+        }
       useEffect(() => {
         // Validate the password whenever it changes
           if (validatePassword(password)) {
@@ -73,7 +84,7 @@ export default function RegisterEthics ( {handleLoginRedirect,handleReset}:Regis
       };
     return(
         <>
-        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={()=>handleLoginRedirect()}>
+        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={()=>handleSubmit()}>
         <Box>
             {/* username and password*/}
             <Grid
@@ -134,7 +145,7 @@ export default function RegisterEthics ( {handleLoginRedirect,handleReset}:Regis
                         <TextField
                         label="Orginisation"
                         variant="outlined"
-                        value={orginisation}
+                        value={organisation}
                         onChange={(e) => setOrginisation(e.target.value)}
                         sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
                         />

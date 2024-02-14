@@ -8,18 +8,22 @@ import validatePhoneNumber from "../Utils/ValidatePhoneNumber";
 import validateUsername from "../Utils/ValidateUsername";
 import { useBankInfoState,BankInfoState } from "../State/BankInfo";
 import FormDialogue from "./FormDialogue";
+import {StudentData} from '../pages/register'
 
 interface RegisterStudentProps {
     handleLoginRedirect:() => void;
     handleReset:() => void;
+    onSubmit: (data: StudentData) => void;
 }
-export default function RegisterStudent ( {handleLoginRedirect,handleReset}:RegisterStudentProps){
+
+
+export default function RegisterStudent ( {handleLoginRedirect,handleReset, onSubmit}:RegisterStudentProps){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const [orginisation, setOrginisation] = useState("");
+    const [organisation, setOrginisation] = useState("");
     const [emailError, setEmailError] = useState("");
     const [phoneNumber, setPhoneNumber]= useState("");
     const [phoneNumberError, setPhoneNumberError]= useState("");
@@ -29,7 +33,18 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
     //defualt rating
     const [extraInfoObj, setExtraInfoObj] = useExtraInfoState();
     const [bankInfoObj, setBankInfoObj] = useBankInfoState();
-      
+    
+    const handleSubmit = () => {
+        const studentData = {
+            username, password, email,
+            organisation, phoneNumber, 
+            id, extraLanguage, extraInfoObj,
+            bankInfoObj
+        };
+        onSubmit(studentData);
+        handleLoginRedirect();
+    }
+
     const handleExtraLanguageChange = (e: { target: { value: SetStateAction<string>; }; }) => {
         setExtraLanguage(e.target.value);
       };
@@ -131,7 +146,7 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
     
     return(
         <>
-        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={()=>handleLoginRedirect()}>
+        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={()=>handleSubmit()}>
         <Box>
             {/* username and password*/}
             <Grid
@@ -192,7 +207,7 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                         <TextField
                         label="Orginisation"
                         variant="outlined"
-                        value={orginisation}
+                        value={organisation}
                         onChange={(e) => setOrginisation(e.target.value)}
                         sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
                         />
