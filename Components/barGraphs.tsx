@@ -3,19 +3,37 @@ import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
-export default function IncomeGraph(){
+interface BarGraphProps {
+    graphData: {
+        xAxisLabels: string[],
+        yAxisLabels: number[],
+        title: string
+        hasData: boolean,
+    }
+}
 
-    let percentData = [1, 2, 3, 50,3,6]
-    
+const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
+
+    if(graphData.hasData == false){
+        return <Box sx={{
+            display:'flex',
+            width: '25em',
+            boxShadow: '0.5em 0.5em 1em 0.1em grey',
+            backgroundColor: '#1F5095',
+            height: "10em",
+            padding: "0.3em",
+            borderRadius: "0.2em",
+            textAlign: "left",
+            color: "white"
+        }}>
+            <Typography> When this advert was created you did not enable tracking for this metric. <br />
+        If in future you wish to see this, enable this feature when creating your advert.</Typography>
+        </Box>
+    }
+
+    let percentData = graphData.yAxisLabels
     const incomeData = {
-        labels: [
-            "0 - 10",
-            "11 - 15",
-            "16 - 20",
-            "21 - 25", 
-            "25 - 30", 
-            "30 +"
-        ],
+        labels: graphData.xAxisLabels,
         datasets: [
             {
                 backgroundColor: "#5293B7",
@@ -59,7 +77,7 @@ export default function IncomeGraph(){
             <Grid width="100%" padding="0.8em" sx = {{backgroundColor: "white",}}>
                 {/* Titles and ID*/}
                 <Grid item sx={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
-                    <Typography fontSize="1.5em" fontWeight="Bold"> Income </Typography>
+                    <Typography fontSize="1.5em" fontWeight="Bold"> {graphData.title} </Typography>
                     <Typography sx={{
                         backgroundColor: "#DAE1E9",
                         padding: "0.3em",
@@ -83,3 +101,5 @@ export default function IncomeGraph(){
         </Box>
     )
 }
+
+export default BarGraph;
