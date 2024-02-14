@@ -42,4 +42,4 @@ describe('Calendar component', () => {
       // Add expectation for navigation or other functionality after clicking
     });
   });
-})
+});

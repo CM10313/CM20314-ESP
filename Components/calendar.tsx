@@ -1,6 +1,6 @@
 import { Box, Grid, Typography, Divider } from "@mui/material";
 import CalendarTodayTwoToneIcon from '@mui/icons-material/CalendarTodayTwoTone';
-import CalendarCard from "./CalendarCard";
+import CalendarCard from "./calendarCard";
 
 
 export default function Calendar(){

@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import BoxedNumber from "./FormDialogue";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useExtraInfoState,ExtraInfoState, Sexuality, Faculty, Religion, Anonymity, Gender, Race, HighestEducation } from "../State/UserExtraInfo";
 import validateEmail from "../Utils/ValidateEmail";
 import validatePassword from "../Utils/ValidatePassword";
@@ -21,7 +21,7 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
     const [passwordError, setPasswordError] = useState("");
     const [orginisation, setOrginisation] = useState("");
     const [emailError, setEmailError] = useState("");
-    const [phoneNumber, setPhoneNumber]= useState(-1);
+    const [phoneNumber, setPhoneNumber]= useState("");
     const [phoneNumberError, setPhoneNumberError]= useState("");
     const [id, setId]= useState(-1);
     const [extraLanguage, setExtraLanguage] = useState('');
@@ -29,49 +29,68 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
     //defualt rating
     const [extraInfoObj, setExtraInfoObj] = useExtraInfoState();
     const [bankInfoObj, setBankInfoObj] = useBankInfoState();
-    
+      
     const handleExtraLanguageChange = (e: { target: { value: SetStateAction<string>; }; }) => {
         setExtraLanguage(e.target.value);
       };
 
-      
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-        if (validateEmail(email)) {
-          setEmailError("");
-          return
-        } else {
-          setEmailError("Invalid Email")
-        }
-      };
-      const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(e.target.value);
-        if (validateUsername(username)) {
-          setUsernameError("");
-          return
-        } else {
-          setUsernameError("Invalid Username")
-        }
-      };
-      const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validatePassword(password)) {
+            setPasswordError('');
+          } else {
+            setPasswordError('Invalid Password');
+          }
+      }, [password]);
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validateEmail(email)) {
+            setEmailError('');
+          } else {
+            setEmailError('Invalid Email');
+          }
+      }, [email]);
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validateUsername(username)) {
+            setUsernameError('');
+          } else {
+            setUsernameError('Invalid Username');
+          }
+      }, [username]);
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validatePhoneNumber(phoneNumber)) {
+            setPhoneNumberError('');
+          } else {
+            setPhoneNumberError('Invalid Phone Number');
+          }
+      }, [phoneNumber]);
+    
+    
+      const handlePasswordChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
-        if (validatePassword(password)) {
-          setPasswordError("");
-          return
-        } else {
-          setPasswordError("Invalid Password")
-        }
+      };
+      const handleEmailChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+      };
+      const handleUsernameChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        setUsername(e.target.value);
       };
       const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPhoneNumber(Number(e.target.value));
-        if (validatePhoneNumber(e.target.value)) {
-          setPhoneNumberError("");
-          return
-        } else {
-          setPhoneNumberError("Invalid Phone Number")
-        }
+        setPhoneNumber(e.target.value);
       };
-    
+      const updateBankInfo = (category: keyof BankInfoState ,field:string, value: string | number) => {
+        setBankInfoObj((prevBankInfoObj) => {
+          return {
+            ...prevBankInfoObj,
+            [category]: {
+              ...prevBankInfoObj[category],
+              [field]: value,
+            },
+          };
+        });
+      };
     const updateExtraInfo = (category: keyof ExtraInfoState , field: string, value: string | number|string[] | boolean|Gender|Race|Sexuality|Faculty|Religion|Anonymity|HighestEducation) => {
         setExtraInfoObj((prevExtraInfoObj) => {
           return {
@@ -94,17 +113,6 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
         const updatedLanguages = [...extraInfoObj.LanguageData.otherLanguages];
         updatedLanguages.pop(); // Remove the last element
         updateExtraInfo('LanguageData', 'otherLanguages', updatedLanguages);
-      };
-      const updateBankInfo = (category: keyof BankInfoState ,field:string, value: string | number) => {
-        setBankInfoObj((prevBankInfoObj) => {
-          return {
-            ...prevBankInfoObj,
-            [category]: {
-              ...prevBankInfoObj[category],
-              [field]: value,
-            },
-          };
-        });
       };
        
       const handleEnumChange = <T extends Faculty | Sexuality | Gender | Anonymity | Race | Religion |HighestEducation>(
@@ -204,7 +212,6 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                         <TextField
                         label="Phone Number"
                         variant="outlined"
-                        type="tel"
                         value={phoneNumber}
                         error={Boolean(passwordError)}
                         helperText={passwordError}
@@ -295,7 +302,7 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                 </Grid>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
                         <FormControl sx={{width:'100%'}}>
-                            <InputLabel id="demo-simple-select-label">Faculty</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Faculty</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
@@ -329,13 +336,14 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                     </Grid>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
                         <FormControl sx={{width:'100%'}}>
-                            <InputLabel id="demo-simple-select-label">Race</InputLabel>
+                            <InputLabel id="race-select-label">Race</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
+                                labelId="race-select-label"
+                                id="race-select"
                                 value={extraInfoObj.DemographicData.race}
                                 label="Race"
                                 onChange={(event: SelectChangeEvent<Race>) => handleEnumChange(event, 'race','DemographicData')}
+                                data-testid="race-select" 
                                 >
                                 <MenuItem value={Race.Asian}>Asian</MenuItem> 
                                 <MenuItem value={Race.Black}>Black</MenuItem>
@@ -349,10 +357,10 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                     </Grid>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
                         <FormControl sx={{width:'100%'}}>
-                            <InputLabel id="demo-simple-select-label">Sexuality</InputLabel>
+                            <InputLabel id="sexuality-select-label">Sexuality</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
+                                labelId="sexuality-select-label"
+                                id="sexuality-select"
                                 value={extraInfoObj.DemographicData.sexuality}
                                 label="Sexuality"
                                 onChange={(event: SelectChangeEvent<Sexuality>) => handleEnumChange(event, 'sexuality','DemographicData')}
@@ -370,10 +378,10 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                     </Grid>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
                     <FormControl sx={{width:'100%'}}>
-                        <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                        <InputLabel id="gender-select-label">Gender</InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
+                            labelId="gender-select-label"
+                            id="gender-select"
                             value={extraInfoObj.DemographicData.gender}
                             label="Gender"
                             onChange={(event: SelectChangeEvent<Gender>) => handleEnumChange(event, 'gender','DemographicData')}
@@ -388,10 +396,10 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                     </Grid>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
                     <FormControl sx={{width:'100%'}}>
-                        <InputLabel id="demo-simple-select-label">Religion</InputLabel>
+                        <InputLabel id="religion-select-label">Religion</InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
+                            labelId="religion-select-label"
+                            id="religion-select"
                             value={extraInfoObj.DemographicData.religion}
                             label="Religion"
                             onChange={(event: SelectChangeEvent<Religion>) => handleEnumChange(event, 'religion','DemographicData')}
@@ -409,10 +417,10 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                     </Grid>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
                         <FormControl sx={{width:'100%'}}>
-                            <InputLabel id="demo-simple-select-label">Highest Level Of Education</InputLabel>
+                            <InputLabel id="hle-select-label">Highest Level Of Education</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
+                                labelId="hle-select-label"
+                                id="hle-select"
                                 value={extraInfoObj.DemographicData.highestLevelOfEducation}
                                 label="Highest Level Of Education"
                                 onChange={(event: SelectChangeEvent<HighestEducation>) => handleEnumChange(event, 'highestLevelOfEducation','DemographicData')}
@@ -441,8 +449,8 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                             label="Age"
                             variant="outlined"
                             type="number"
-                            value={extraInfoObj.DemographicData.income}
-                            onChange={(e) => updateExtraInfo('DemographicData', 'income', e.target.value)}
+                            value={extraInfoObj.DemographicData.age}
+                            onChange={(e) => updateExtraInfo('DemographicData', 'age', e.target.value)}
                             sx={{width:'100%',padding:0,backgroundColor:'#DAE1E9'}} 
                             inputProps={{
                                 min: 18,  
@@ -564,28 +572,29 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                     </Grid>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
                     <FormGroup>
-  <FormControlLabel control={ <Checkbox
-        checked={Boolean(extraInfoObj.TechnicalData.accessToDevice)}
-        onChange={(e) => updateExtraInfo('TechnicalData', 'accessToDevice', Boolean(e.target.checked))}
-        sx={{
-          color: "#0B254A",
-         
-          '&.Mui-checked': {
-            color: "#0B254A",
-          },
-        }}
-      />} label={
-        <Typography
-          sx={{
-            fontSize: '16px',
-            width:'300px' 
-          }}
-        >
-         I have a device with internet access
-        </Typography>
-      } />
+                        <FormControlLabel control={ <Checkbox 
+                                checked={Boolean(extraInfoObj.TechnicalData.accessToDevice)}
+                                onChange={(e) => updateExtraInfo('TechnicalData', 'accessToDevice', Boolean(e.target.checked))}
+                                
+                                sx={{
+                                color: "#0B254A",
+                                
+                                '&.Mui-checked': {
+                                    color: "#0B254A",
+                                },
+                                }}
+                            />} label={
+                                <Typography
+                                sx={{
+                                    fontSize: '16px',
+                                    width:'300px' 
+                                }}
+                                >
+                                I have a device with internet access
+                                </Typography>
+                            } />
 
-</FormGroup>
+                        </FormGroup>
                    
                     </Grid>
                     <Grid item xs={12} sx={{display:'flex',justifyContent:'start',alignItems:'center',ml:0}}>
@@ -678,7 +687,7 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset}:Regi
                                 label="Level Of Anonymity"
                                 onChange={(event: SelectChangeEvent<Anonymity>) => handleEnumChange(event, 'anonymityRequired','PrivacyData')}
                                 >
-                                <MenuItem value={Anonymity.Full}>A Full</MenuItem>   
+                                <MenuItem value={Anonymity.Full}>Full</MenuItem>   
                                 <MenuItem value={Anonymity.None}>None</MenuItem>   
                                 <MenuItem value={Anonymity.NotSpecified}>Prefer Not To Say</MenuItem>  
                             </Select>

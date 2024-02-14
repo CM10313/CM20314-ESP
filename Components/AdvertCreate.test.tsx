@@ -2,9 +2,12 @@ import React from 'react';
 import { render, fireEvent,screen, getByRole } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import AdvertCreate from './AdvertCreate';
-import { useRouter } from 'next/router';
 import mockRouter from 'next-router-mock';
-
+import { useRouter } from 'next/router';
+jest.mock('next/router', () => ({
+  ...jest.requireActual('next/router'),
+  useRouter: jest.fn(),
+}));
 describe('AdvertCreate Component', () => {
   const advertTypes = ["Study", "Webinar", "Other"];
   const width = '90%';
@@ -15,8 +18,6 @@ describe('AdvertCreate Component', () => {
     'Not sure what this is ?'
   ];
 
-  // Define the mock function for 'push' method
-  jest.mock('next/router', () => jest.requireActual('next-router-mock'))
 
 
   it('renders without crashing', () => {
@@ -48,34 +49,29 @@ describe('AdvertCreate Component', () => {
   });
 
 
-    it('mocks the useRouter hook', () => {
-      // Set the initial url:
-      mockRouter.push("/");
-      
-      // Render the component:
-      const{ getByRole,getByText }=render(<AdvertCreate
+  it('mocks the useRouter hook', () => {
+    const pushMock = jest.fn();
+    const useRouterMock = jest.spyOn(require('next/router'), 'useRouter');
+    useRouterMock.mockReturnValue({ push: pushMock });
+
+    const { getByRole, getByText } = render(
+      <AdvertCreate
         advertTypes={advertTypes}
         width={width}
         height={height}
         textAreaContent={textAreaContent}
-      />);
-      const createButton = getByRole('button', { name: /Create/i });
+      />
+    );
+
+    const createButton = getByRole('button', { name: /Create/i });
     expect(createButton).toBeInTheDocument();
 
-    // Click on the 'Webinar' button
     fireEvent.click(getByText('Webinar'));
-
-    // Click the 'Create' button:
     fireEvent.click(createButton);
 
-      
-      
-      // Ensure the router was updated:
-      expect(mockRouter).toMatchObject({ 
-        asPath: "/advertCreate",
-        pathname: "/advertCreate",
-        query: { type: "A Webinar is an online hosted event, these are typically informational and use a link to zoom/teams etc to manage participants. ~ No participant information is collected so setup is faster." },
-      });
-  
-});
+    expect(pushMock).toHaveBeenCalledWith({
+      pathname: '/advertCreate',
+      query: { type: 'Webinar' }
+    });
+  });
 });

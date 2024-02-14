@@ -19,10 +19,6 @@ const RegisterForm: React.FC = () => {
     const [userType, setUserType] = useState<UserType>(UserType.none);
     const router = useRouter();
  
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        //handle user login
-    };
     const handleLoginRedirect=()=>{
     router.push('/login');
     }

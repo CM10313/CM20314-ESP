@@ -1,19 +1,47 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
-
+import { useRouter as useRouterWrapper } from '../Utils/router';
 import { TextField, Button, Grid, Typography, Box, useMediaQuery } from '@mui/material';
+import validatePassword from '../Utils/ValidatePassword';
+import validateUsername from '../Utils/ValidateUsername';
 
 
 
-import { useRouter } from 'next/router';
+
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
-  const router = useRouter();
+  const router = useRouterWrapper();
   //const { isLoggedIn,setUserLoggedIn} = useContext(AuthContext);
+  useEffect(() => {
+    // Validate the password whenever it changes
+      if (validatePassword(password)) {
+        setPasswordError('');
+      } else {
+        setPasswordError('Invalid Password');
+      }
+  }, [password]);
+  useEffect(() => {
+    // Validate the password whenever it changes
+      if (validateUsername(username)) {
+        setUsernameError('');
+      } else {
+        setUsernameError('Invalid Username');
+      }
+  }, [username]);
+ 
+
+
+  const handlePasswordChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+  const handleUsernameChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+ 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     //handle user login
@@ -140,7 +168,7 @@ return (
                     label="Username"
                     variant="outlined"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={handleUsernameChange}
                     error={Boolean(usernameError)}
                     helperText={usernameError}
                     sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
@@ -151,13 +179,12 @@ return (
         <Grid item xs={12}>
         <Grid container spacing={0}>
         <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-        <Box sx={{mb:emailError ? 3: 0}}></Box>
                   <TextField
                   label="Password"
                   variant="outlined"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                   error={Boolean(passwordError)}
                     helperText={passwordError}
                     sx={{width:'80%',backgroundColor:'#DAE1E9'}}
