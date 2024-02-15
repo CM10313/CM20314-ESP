@@ -21,7 +21,7 @@ export interface StudentData {
   password: String;
   email: String;
   organisation: String;
-  phoneNumber: Number;
+  phoneNumber: String;
   id: Number;
   extraLanguage: String;
   extraInfoObj: ExtraInfoState;
@@ -33,7 +33,7 @@ export interface ResearcherData {
   password: String;
   email: String;
   organisation: String;
-  phoneNumber: Number;
+  phoneNumber: String;
   id: Number;
   department: Faculty;
   bankInfoObj: BankInfoState;
@@ -44,7 +44,7 @@ export interface EthicsData {
   password: String;
   email: String;
   organisation: String;
-  phoneNumber: Number;
+  phoneNumber: String;
   id: Number;
 }
 

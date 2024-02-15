@@ -17,7 +17,7 @@ export default function CardGrouper({
     return (
     
        <>
-                <Grid container rowSpacing={rowSpacing} columnSpacing={{ xs: 0, sm: 0, md: 0}} >
+                <Grid container rowSpacing={rowSpacing} columnSpacing={{ xs: 0, sm: 0, md: 0}}  >
             {cardInputList.map((item, index) => ( 
                 <Grid item xs={12/numberOfItemsPerRow} key={index} sx={{display:'flex',justifyContent:'center'}}>
                   {item}

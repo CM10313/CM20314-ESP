@@ -39,10 +39,6 @@ const LoginForm: React.FC = () => {
     setEmail(e.target.value);
   };
  
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    //handle user login
-};
 const handleSignupRedirect=()=>{
   router.push('/register');
 }
@@ -150,7 +146,7 @@ return (
   }}>
         <Box sx={{minHeight:'760px',height:'100vh',width:'100%'}}><>  <Box sx={{display: "flex",
     justifyContent: "center",
-    alignItems: "center",width:'100%',height:'100%'}}><form onSubmit={handleSubmit}>
+    alignItems: "center",width:'100%',height:'100%'}}><form>
     
     <Grid
     container

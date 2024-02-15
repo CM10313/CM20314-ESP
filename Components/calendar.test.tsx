@@ -3,6 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Calendar from './Calendar';
 
+
 // Mock useRouter
 jest.mock('next/router', () => ({
   useRouter: jest.fn().mockReturnValue({
@@ -25,9 +26,9 @@ describe('Calendar component', () => {
 
   it('renders card details for each item in cardDetails', () => {
     const cardDetails = [
-      { id: 1, date: "2024-02-10T09:00:00", location: "1.1 West", priority: "high" },
-      { id: 2, date: "2024-02-12T12:30:00", location: "2.1 West", priority: "low" },
-      { id: 3, date: "2024-02-15T17:00:00", location: "1.1 South", priority: "low" }
+      { id: 1, date: "13/09/23", location: "1.1 West", priority: "high" },
+      { id: 2, date: "13/09/23", location: "2.1 West", priority: "low" },
+      { id: 3, date: "13/09/23", location: "1.1 South", priority: "low" }
     ];
 
     const { getAllByTestId, getByText } = render(<Calendar />);

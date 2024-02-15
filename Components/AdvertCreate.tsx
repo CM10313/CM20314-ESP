@@ -44,7 +44,7 @@ export default function AdvertCreate({
     return (
     
        <>
-        <Box sx={{width:width, height:height,backgroundColor:'#F6F6F6',borderRadius:'10px',boxShadow: '0px 4px 4px 0px #00000040'}}>
+        <Box sx={{width:width, height:height,backgroundColor:'#F6F6F6',borderRadius:'10px',boxShadow: '0px 4px 4px 0px #00000040',maxWidth:'500px'}}>
           <Grid container rowSpacing={0} columnSpacing={0} sx={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%',width:'100%'}}>
             <Grid item xs={12} sx={{display:'flex',justifyContent:'center',width:'100%'}}>
               <Box  sx={{width:'80%',backgroundColor:'#C5DBE7',borderRadius:'5px',height:'29px'}}>
