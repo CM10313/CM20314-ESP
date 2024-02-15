@@ -1,6 +1,6 @@
 import { Box, Grid, Typography, Divider } from "@mui/material";
 import CalendarTodayTwoToneIcon from '@mui/icons-material/CalendarTodayTwoTone';
-import CalendarCard from "./calendarCard";
+import CalendarCard from "./CalendarCard";
 
 
 export default function Calendar(){
@@ -11,32 +11,33 @@ export default function Calendar(){
         {
           id: 1,
           location: "1.1 West",
-          date: "2024-02-10T09:00:00",
+          date: "13/09/23",
           priority: "high"
         },
         {
           id: 2,
-          date: "2024-02-12T12:30:00",
+          date: "13/09/23",
           location: "2.1 West",
           priority: "low"
         },
         {
           id: 3,
-          date: "2024-02-15T17:00:00",
+          date: "13/09/23",
           location: "1.1 South",
           priority: "high"
         },
       ];
 
     return (
-        <Box width="30em" sx = {{borderRadius: "10px", boxShadow: "0.1em 0.4em 0.8em grey"}}>
-            <Grid height = "20em" display="flex" flexDirection="row" justifyContent = "space-between">
+        <Box sx={{display:'flex',justifyContent:'center',width:'100%'}}>
+            <Box sx={{height:'330px',width:'100%',maxWidth:'500px'}}>
+            <Grid  sx={{display:'flex',justifyContent:'space-between',flexDirection:'row',width:'100%',height:'100%'}}>
                 <Grid item
                     sx = {{ 
                         display:"flex", 
                         flexDirection:"column", 
                         justifyContent: "center",
-                        width:"8em", 
+                        width:"40%", 
                         height:"100%", 
                         backgroundColor: "#1F5095",
                         color:"white",
@@ -44,48 +45,45 @@ export default function Calendar(){
                         borderTopLeftRadius: "0.5em",
                         }} >
                     
-                    <Typography sx={{fontSize:"3.5em", padding: "0.1em"}}> 30th <br/> Nov </Typography>
+                    <Typography sx={{fontSize:"70px", padding: "0.1em"}}> 30th </Typography>
+                    <Typography sx={{fontSize:"25px", padding: "0.1em"}}>  Nov </Typography>
                 </Grid>
 
-                <Grid item width = "22em" 
+                <Grid item 
                     sx={{
-                        backgroundColor: "#C6CFD8",                        
+                        backgroundColor: "#C6CFD8",  
+                        width:"60%",                       
                         borderTopRightRadius: "0.5em",
                         borderBottomRightRadius: "0.5em",}}>
-                    <Box 
-                        sx= {{
-                            display:"flex", 
-                            flexDirection:"row",
-                            justifyContent:"space-evenly",
-                            fontSize: "2em",
-                            color: "white",
-                            padding: "0.1em"
-                        }}>
-
-                        Dont`&apos;` Forget
-                        < CalendarTodayTwoToneIcon sx={{color:"red", width:"1.5em", height:"auto"}} />
-                    </Box>
-
-                    <Box 
+                    <Box
                         sx={{
-                            display:"flex", 
-                            justifyContent:"space-evenly", 
-                            flexDirection:"column", 
-                            padding: "0.1em"
-                            }}>
-                        
-                        <Divider orientation="horizontal" variant="inset"
-                            sx={{ backgroundColor: "#1F5095", width: '55%', height: '0.1em' }}/>
+                            width: '85%',
+                            color: 'white',
+                            padding: '1em',
+                            display: 'flex',
+                            justifyContent: 'space-between', // Aligns items with space between them
+                            alignItems: 'center', // Aligns items vertically
+                        }}
+                        >
+                        <Typography fontSize={25}>Dont&apos; Forget</Typography>
+                        <CalendarTodayTwoToneIcon sx={{ color: 'red', width: '1.5em', height: 'auto',mr:1 }} />
+                        </Box>
+
+                   
+                        <Divider orientation="horizontal"
+                            sx={{ backgroundColor: "#1F5095", width: '80%', height: '2px',ml:3 }}/>
                         
                         {/* Need to think about what happens onClick */}
+                        <Box sx={{width:'85%',height:'215px',overflowY:'auto',padding:2}}>
                         {calendarCardData.map((entry) => (
                             <CalendarCard key={entry.id} event = {entry} />
                         ))}
-                    </Box>
+                        </Box>
+                  
                 </Grid>
 
             </Grid>
-
+            </Box>
         </Box>
     )
 }
