@@ -3,7 +3,7 @@ import * as React from 'react';
 import StarIcon from '@mui/icons-material/Star';
 import { ReactNode } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import router from 'next/router';
+import { useRouter as useRouterWrapper } from '../Utils/router';
 interface AdvertCreateProps {
   advertTypes: string [];
   width:number|string;
@@ -37,14 +37,14 @@ export default function AdvertCreate({
   ) => {
     setAlignment(newAlignment);
   };
-
+  const router = useRouterWrapper();
   const handleCreateAdvertRedirect=(targetUrl:string,data:string)=>{
-    router.push({ pathname: targetUrl, query: data });
+    router.push({ pathname: targetUrl, query: { type: data } });
   }
     return (
     
        <>
-        <Box sx={{width:width, height:height,backgroundColor:'#F6F6F6',borderRadius:'10px',boxShadow: '0px 4px 4px 0px #00000040'}}>
+        <Box sx={{width:width, height:height,backgroundColor:'#F6F6F6',borderRadius:'10px',boxShadow: '0px 4px 4px 0px #00000040',maxWidth:'500px'}}>
           <Grid container rowSpacing={0} columnSpacing={0} sx={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%',width:'100%'}}>
             <Grid item xs={12} sx={{display:'flex',justifyContent:'center',width:'100%'}}>
               <Box  sx={{width:'80%',backgroundColor:'#C5DBE7',borderRadius:'5px',height:'29px'}}>

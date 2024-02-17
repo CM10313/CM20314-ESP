@@ -1,30 +1,75 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
-
+import { useRouter as useRouterWrapper } from '../Utils/router';
 import { TextField, Button, Grid, Typography, Box, useMediaQuery } from '@mui/material';
+import validatePassword from '../Utils/ValidatePassword';
+import validateUsername from '../Utils/ValidateUsername';
 
 
+import {getUID, signIn} from '../firebase/auth';
 
 import { useRouter } from 'next/router';
+import { fetchDocumentById } from '../firebase/firestore';
+
+
 const LoginForm: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
-  const router = useRouter();
+  const [passwordError, setPasswordError] = useState("");
+  const [loginError, setLoginError] = useState('');
+  const router = useRouterWrapper();
   //const { isLoggedIn,setUserLoggedIn} = useContext(AuthContext);
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    //handle user login
-};
+  useEffect(() => {
+    // Validate the password whenever it changes
+      if (validatePassword(password)) {
+        setPasswordError('');
+      } else {
+        setPasswordError('Invalid Password');
+      }
+  }, [password]);
+ 
+ 
+
+
+  const handlePasswordChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+  const handleEmailChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+ 
 const handleSignupRedirect=()=>{
   router.push('/register');
 }
 
 
-const handleLoginRedirect = () => {
-  router.push('/researchHome');
+const handleLoginRedirect = async () => {
+  try {
+    await signIn(email, password);
+    //check account type then push research/ethics/participant home page
+    let doc_data = await fetchDocumentById('users', getUID());
+    let account_type = (doc_data as any).accountType
+    switch (account_type) {
+      case "participant":
+        break;
+      case "researcher":
+        router.push('/researchHome');
+        break;
+      case "ethics":
+        break;
+      default:
+        break;
+    }
+  }
+  catch (error) {
+    if (error instanceof Error){
+      setLoginError(error.message);
+    }
+    else{
+      setLoginError('An unexpected error occurred');
+    }
+  }
 }
 
 
@@ -101,7 +146,7 @@ return (
   }}>
         <Box sx={{minHeight:'760px',height:'100vh',width:'100%'}}><>  <Box sx={{display: "flex",
     justifyContent: "center",
-    alignItems: "center",width:'100%',height:'100%'}}><form onSubmit={handleSubmit}>
+    alignItems: "center",width:'100%',height:'100%'}}><form>
     
     <Grid
     container
@@ -135,14 +180,14 @@ return (
       <Grid container spacing={2} >
         <Grid item xs={12}>
         <Grid container spacing={0} >
-        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><Box sx={{mb:usernameError ? 3: 0}}></Box>
+        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><Box sx={{mb:emailError ? 3: 0}}></Box>
                   <TextField
-                    label="Username"
+                    label="Email"
                     variant="outlined"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    error={Boolean(usernameError)}
-                    helperText={usernameError}
+                    value={email}
+                    onChange={handleEmailChange}
+                    error={Boolean(emailError)}
+                    helperText={emailError}
                     sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
                     
                   /></Grid>
@@ -151,13 +196,12 @@ return (
         <Grid item xs={12}>
         <Grid container spacing={0}>
         <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-        <Box sx={{mb:emailError ? 3: 0}}></Box>
                   <TextField
                   label="Password"
                   variant="outlined"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                   error={Boolean(passwordError)}
                     helperText={passwordError}
                     sx={{width:'80%',backgroundColor:'#DAE1E9'}}
