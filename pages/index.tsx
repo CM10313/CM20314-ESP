@@ -1,10 +1,10 @@
 import React from 'react';
-import Login from './login';
+import LoginForm from './login';
 
 const HomePage: React.FC = () => {
   return (
     <div>
-      <Login />
+      <LoginForm />
     </div>
   );
 };

@@ -45,23 +45,25 @@ interface CalendarEvent {
                 alignItems: "center",
                 backgroundColor:"white",
                 margin: "0.5em",
-                minWidth: "20em",
-                height: "4em",
+                width: "90%",
+                height: "60px",
                 border: "solid 0.3em",
                 borderRadius: "0.5em",
                 borderColor: borderColor,
                 transition: "background-color 0.3s",
                 "&:hover" : {backgroundColor: "lightgrey"}
 
-                }}>
+                }}
+                data-testid="calendar-card"
+                >
             
             <CardContent>
-                <Typography> Study {event.id} </Typography>
-                <Typography> {event.location} </Typography>
+                <Typography fontSize={12}> Study {event.id} </Typography>
+                <Typography fontSize={11}> {event.location} </Typography>
             </CardContent>
             
             <CardContent>
-                <Typography> {event.date} </Typography>
+                <Typography fontSize={15}> {event.date} </Typography>
             </CardContent>
             
 

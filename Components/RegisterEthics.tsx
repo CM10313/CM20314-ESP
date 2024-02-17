@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import BoxedNumber from "./FormDialogue";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useExtraInfoState,ExtraInfoState, Sexuality, Faculty, Religion, Anonymity, Gender, Race, HighestEducation } from "../State/UserExtraInfo";
 import validateEmail from "../Utils/ValidateEmail";
 import validatePassword from "../Utils/ValidatePassword";
@@ -8,64 +8,83 @@ import validatePhoneNumber from "../Utils/ValidatePhoneNumber";
 import validateUsername from "../Utils/ValidateUsername";
 import { useBankInfoState,BankInfoState } from "../State/BankInfo";
 import FormDialogue from "./FormDialogue";
+import {EthicsData} from '../pages/register'
 
-interface RegisterStudentProps {
+interface RegisterEthicsProps {
     handleLoginRedirect:() => void;
     handleReset:() => void;
+    onSubmit: (data: EthicsData) => void;
 }
-export default function RegisterEthics ( {handleLoginRedirect,handleReset}:RegisterStudentProps){
+export default function RegisterEthics ( {handleLoginRedirect,handleReset, onSubmit}:RegisterEthicsProps){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const [orginisation, setOrginisation] = useState("");
+    const [organisation, setOrginisation] = useState("");
     const [emailError, setEmailError] = useState("");
-    const [phoneNumber, setPhoneNumber]= useState(-1);
+    const [phoneNumber, setPhoneNumber]= useState("");
     const [phoneNumberError, setPhoneNumberError]= useState("");
     const [id, setId]= useState(-1);
 
-
-      
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-        if (validateEmail(email)) {
-          setEmailError("");
-          return
-        } else {
-          setEmailError("Invalid Email")
+        const handleSubmit = () => {
+            const ethicsData = {
+                username, password, email,
+                organisation, phoneNumber, 
+                id
+            };
+            onSubmit(ethicsData);
+            handleLoginRedirect();
         }
-      };
-      const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(e.target.value);
-        if (validateUsername(username)) {
-          setUsernameError("");
-          return
-        } else {
-          setUsernameError("Invalid Username")
-        }
-      };
-      const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validatePassword(password)) {
+            setPasswordError('');
+          } else {
+            setPasswordError('Invalid Password');
+          }
+      }, [password]);
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validateEmail(email)) {
+            setEmailError('');
+          } else {
+            setEmailError('Invalid Email');
+          }
+      }, [email]);
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validateUsername(username)) {
+            setUsernameError('');
+          } else {
+            setUsernameError('Invalid Username');
+          }
+      }, [username]);
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (validatePhoneNumber(phoneNumber)) {
+            setPhoneNumberError('');
+          } else {
+            setPhoneNumberError('Invalid Phone Number');
+          }
+      }, [phoneNumber]);
+    
+    
+      const handlePasswordChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
-        if (validatePassword(password)) {
-          setPasswordError("");
-          return
-        } else {
-          setPasswordError("Invalid Password")
-        }
+      };
+      const handleEmailChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+      };
+      const handleUsernameChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        setUsername(e.target.value);
       };
       const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPhoneNumber(Number(e.target.value));
-        if (validatePhoneNumber(e.target.value)) {
-          setPhoneNumberError("");
-          return
-        } else {
-          setPhoneNumberError("Invalid Phone Number")
-        }
+        setPhoneNumber(e.target.value);
       };
     return(
         <>
-        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={()=>handleLoginRedirect()}>
+        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={()=>handleSubmit()}>
         <Box>
             {/* username and password*/}
             <Grid
@@ -126,7 +145,7 @@ export default function RegisterEthics ( {handleLoginRedirect,handleReset}:Regis
                         <TextField
                         label="Orginisation"
                         variant="outlined"
-                        value={orginisation}
+                        value={organisation}
                         onChange={(e) => setOrginisation(e.target.value)}
                         sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
                         />
@@ -146,10 +165,10 @@ export default function RegisterEthics ( {handleLoginRedirect,handleReset}:Regis
                         <TextField
                         label="Phone Number"
                         variant="outlined"
-                        type="tel"
+                        
                         value={phoneNumber}
-                        error={Boolean(passwordError)}
-                        helperText={passwordError}
+                        error={Boolean(phoneNumberError)}
+                        helperText={phoneNumberError}
                         onChange={handlePhoneNumberChange}
                         sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
                         />
