@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { Bar } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
+import { Chart, registerables } from 'chart.js/auto';
+//Chart.register(...registerables);
 
 interface BarGraphProps {
     graphData: {
@@ -91,7 +91,7 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
                 <Grid item >
                     <Bar 
                         data={incomeData}
-                        options = {barChartOptions}  
+                        options = {barChartOptions} 
                     />
                 </Grid>
             </Grid>
