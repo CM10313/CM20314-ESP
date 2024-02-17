@@ -1,48 +1,41 @@
-import {Box} from "@mui/material";
+import {Box, Grid} from "@mui/material";
 import TriangleBackground from "../Components/TriangleBackground";
+import HorizontalBarGraph from "../Components/horizontalBarGraph";
+import DonughtChart from "../Components/donughtChart";
 import BarGraph from "../Components/barGraphs";
 import Navbar from "../Components/navbar";
 
+// All the data that is passed to the graph
+import { 
+    diversityScore, incomeGraphLabelData, ageGraphLabelData,  
+    raceGraphLabelData, sexualityGraphLabelData, 
+    genderGraphLabelData, religionGraphLabelData
+} from "../Components/graphData";
+import OverallDiversityScore from "../Components/diversityScore";
+
+
 export default function DiversityView(){
-
-    const studyId = "#123456"
-    const incomeGraphLabelData = {
-            yAxisLabels : [1, 2, 3, 60,3,6],
-            xAxisLabels : [
-                    "0 - 10",
-                    "11 - 15",
-                    "16 - 20",
-                    "21 - 25", 
-                    "25 - 30", 
-                    "30 +"
-                ],
-            title: "Income",
-            studyId: studyId,
-            hasData: true
-        }
-
-    const ageGraphLabelData = {
-        yAxisLabels: [5, 10, 5, 50, 90,20,7],
-        xAxisLabels: [
-            "18-20",
-            "21-25",
-            "26-30",
-            "31-40",
-            "41-45",
-            "56-50",
-            "50+"
-        ],
-        title: "Age",
-        studyId: studyId,
-        hasData: true
-    }
-
     return (
         <Box> 
             <Navbar />
             <TriangleBackground />
-            <BarGraph graphData={incomeGraphLabelData} />
-            <BarGraph graphData={ageGraphLabelData} />
+            <Grid display="flex" flexDirection="row" justifyContent="center">
+                <Grid item display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em" >
+                    <BarGraph graphData={incomeGraphLabelData} />
+                    <BarGraph graphData={ageGraphLabelData} />
+                </Grid>
+
+                <Grid item display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em">
+                    <OverallDiversityScore score={diversityScore} />
+                    <HorizontalBarGraph graphData={raceGraphLabelData} />
+                    <HorizontalBarGraph graphData={religionGraphLabelData} />
+                </Grid>
+
+                <Grid item display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em">
+                    <DonughtChart graphData = {sexualityGraphLabelData} />
+                    <DonughtChart graphData = {genderGraphLabelData} />
+                </Grid>
+            </Grid>
         </Box>
     )
 
