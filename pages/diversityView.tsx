@@ -17,7 +17,7 @@ import OverallDiversityScore from "../Components/diversityScore";
 export default function DiversityView(){
     return (
         <Box> 
-            <Navbar />
+            <Navbar name={"John Doe"} rating={4.1} />
             <TriangleBackground />
             <Grid display="flex" flexDirection="row" justifyContent="center">
                 <Grid item display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em" >
