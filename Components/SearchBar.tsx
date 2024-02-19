@@ -21,8 +21,11 @@ export default function SearchBar({
       const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
           onReturn(search);
+        }else{
+          return;
         }
       };
+      
       const handleSearchButtonClick = () => {
         onReturn(search);
       };
@@ -42,12 +45,13 @@ export default function SearchBar({
       }}
     >
       <Button onClick={handleSearchButtonClick}>
-        <SearchIcon />
+      <SearchIcon data-testid="search-icon" />
       </Button>
       <TextField
         value={search}
         onChange={handleSearchChange}
         onKeyDown={handleKeyDown}
+        placeholder='Search'
         sx={{
             flexGrow: 1,
             height: '100%', // Set the desired height
