@@ -43,9 +43,8 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
         ]
     }
 
-    const barCharOptions = {
+    const barChartOptions = {
         responsive: true,
-        
         plugins: {
           legend: {display:false},
           title: { display: false}
@@ -64,8 +63,6 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
                 grid: { display: false }
             }
         }
-    
-    
     }
 
     return (
@@ -94,7 +91,7 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
                 <Grid item >
                     <Bar 
                         data={incomeData}
-                        options = {barCharOptions}
+                        options = {barChartOptions}  
                     />
                 </Grid>
             </Grid>
