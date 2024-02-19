@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import {  Doughnut } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
+import { Chart, registerables, ScaleOptions  } from 'chart.js';
 Chart.register(...registerables);
 
 interface BarGraphProps {
@@ -63,7 +63,7 @@ const DonughtChart: React.FC<BarGraphProps> = ({graphData}) => {
                 }, 
                 display: false,
                 grid:{display: false}, 
-                },
+                }as ScaleOptions<'linear'>,
             
             x : {
                 display:false,
@@ -110,7 +110,7 @@ const DonughtChart: React.FC<BarGraphProps> = ({graphData}) => {
 
                         <Grid item width = "40%" height="100%" sx={{backgroundColor: "#DAE1E9", padding:"0.5em", margin:"0.2em", borderRadius: "0.5em"}}>
                             {graphData.xAxisLabels.map((xAxisLabel, index) => (
-                                <Typography display="flex" justifyContent="space-between"> 
+                                <Typography  key={index}display="flex" justifyContent="space-between"> 
                                     <span> {`${xAxisLabel}`} </span>
                                     <span> {`${graphData.yAxisLabels[index]}`}% </span>
                                 </Typography>

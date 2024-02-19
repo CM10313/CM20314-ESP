@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { Bar } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
+import { Chart, registerables, ScaleOptions } from 'chart.js';
 Chart.register(...registerables);
 
 interface BarGraphProps {
@@ -57,7 +57,7 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
         scales: {
             y: {ticks: {
                     callback: function (value:number){ return value + '%' }
-                }},
+                }}as ScaleOptions<'linear'>,
             
             x : {
                 grid: { display: false }
