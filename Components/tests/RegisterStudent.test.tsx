@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, fireEvent, queryByLabelText, screen, waitFor, within  } from '@testing-library/react';
-import RegisterStudent from './RegisterStudent';
+import RegisterStudent from '../RegisterStudent';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event'; 
-import { Faculty } from '../State/UserExtraInfo';
+import { Faculty } from '../../State/UserExtraInfo';
 
 
 

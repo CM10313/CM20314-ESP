@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, fireEvent, queryByLabelText, screen, waitFor, within  } from '@testing-library/react';
-import RegisterResearcher from './RegisterResearcher';
+import RegisterResearcher from '../RegisterResearcher';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event'; 
-import { Faculty } from '../State/UserExtraInfo';
+import { Faculty } from '../../State/UserExtraInfo';
 
 const mockSetDepartment = jest.fn();
 

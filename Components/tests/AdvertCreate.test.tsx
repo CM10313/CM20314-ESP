@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent,screen, getByRole } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import AdvertCreate from './AdvertCreate';
+import AdvertCreate from '../AdvertCreate';
 import mockRouter from 'next-router-mock';
 import { useRouter } from 'next/router';
 jest.mock('next/router', () => ({

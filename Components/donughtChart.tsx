@@ -80,6 +80,7 @@ const DonughtChart: React.FC<BarGraphProps> = ({graphData}) => {
             display:'flex',
             width: '30em',
             boxShadow: '0.5em 0.5em 1em 0.1em grey',
+            height: "40%"
         }}>
             <Grid width="100%" padding="0.8em" sx = {{backgroundColor: "white",}}>
                 {/* Titles and ID*/}

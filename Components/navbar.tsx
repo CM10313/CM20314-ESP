@@ -8,7 +8,7 @@ const Navbar: React.FC<NavBarProps> = ({ name, rating}: NavBarProps) => {
 
   const isMobile = useMediaQuery('(max-width:1000px)');
   return (
-    <Box sx={{ backgroundColor: '#0B254A', color: '#0B254A', margin: '0',height:'40px'}}>
+    <Box sx={{backgroundColor: '#0B254A', color: '#0B254A', margin: '0',height:'40px'}}>
       <Grid container justifyContent = "space-between" alignItems = 'center'>
         
         <Grid item xs={12} sm={8} sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center',ml:10 }}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import StudyMediumCard from './StudyMediumCard';
+import StudyMediumCard from '../StudyMediumCard';
 import userEvent from '@testing-library/user-event';
 
 describe('Study Medium Card Component', () => {

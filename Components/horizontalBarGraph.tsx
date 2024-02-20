@@ -40,9 +40,14 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
                 backgroundColor: "#1F5095",
                 BorderRadius: 25,
                 data: graphData.yAxisLabels, // The precentages data
-                barPercentage: 0.5
-            }
-        ]
+                barPercentage: 0.5,
+                datalabels: {
+                    anchor: "end",
+                    align: "end",
+                    padding: "10px"
+                }
+            },
+        ], 
     }
 
     const barChartOptions = {
@@ -51,10 +56,6 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
         plugins: {
           legend: {display:false},
           title: { display: false},
-          datalabels: {
-            anchor: "end",
-            align: "end"
-          }
         },
 
         elements: {
@@ -63,21 +64,19 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
 
         scales: {
             y: {
-                labels: graphData.xAxisLabels,
-                ticks: {
-                    callback: function (value:number){ return value + '%' }
-                }, 
-                position: 'right',
+                labels: graphData.xAxisLabels, 
                 grid:{display: false}, 
+                
                 },
             
             x : {
                 grid: { display: false },
-                position: "top",   
-            }
+                ticks: {
+                    callback: function (value:number){ return value + '%' }
+                },
+                display: false     
+            },
         },
-    
-    
     }
     
     return (
@@ -86,9 +85,9 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
             width: '25em',
             boxShadow: '0.5em 0.5em 1em 0.1em grey'
         }}>
-            <Grid width="100%" padding="0.8em" sx = {{backgroundColor: "white",}}>
+            <Grid container padding="0.8em" sx = {{backgroundColor: "white",}}>
                 {/* Titles and ID*/}
-                <Grid item sx={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
+                <Grid item md={12} sx={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                     <Typography fontSize="1.5em" fontWeight="Bold"> {graphData.title} </Typography>
                     <Typography sx={{
                         backgroundColor: "#DAE1E9",
@@ -104,9 +103,9 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
 
                 {/* Graph */}
                 <Grid item >
-                    <Bar 
-                        data={thisGraphData}
-                        options = {barChartOptions}                        
+                    <Bar data={thisGraphData}
+                        options = {barChartOptions}
+                        plugins={[ChartDataLabels]}                           
                     />
                 </Grid>
             </Grid>
