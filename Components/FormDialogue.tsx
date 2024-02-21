@@ -16,6 +16,7 @@ interface FormDialogueProps {
   currentPage: number;
   children?: ReactNode;
   onFormSubmit:() => void;
+  hasBorderRadius:boolean;
 }
 
 export default function FormDialogue({
@@ -23,6 +24,7 @@ export default function FormDialogue({
   height,
   currentPage,
   children,
+  hasBorderRadius,
   onFormSubmit,
 }: FormDialogueProps) {
   const [activePage, setActivePage] = useState(currentPage);
@@ -56,6 +58,7 @@ export default function FormDialogue({
         boxShadow: '10px 10px 10px 10px rgba(0, 0, 0, 0.5)',
         overflow: 'hidden',
         display: 'flex', justifyContent: 'center',
+        borderRadius: hasBorderRadius ? '5px 0px 0px 5px' : '5px 5px 5px 5px',
       }}
     >
       <Grid container spacing={2} sx={{ display:'flex',justifyContent:'center',height: '100%',width:'80%',overflow:'auto' }}>

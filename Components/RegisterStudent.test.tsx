@@ -9,7 +9,7 @@ import { Faculty } from '../State/UserExtraInfo';
 
 describe('RegisterStudent Component', () => {
     it('updates extrainfoobj faculty  state on select change', async () => {
-        const { getByLabelText, getByRole } = render(<RegisterStudent handleLoginRedirect={() => {}} handleReset={() => {}} />);
+        const { getByLabelText, getByRole } = render(<RegisterStudent handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -35,7 +35,7 @@ describe('RegisterStudent Component', () => {
 
     });
     it('updates extrainfoobj race state on select change', async () => {
-        const { getByLabelText, getByRole } = render(<RegisterStudent handleLoginRedirect={() => {}} handleReset={() => {}} />);
+        const { getByLabelText, getByRole } = render(<RegisterStudent handleLoginRedirect={() => {}} handleReset={() => {}}  />);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));

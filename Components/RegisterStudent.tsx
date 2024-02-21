@@ -146,7 +146,7 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset, onSu
     
     return(
         <>
-        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={()=>handleSubmit()}>
+        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={() => handleSubmit()} hasBorderRadius={false}>
         <Box>
             {/* username and password*/}
             <Grid
