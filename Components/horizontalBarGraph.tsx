@@ -10,7 +10,8 @@ interface BarGraphProps {
     graphData: {
         xAxisLabels: string[],
         yAxisLabels: number[],
-        title: string
+        title: string,
+        studyId: string,
         hasData: boolean,
     }
 }
@@ -97,7 +98,7 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
                         textAlign: "center",
                         fontWeight: "bold"
                     }}> 
-                        #123456 
+                        {graphData.studyId}
                     </Typography>
                 </Grid>
 
