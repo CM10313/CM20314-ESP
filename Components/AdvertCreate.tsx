@@ -26,7 +26,7 @@ export default function AdvertCreate({
  
   const [alignment, setAlignment] = React.useState<string | null>('left');
   const primary = "#8BB7CF";
-  const [currentText, setCurrentText] = React.useState(0);
+  const [currentText, setCurrentText] = React.useState(-1);
   const handleSelection = (event: React.MouseEvent<HTMLElement>,newAlignment: string | null,newNumber:number)=>{
     handleAlignment(event,newAlignment);
     setCurrentText(newNumber)
@@ -56,8 +56,8 @@ export default function AdvertCreate({
                      
                       value={item}
                       aria-label={item}
-                      onChange={(e)=>handleSelection(e,item,index)}   // Assuming this function should handle the change
-                      selected={alignment === item}  // Assuming 'alignment' is the state representing the selected value
+                      onChange={(e)=>handleSelection(e,item,index)}  
+                      selected={alignment === item}  
                       sx={{width:'100%',height:'29px',
                       }}
                     >
@@ -71,17 +71,19 @@ export default function AdvertCreate({
             </Grid>
             <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>
             <Box sx={{height:'140px',borderRadius:'5px',width:'80%',backgroundColor:'#DAE1E9',display:'flex',flexDirection: 'column',overflowY:'auto'}}>
-            {textAreaContent[currentText].split('~').map((line, index) => (
-              <div key={index} style={{display: 'flex', alignItems: 'center'}}>
-                <Typography fontSize={12} sx={{ml: 1,mr:1, mt: index > 0 ? 2 : 1}}>
-                  {line.trim()}
-                </Typography>
-              </div>
-            ))}
+            {currentText >= 0 ? textAreaContent[currentText].split('~').map((line, index) => (
+                <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography fontSize={12} sx={{ ml: 1, mr: 1, mt: index > 0 ? 2 : 1 }}>
+                        {line.trim()}
+                    </Typography>
+                </div>
+            )) : <Typography fontSize={12} sx={{ ml: 1, mr: 1,mt:1 }}>
+                Please Select an advert type to continue
+                </Typography>}
           </Box>
             </Grid>
             <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>
-              <Button  onClick={()=>handleCreateAdvertRedirect('/advertCreate',advertTypes[currentText])}variant='contained' sx={{height:'80px',borderRadius:'10px',width:'80%',backgroundColor:'#1870A0',display:'flex',justifyContent:'center'}}>
+              <Button disabled={currentText<=-1} onClick={()=>handleCreateAdvertRedirect('/advertCreate',advertTypes[currentText])}variant='contained' sx={{height:'80px',borderRadius:'10px',width:'80%',backgroundColor:'#1870A0',display:'flex',justifyContent:'center'}}>
                   <Typography sx={{ fontSize: '25px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
                     Create
                     <AddIcon />

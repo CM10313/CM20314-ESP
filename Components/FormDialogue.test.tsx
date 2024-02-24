@@ -7,12 +7,12 @@ import '@testing-library/jest-dom';
 
 describe('FormDialogue Component', () => {
   it('renders without crashing', () => {
-    render(<FormDialogue width="100px" height="100px" currentPage={0} onFormSubmit={() => {}} />);
+    render(<FormDialogue width="100px" height="100px" currentPage={0} onFormSubmit={() => { } } hasBorderRadius={false} canSubmit={false} />);
   });
 
   it('displays the correct page number', () => {
     const { getByText } = render(
-      <FormDialogue width="100px" height="100px" currentPage={0} onFormSubmit={() => {}}>
+      <FormDialogue width="100px" height="100px" currentPage={0} onFormSubmit={() => { } } hasBorderRadius={false} canSubmit={false}>
         <div>Page 1</div>
         <div>Page 2</div>
         <div>Page 3</div>
@@ -24,7 +24,7 @@ describe('FormDialogue Component', () => {
   it('calls onFormSubmit when Submit button is clicked on the last page', () => {
     const onFormSubmitMock = jest.fn();
     const { getByText } = render(
-      <FormDialogue width="100px" height="100px" currentPage={2} onFormSubmit={onFormSubmitMock}>
+      <FormDialogue width="100px" height="100px" currentPage={2} onFormSubmit={onFormSubmitMock} hasBorderRadius={false} canSubmit={false}>
         <div>Page 1</div>
         <div>Page 2</div>
         <div>Page 3</div>
@@ -36,7 +36,7 @@ describe('FormDialogue Component', () => {
 
   it('navigates to the next page when "NEXT" button is clicked', () => {
     const { getByText } = render(
-      <FormDialogue width="100px" height="100px" currentPage={0} onFormSubmit={() => {}}>
+      <FormDialogue width="100px" height="100px" currentPage={0} onFormSubmit={() => { } } hasBorderRadius={false} canSubmit={false}>
         <div>Page 1</div>
         <div>Page 2</div>
         <div>Page 3</div>
@@ -48,7 +48,7 @@ describe('FormDialogue Component', () => {
 
   it('navigates to the previous page when "PREV" button is clicked', () => {
     const { getByText } = render(
-      <FormDialogue width="100px" height="100px" currentPage={1} onFormSubmit={() => {}}>
+      <FormDialogue width="100px" height="100px" currentPage={1} onFormSubmit={() => { } } hasBorderRadius={false} canSubmit={false}>
         <div>Page 1</div>
         <div>Page 2</div>
         <div>Page 3</div>

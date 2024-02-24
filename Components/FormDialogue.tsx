@@ -17,6 +17,7 @@ interface FormDialogueProps {
   children?: ReactNode;
   onFormSubmit:() => void;
   hasBorderRadius:boolean;
+  canSubmit:boolean;
 }
 
 export default function FormDialogue({
@@ -25,6 +26,7 @@ export default function FormDialogue({
   currentPage,
   children,
   hasBorderRadius,
+  canSubmit,
   onFormSubmit,
 }: FormDialogueProps) {
   const [activePage, setActivePage] = useState(currentPage);
@@ -79,6 +81,7 @@ export default function FormDialogue({
                 borderRadius: '10px',
               }}
               type="submit"
+              disabled={canSubmit?true:false}
               onClick={handleFormSubmit}
             >
               Submit

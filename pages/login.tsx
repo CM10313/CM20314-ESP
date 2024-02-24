@@ -220,7 +220,7 @@ return (
             rowSpacing={0} sx={{justifyContent:'center',textAlign:'center'}}>
             <Grid item xs={12}>
 
-                    <Button onClick={handleLoginRedirect} variant={'contained'}sx={{whiteSpace:'nowrap',overflow:'auto',width:'60%',height:'55px',backgroundColor:'#0B254A',borderRadius:'10px'}} type="submit">
+                    <Button onClick={handleLoginRedirect} variant={'contained'}sx={{whiteSpace:'nowrap',overflow:'auto',width:'60%',height:'55px',backgroundColor:'#0B254A',borderRadius:'10px'}} >
 
                         Login
                     </Button>

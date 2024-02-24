@@ -72,7 +72,6 @@ export default function SearchableList({
                     <CardGrouper rowSpacing={rowSpacing} cardInputList={currentList} numberOfItemsPerRow={isSmallerThanMaxSize?2:numberOfItemsPerRow}></CardGrouper>
                 </Box>
                 </Box>
-                
             </Box>
     </>
        

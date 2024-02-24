@@ -146,7 +146,7 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset, onSu
     
     return(
         <>
-        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={() => handleSubmit()} hasBorderRadius={false}>
+        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={() => handleSubmit()} hasBorderRadius={false} canSubmit={true}>
         <Box>
             {/* username and password*/}
             <Grid
@@ -166,7 +166,10 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset, onSu
                         onChange={handleUsernameChange}
                         error={Boolean(usernameError)}
                         helperText={usernameError}
-                        sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
+                        sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9',"&  .MuiFormHelperText-root.Mui-error": {
+                            backgroundColor: "#F6F6F6",
+                            margin:0,
+                          },}}
                     />
                 </Grid>
                 <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
@@ -177,7 +180,10 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset, onSu
                         onChange={handlePasswordChange}
                         error={Boolean(passwordError)}
                         helperText={passwordError}
-                        sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
+                        sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9',"&  .MuiFormHelperText-root.Mui-error": {
+                            backgroundColor: "#F6F6F6",
+                            margin:0,
+                          },}}
                         />
                 </Grid>
                 <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
@@ -220,7 +226,10 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset, onSu
                         onChange={handleEmailChange}
                         error={Boolean(emailError)}
                         helperText={emailError}
-                        sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
+                        sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9',"&  .MuiFormHelperText-root.Mui-error": {
+                            backgroundColor: "#F6F6F6",
+                            margin:0,
+                          },}}
                         /> 
                     </Grid>
                     <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
@@ -231,7 +240,10 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset, onSu
                         error={Boolean(passwordError)}
                         helperText={passwordError}
                         onChange={handlePhoneNumberChange}
-                        sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
+                        sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9',"&  .MuiFormHelperText-root.Mui-error": {
+                            backgroundColor: "#F6F6F6",
+                            margin:0,
+                          },}}
                         />
                     </Grid>
                     <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%'}}>

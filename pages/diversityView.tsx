@@ -39,7 +39,7 @@ export default function DiversityView(){
 
     return (
         <Box> 
-            <Navbar />
+            <Navbar name={"John Doe"} rating={4.1} />
             <TriangleBackground />
             <BarGraph graphData={incomeGraphLabelData} />
             <BarGraph graphData={ageGraphLabelData} />
