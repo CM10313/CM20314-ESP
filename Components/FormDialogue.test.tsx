@@ -24,7 +24,7 @@ describe('FormDialogue Component', () => {
   it('calls onFormSubmit when Submit button is clicked on the last page', () => {
     const onFormSubmitMock = jest.fn();
     const { getByText } = render(
-      <FormDialogue width="100px" height="100px" currentPage={2} onFormSubmit={onFormSubmitMock} hasBorderRadius={false} canSubmit={false}>
+      <FormDialogue width="100px" height="100px" currentPage={2} onFormSubmit={onFormSubmitMock} hasBorderRadius={false} canSubmit={true} >
         <div>Page 1</div>
         <div>Page 2</div>
         <div>Page 3</div>

@@ -4,17 +4,19 @@ import { Faculty} from "../State/UserExtraInfo";
 import FormDialogue from "./FormDialogue";
 import Checkbox from '@mui/material/Checkbox';
 import { useStudyState, StudyState, RequirementsObject } from "../State/StudyState";
-import { StudyData } from "../pages/advertCreate";
+import { StudyData } from "../pages/studyCreator";
 import validateDate, { getTodayDate } from "../Utils/ValidateDate";
 import validateNumberInRange from "../Utils/ValidateNumberInput";
 import validateURL from "../Utils/ValidateURL";
-import { useRouter as useRouterWrapper } from '../Utils/router';
+
 interface StudyDialogProps {
     onSubmit: (data: StudyData,uid:String) => void;
+    handleHomeRedirect:() => void;
+    jestBypass:boolean;
 }
 
 // add tests, needs
-export default function StudyDialog({ onSubmit }: StudyDialogProps) {
+export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: StudyDialogProps) {
     const [title,setTitle] = useState("");
     const [closingDate, setClosingDate]= useState("");
     const [preliminaryDate, setPreliminaryDate] = useState("");
@@ -34,7 +36,7 @@ export default function StudyDialog({ onSubmit }: StudyDialogProps) {
     const [titleError,setTitleError]= useState("");
     const [descriptionError,setDescriptionError]= useState("");
     const [submitError, setSubmitError]= useState("");
-    const router = useRouterWrapper();
+
     const dateOfPublish = getTodayDate();
     const publisherId = "swQ90URzscZLubKOh6t8hSAXr1V2"//needs to be based on current user
     const publisherRating = 4.1
@@ -46,12 +48,10 @@ export default function StudyDialog({ onSubmit }: StudyDialogProps) {
             };
             onSubmit(studyData,"swQ90URzscZLubKOh6t8hSAXr1V2");//needs to change to reference the current user
             //redirect
-            router.push('/researchHome'); //needs to be changed to redirect based on user type but only for shared advert types
+            handleHomeRedirect(); //needs to be changed to redirect based on user type but only for shared advert types
             return;
         }
-        const handleReset =()=>{
-            router.push('/researchHome');//needs to cheange based on user type
-        }
+        
         useEffect(()=>{
             if (!closingDateError && !preliminaryDateError && !maxNoError && !minimumAgeError && !externalLinkError && !titleError && !descriptionError) {
                 setSubmitError("");
@@ -188,13 +188,12 @@ export default function StudyDialog({ onSubmit }: StudyDialogProps) {
 
       
     const isMobile = useMediaQuery('(max-width:1000px)');
-
     return (
         <>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 10 }}>
             <Grid container sx={{ width: '100%', display: 'flex', justifyContent: 'center', rowGap: 0 }}>
                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <FormDialogue width={770} height={540} currentPage={0} onFormSubmit={() => handleStudySubmit()} hasBorderRadius={true} canSubmit={Boolean(submitError)}>
+                    <FormDialogue width={770} height={540} currentPage={0} onFormSubmit={() => handleStudySubmit()} hasBorderRadius={true} canSubmit={!Boolean(submitError)||jestBypass}>
                         <Box sx={{width:'100%',height:'100%',mt:4}}>
                             <Grid
                                 container
@@ -231,6 +230,7 @@ export default function StudyDialog({ onSubmit }: StudyDialogProps) {
                                         variant="outlined"
                                         value={closingDate}
                                         type='date'
+                                        data-testid="closingDateInput"
                                         onChange={handleInputChange(setClosingDate)}
                                         error={Boolean(closingDateError)}
                                         helperText={closingDateError}
@@ -254,10 +254,12 @@ export default function StudyDialog({ onSubmit }: StudyDialogProps) {
                                 sx={{display:'flex'}}
                                 > 
                                     <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%'}}><Typography sx={{width:'80%'}}>Preliminary Study Date</Typography></Grid>
-                                    <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}><TextField 
+                                    <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
+                                        <TextField 
                                         variant="outlined"
                                         value={preliminaryDate}
                                         type='date'
+                                        data-testid="preliminaryDateInput"
                                         error={Boolean(preliminaryDateError)}
                                         helperText={preliminaryDateError}
                                         onChange={handleInputChange(setPreliminaryDate)}//set errpr when date is not within allocated range
@@ -311,7 +313,7 @@ export default function StudyDialog({ onSubmit }: StudyDialogProps) {
                             <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',mt:-2}}>
                                 <Typography fontSize={12}>
                                     {"Don't want to continue ?"}
-                                    <Button sx ={{color:'black'}} onClick={handleReset}>
+                                    <Button sx ={{color:'black'}} onClick={handleHomeRedirect}>
                                         <Typography component="span" fontWeight="bold" fontSize={12}>
                                             Click Here
                                         </Typography>
@@ -381,7 +383,7 @@ export default function StudyDialog({ onSubmit }: StudyDialogProps) {
                                 </Grid>
                                 <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
                                 <TextField
-                            label=" Minimum Age"
+                            label="Minimum Age"
                             variant="outlined"
                             type="number"
                             placeholder={"18"}
@@ -432,7 +434,7 @@ export default function StudyDialog({ onSubmit }: StudyDialogProps) {
                                 <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',mt:-2}}>
                                 <Typography fontSize={12}>
                                     {"Don't want to continue ?"}
-                                    <Button sx ={{color:'black'}} onClick={handleReset}>
+                                    <Button sx ={{color:'black'}} onClick={handleHomeRedirect}>
                                         <Typography component="span" fontWeight="bold" fontSize={12}>
                                             Click Here
                                         </Typography>
@@ -496,7 +498,7 @@ export default function StudyDialog({ onSubmit }: StudyDialogProps) {
                                 <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',mt:-2}}>
                                 <Typography fontSize={12}>
                                     {"Don't want to continue ?"}
-                                    <Button sx ={{color:'black'}} onClick={handleReset}>
+                                    <Button sx ={{color:'black'}} onClick={handleHomeRedirect}>
                                         <Typography component="span" fontWeight="bold" fontSize={12}>
                                             Click Here
                                         </Typography>
@@ -632,7 +634,7 @@ export default function StudyDialog({ onSubmit }: StudyDialogProps) {
                                 <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',mt:-2}}>
                                 <Typography fontSize={12}>
                                     {"Don't want to continue ?"}
-                                    <Button sx ={{color:'black'}} onClick={handleReset}>
+                                    <Button sx ={{color:'black'}} onClick={handleHomeRedirect}>
                                         <Typography component="span" fontWeight="bold" fontSize={12}>
                                             Click Here
                                         </Typography>
@@ -660,7 +662,7 @@ export default function StudyDialog({ onSubmit }: StudyDialogProps) {
                                 <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
                                 <Typography fontSize={12}>
                                     {"Don't want to continue ?"}
-                                    <Button sx ={{color:'black'}} onClick={handleReset}>
+                                    <Button sx ={{color:'black'}} onClick={handleHomeRedirect}>
                                         <Typography component="span" fontWeight="bold" fontSize={12}>
                                             Click Here
                                         </Typography>

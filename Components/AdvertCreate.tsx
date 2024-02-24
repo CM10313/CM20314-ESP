@@ -38,8 +38,19 @@ export default function AdvertCreate({
     setAlignment(newAlignment);
   };
   const router = useRouterWrapper();
-  const handleCreateAdvertRedirect=(targetUrl:string,data:string)=>{
-    router.push({ pathname: targetUrl, query: { type: data } });
+  const handleCreateAdvertRedirect=(data:string)=>{
+    switch(data){
+      case "Study":
+        router.push('/studyCreator');
+        break;
+      case "Webinar":
+        router.push('/webinarCreator');
+        break;
+      case "Other":
+        router.push('/otherCreator');
+        break;
+    }
+    
   }
     return (
     
@@ -83,7 +94,7 @@ export default function AdvertCreate({
           </Box>
             </Grid>
             <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>
-              <Button disabled={currentText<=-1} onClick={()=>handleCreateAdvertRedirect('/advertCreate',advertTypes[currentText])}variant='contained' sx={{height:'80px',borderRadius:'10px',width:'80%',backgroundColor:'#1870A0',display:'flex',justifyContent:'center'}}>
+              <Button disabled={currentText<=-1} onClick={()=>handleCreateAdvertRedirect(advertTypes[currentText])}variant='contained' sx={{height:'80px',borderRadius:'10px',width:'80%',backgroundColor:'#1870A0',display:'flex',justifyContent:'center'}}>
                   <Typography sx={{ fontSize: '25px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
                     Create
                     <AddIcon />

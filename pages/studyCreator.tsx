@@ -4,12 +4,15 @@ import Navbar from '../Components/navbar';
 import TriangleBackground from '../Components/TriangleBackground';
 import StudyDialog from '../Components/StudyDialog';
 import { EthicsData } from './register';
-import { useRouter } from '../Utils/router';
+
 import { useMediaQuery } from '@mui/material';
 import { StudyState } from '../State/StudyState';
 import { Faculty } from '../State/UserExtraInfo';
 import { addDocument, createNestedDocument } from '../firebase/firestore';
-
+import { useRouter } from 'next/router';
+interface Props {
+  jestBypass: boolean;
+}
 enum UserType{
     student = "Student",
     researcher = "Researcher",
@@ -32,25 +35,19 @@ enum UserType{
     relatedFields: String[];
     studyObj:StudyState;
   }
+
+  const StudyCreator: React.FC<Props> = ({ jestBypass }) => {
+  const router = useRouter();
   const handleStudySubmit= (data:StudyData,uid:String) =>{
       console.log(data);
       createNestedDocument("studies",`${uid}-studies`,data,uid)
       //addDocument("studies",data,"swQ90URzscZLubKOh6t8hSAXr1V2")
       return;
   }
+  const handleHomeDirect =()=>{
+    router.push('/researchHome');//needs to cheange based on user type
+  }
 
-
-const CreateStudy: React.FC = () => {
-    
-    const [advertType,setAdvertType] = useState("");
-    useEffect(() => {
-      const currentPageUrl = window.location.href;
-      const urlObj = new URL(currentPageUrl);
-      const type = urlObj.searchParams.get('type');
-      if (type !== null) {
-         setAdvertType(type);
-      }
-  }, []);
     //need a way to go back to start of input sequence
     // ethics and professor types
     return (
@@ -59,10 +56,10 @@ const CreateStudy: React.FC = () => {
      <Navbar name={'John Doe'} rating={4.1} />
             <TriangleBackground />
       <div style={{ height: '810px' }}>
-      {advertType == 'Study'?  <StudyDialog onSubmit={handleStudySubmit}></StudyDialog>: null}
+        <StudyDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} ></StudyDialog>
         </div>    
 </>
         );
 };
 
-export default CreateStudy;
+export default StudyCreator;

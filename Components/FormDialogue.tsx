@@ -81,7 +81,7 @@ export default function FormDialogue({
                 borderRadius: '10px',
               }}
               type="submit"
-              disabled={canSubmit?true:false}
+              disabled={canSubmit?false:true}
               onClick={handleFormSubmit}
             >
               Submit
