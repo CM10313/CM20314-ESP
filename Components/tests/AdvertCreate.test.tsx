@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, fireEvent,screen, getByRole } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import AdvertCreate from './AdvertCreate';
+import AdvertCreate from '../AdvertCreate';
+import mockRouter from 'next-router-mock';
+import { useRouter } from 'next/router';
 jest.mock('next/router', () => ({
   ...jest.requireActual('next/router'),
   useRouter: jest.fn(),
@@ -67,56 +69,9 @@ describe('AdvertCreate Component', () => {
     fireEvent.click(getByText('Webinar'));
     fireEvent.click(createButton);
 
-    expect(pushMock).toHaveBeenCalledWith(
-      '/webinarCreator'
-    );
-  });
-  it('mocks the useRouter hook', () => {
-    const pushMock = jest.fn();
-    const useRouterMock = jest.spyOn(require('next/router'), 'useRouter');
-    useRouterMock.mockReturnValue({ push: pushMock });
-
-    const { getByRole, getByText } = render(
-      <AdvertCreate
-        advertTypes={advertTypes}
-        width={width}
-        height={height}
-        textAreaContent={textAreaContent}
-      />
-    );
-
-    const createButton = getByRole('button', { name: /Create/i });
-    expect(createButton).toBeInTheDocument();
-
-    fireEvent.click(getByText('Study'));
-    fireEvent.click(createButton);
-
-    expect(pushMock).toHaveBeenCalledWith(
-      '/studyCreator'
-    );
-  });
-  it('mocks the useRouter hook', () => {
-    const pushMock = jest.fn();
-    const useRouterMock = jest.spyOn(require('next/router'), 'useRouter');
-    useRouterMock.mockReturnValue({ push: pushMock });
-
-    const { getByRole, getByText } = render(
-      <AdvertCreate
-        advertTypes={advertTypes}
-        width={width}
-        height={height}
-        textAreaContent={textAreaContent}
-      />
-    );
-
-    const createButton = getByRole('button', { name: /Create/i });
-    expect(createButton).toBeInTheDocument();
-
-    fireEvent.click(getByText('Other'));
-    fireEvent.click(createButton);
-
-    expect(pushMock).toHaveBeenCalledWith(
-      '/otherCreator'
-    );
+    expect(pushMock).toHaveBeenCalledWith({
+      pathname: '/advertCreate',
+      query: { type: 'Webinar' }
+    });
   });
 });

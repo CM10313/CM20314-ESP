@@ -17,21 +17,23 @@ import OverallDiversityScore from "../Components/diversityScore";
 export default function DiversityView(){
     return (
         <Box> 
-            <Navbar name={"John Doe"} rating={4.1} />
+            <Navbar name={"John Doe"} rating={4.5} />
             <TriangleBackground />
-            <Grid display="flex" flexDirection="row" justifyContent="center">
-                <Grid item display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em" >
+            <Grid container>
+                <Grid item sm={8} md={4}  padding="1em" display="flex" flexDirection="column" justifyContent="space-evenly" >
                     <BarGraph graphData={incomeGraphLabelData} />
                     <BarGraph graphData={ageGraphLabelData} />
                 </Grid>
 
-                <Grid item display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em">
+                <Grid item sm={8} md={4} display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em">
                     <OverallDiversityScore score={diversityScore} />
+                    <br />
                     <HorizontalBarGraph graphData={raceGraphLabelData} />
+                    <br />
                     <HorizontalBarGraph graphData={religionGraphLabelData} />
                 </Grid>
 
-                <Grid item display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em">
+                <Grid item sm={8} md={4} display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em">
                     <DonughtChart graphData = {sexualityGraphLabelData} />
                     <DonughtChart graphData = {genderGraphLabelData} />
                 </Grid>
