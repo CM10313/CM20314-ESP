@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { Bar } from 'react-chartjs-2';
-import { Chart, registerables, ScaleOptions } from 'chart.js';
-Chart.register(...registerables);
+import { Chart, registerables } from 'chart.js/auto';
+//Chart.register(...registerables);
 
 interface BarGraphProps {
     graphData: {
@@ -76,7 +76,7 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
         }}>
             <Grid width="100%" padding="0.8em" sx = {{backgroundColor: "#F2F2F2",borderRadius:'5px',height:'100%'}}>
                 {/* Titles and ID*/}
-                <Grid item sx={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
+                <Grid item sm = {12} sx={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                     <Typography fontSize="1.5em" fontWeight="Bold"> {graphData.title} </Typography>
                     <Typography sx={{
                         backgroundColor: "#DAE1E9",

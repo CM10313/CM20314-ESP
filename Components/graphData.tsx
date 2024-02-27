@@ -47,7 +47,7 @@ export const raceGraphLabelData = {
 }
 
 export const religionGraphLabelData = {
-    yAxisLabels: [5,10,15,30],
+    yAxisLabels: [5,10,15,30,20],
     xAxisLabels: [
         "Christian",
         "Islam",

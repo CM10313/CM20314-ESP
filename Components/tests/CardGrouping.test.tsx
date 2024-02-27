@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import CardGrouper from './CardGrouping';
+import CardGrouper from '../CardGrouping';
 
 describe('CardGrouper', () => {
   test('renders cards correctly', () => {

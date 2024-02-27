@@ -7,7 +7,8 @@ interface BarGraphProps {
     graphData: {
         xAxisLabels: string[],
         yAxisLabels: number[],
-        title: string
+        title: string,
+        studyId: string,
         hasData: boolean,
     }
 }
@@ -37,40 +38,43 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
         datasets: [
             {
                 backgroundColor: "#1F5095",
-                borderRadius: 25,
-                data: graphData.yAxisLabels, // The percentages data
-                barPercentage: 0.5
-            }
-        ]
+                BorderRadius: 25,
+                data: graphData.yAxisLabels, // The precentages data
+                barPercentage: 0.5,
+                datalabels: {
+                    anchor: "end",
+                    align: "end",
+                    padding: "10px"
+                }
+            },
+        ], 
     }
 
     const barChartOptions: Chart.ChartOptions<'bar'> = {
         responsive: true,
         indexAxis: "y",
         plugins: {
-            legend: { display: false },
-            title: { display: false },
-            datalabels: {
-                anchor: "end",
-                align: "end"
-            }
+          legend: {display:false},
+          title: { display: false},
         },
         elements: {
             bar: { borderRadius: 10 }
         },
         scales: {
             y: {
-                ticks: {
-                    callback: function (value: number) { return value + '%' }
+                labels: graphData.xAxisLabels, 
+                grid:{display: false}, 
+                
                 },
-                position: 'right',
+            
+            x : {
                 grid: { display: false },
+                ticks: {
+                    callback: function (value:number){ return value + '%' }
+                },
+                display: false     
             },
-            x: {
-                grid: { display: false },
-                position: "top",
-            }
-        }
+        },
     }
 
     return (
@@ -83,7 +87,7 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
         }}>
             <Grid width="100%" padding="0.8em" sx={{ backgroundColor: "#F2F2F2",borderRadius:'5px' }}>
                 {/* Titles and ID*/}
-                <Grid item sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                <Grid item md={12} sx={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                     <Typography fontSize="1.5em" fontWeight="Bold"> {graphData.title} </Typography>
                     <Typography sx={{
                         backgroundColor: "#DAE1E9",
@@ -92,16 +96,16 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
                         width: "6em",
                         textAlign: "center",
                         fontWeight: "bold"
-                    }}>
-                        #123456
+                    }}> 
+                        {graphData.studyId}
                     </Typography>
                 </Grid>
 
                 {/* Graph */}
                 <Grid item >
-                    <Bar
-                        data={thisGraphData}
-                        options={barChartOptions}
+                    <Bar data={thisGraphData}
+                        options = {barChartOptions}
+                        plugins={[ChartDataLabels]}                           
                     />
                 </Grid>
             </Grid>

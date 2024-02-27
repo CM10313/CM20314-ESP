@@ -28,7 +28,9 @@ export default function DiversityView(){
 
                 <Grid item xs={isMobile?12:4} display="flex" flexDirection="column" justifyContent="space-evenly" >
                     <OverallDiversityScore score={diversityScore} />
+                    <br />
                     <HorizontalBarGraph graphData={raceGraphLabelData} />
+                    <br />
                     <HorizontalBarGraph graphData={religionGraphLabelData} />
                 </Grid>
 
