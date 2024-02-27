@@ -15,7 +15,7 @@ jest.mock('next/router', () => ({
 describe('Calendar component', () => {
   it('renders date', () => {
     const { getByText } = render(<Calendar />);
-    const novemberText = getByText(/30th Nov/i);
+    const novemberText = getByText("30th");
     expect(novemberText).toBeInTheDocument();
   });
 

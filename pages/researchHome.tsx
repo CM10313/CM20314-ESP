@@ -11,7 +11,6 @@ import TriangleBackground from '../Components/TriangleBackground';
 import Calendar from '../Components/Calendar';
 import SearchableList from '../Components/SearchableList';
 const ResearchHome: React.FC = () => {
-  
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
   const handleCardClick = (title: string) => {

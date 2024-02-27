@@ -51,7 +51,7 @@ describe('RegisterStudent Component', () => {
         const optionsPopupEl = await screen.findByRole("listbox", {
           name: 'Race'
         });
-      
+
         // Click an option in the popup.
         userEvent.click(within(optionsPopupEl).getByText(/Asian/i));
       
@@ -527,7 +527,7 @@ describe('RegisterStudent Component', () => {
     // Check if the password state is updated
     expect(incomeInput.value).toBe('£1000');
   });
-  it('updates the Age state when a key is pressed in the phone number field', () => {
+  it('updates the Age state when a key is pressed in the age number field', () => {
     const { getByLabelText, getByRole , getByText } = render(
       <RegisterStudent handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>
     );

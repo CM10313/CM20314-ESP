@@ -209,12 +209,12 @@ const RegisterForm: React.FC = () => {
                 <Grid
                 item
                 xs={12}
-                sx={{ display: 'flex', justifyContent: 'center', height: '50%', width: '100%',alignItems:'center'}}
+                sx={{ display: 'flex', justifyContent: 'center', height: '40%', width: '100%',alignItems:'center'}}
                 ><Typography fontSize={20}>Please select the type of user you would like to be</Typography></Grid>
                 <Grid
                 item
                 xs={12}
-                sx={{ display: 'flex', justifyContent: 'left', height: '50%', width: '100%',mb:2,ml:2}}
+                sx={{ display: 'flex', justifyContent: 'left', height: '40%', width: '100%',mb:2,ml:2}}
                 >
                         <FormControl component="fieldset">
                             <FormLabel component="legend">User Type</FormLabel>
@@ -230,8 +230,15 @@ const RegisterForm: React.FC = () => {
                                 <FormControlLabel value={UserType.none} control={<Radio />} label="None" />
                             </RadioGroup>
                         </FormControl>
-                        </Grid>
-                        </Grid>
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    sx={{ display: 'flex', justifyContent: 'center', height: '20%', width: '100%'}}
+                    >
+                      <Button onClick={handleLoginRedirect}variant='contained' sx={{height:'50px',borderRadius:'10px',width:'50%',backgroundColor:'#1870A0',display:'flex',justifyContent:'center'}}><Typography fontSize={15} sx={{color:"white"}}>Go back to Login</Typography></Button>
+                </Grid> 
+              </Grid>
                         </Box>
                         </Grid>
                         :null}

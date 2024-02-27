@@ -4,6 +4,7 @@ import RegisterResearcher from './RegisterResearcher';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event'; 
 import { Faculty } from '../State/UserExtraInfo';
+import { ResearcherData } from '../pages/register';
 
 const mockSetDepartment = jest.fn();
 
