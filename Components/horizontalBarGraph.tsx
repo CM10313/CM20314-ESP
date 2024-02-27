@@ -1,10 +1,7 @@
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Box, Grid, Typography } from "@mui/material";
 import { Bar } from 'react-chartjs-2';
-import { Chart} from 'chart.js';
-//Chart.register(...registerables);
-//Chart.register(ChartDataLabels);
-
+import { Chart } from 'chart.js';
 
 interface BarGraphProps {
     graphData: {
@@ -15,22 +12,24 @@ interface BarGraphProps {
     }
 }
 
-const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
-    if(graphData.hasData == false){
-        return <Box sx={{
-            display:'flex',
-            width: '25em',
-            boxShadow: '0.5em 0.5em 1em 0.1em grey',
-            backgroundColor: '#1F5095',
-            height: "10em",
-            padding: "0.3em",
-            borderRadius: "0.2em",
-            textAlign: "left",
-            color: "white"
-        }}>
-            <Typography> When this advert was created you did not enable tracking for this metric. <br />
-        If in future you wish to see this, enable this feature when creating your advert.</Typography>
-        </Box>
+const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
+    if (!graphData.hasData) {
+        return (
+            <Box sx={{
+                display: 'flex',
+                width: '25em',
+                boxShadow: '0.5em 0.5em 1em 0.1em grey',
+                backgroundColor: '#1F5095',
+                height: "10em",
+                padding: "0.3em",
+                borderRadius: "0.2em",
+                textAlign: "left",
+                color: "white"
+            }}>
+                <Typography>When this advert was created you did not enable tracking for this metric. <br />
+                    If in future you wish to see this, enable this feature when creating your advert.</Typography>
+            </Box>
+        );
     }
 
     const thisGraphData = {
@@ -38,57 +37,51 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
         datasets: [
             {
                 backgroundColor: "#1F5095",
-                BorderRadius: 25,
-                data: graphData.yAxisLabels, // The precentages data
+                borderRadius: 25,
+                data: graphData.yAxisLabels, // The percentages data
                 barPercentage: 0.5
             }
         ]
     }
 
-    const barChartOptions = {
+    const barChartOptions: Chart.ChartOptions<'bar'> = {
         responsive: true,
-        indexAxis: 'y',
+        indexAxis: "y",
         plugins: {
-          legend: {display:false},
-          title: { display: false},
-          datalabels: {
-            anchor: "end",
-            align: "end"
-          }
+            legend: { display: false },
+            title: { display: false },
+            datalabels: {
+                anchor: "end",
+                align: "end"
+            }
         },
-
         elements: {
             bar: { borderRadius: 10 }
         },
-
         scales: {
             y: {
-                labels: graphData.xAxisLabels,
                 ticks: {
-                    callback: function (value:number){ return value + '%' }
-                }, 
-                position: 'right',
-                grid:{display: false}, 
+                    callback: function (value: number) { return value + '%' }
                 },
-            
-            x : {
+                position: 'right',
                 grid: { display: false },
-                position: "top",   
+            },
+            x: {
+                grid: { display: false },
+                position: "top",
             }
-        },
-    
-    
+        }
     }
-    
+
     return (
         <Box sx={{
-            display:'flex',
+            display: 'flex',
             width: '25em',
             boxShadow: '0.5em 0.5em 1em 0.1em grey'
         }}>
-            <Grid width="100%" padding="0.8em" sx = {{backgroundColor: "white",}}>
+            <Grid width="100%" padding="0.8em" sx={{ backgroundColor: "white", }}>
                 {/* Titles and ID*/}
-                <Grid item sx={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
+                <Grid item sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                     <Typography fontSize="1.5em" fontWeight="Bold"> {graphData.title} </Typography>
                     <Typography sx={{
                         backgroundColor: "#DAE1E9",
@@ -97,16 +90,16 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
                         width: "6em",
                         textAlign: "center",
                         fontWeight: "bold"
-                    }}> 
-                        #123456 
+                    }}>
+                        #123456
                     </Typography>
                 </Grid>
 
                 {/* Graph */}
                 <Grid item >
-                    <Bar 
+                    <Bar
                         data={thisGraphData}
-                        options = {barChartOptions}                        
+                        options={barChartOptions}
                     />
                 </Grid>
             </Grid>

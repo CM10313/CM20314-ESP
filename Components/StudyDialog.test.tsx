@@ -9,16 +9,30 @@ jest.mock('next/router', () => ({
     ...jest.requireActual('next/router'),
     useRouter: jest.fn(),
   }));
-
+// Mocking the useMediaQuery hook
+jest.mock('@mui/material/useMediaQuery', () => {
+    return jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : true);
+  });
 describe('Study Dialogue Component', () => {
-    it('should render correctly', () => {
+    it('should render correctly on non-mobile view', () => {
         // Render the component
-        render(<StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} />);
-    
-        // Assert that certain elements are rendered
+        render(<StudyDialog onSubmit={() => {}} handleHomeRedirect={() => {}} jestBypass={false} />);
+      
+        // Assert that certain elements are rendered based on non-mobile view
         expect(screen.getByLabelText('Title')).toBeInTheDocument();
         expect(screen.getByText('Closing Date')).toBeInTheDocument();
         // Add more assertions as needed based on your component's structure
+      });
+    
+      it('should render correctly on mobile view', () => {
+        // Mocking the useMediaQuery hook to return true for mobile view
+        jest.mock('@mui/material/useMediaQuery', () => jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : false));
+    
+        // Render the component
+        render(<StudyDialog onSubmit={() => {}} handleHomeRedirect={() => {}} jestBypass={false} />);
+      
+        // Assert that certain elements are rendered based on mobile view
+        // Add assertions specific to mobile view rendering
       });
       it('updates the minimum age state when a key is pressed in the minimum age field', () => {
         const { getByLabelText, getByRole , getByText } = render(

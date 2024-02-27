@@ -6,9 +6,16 @@ import userEvent from '@testing-library/user-event';
 import { Faculty } from '../State/UserExtraInfo';
 import { StudentData } from '../pages/register';
 
-
+jest.mock('@mui/material/useMediaQuery', () => {
+  return jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : true);//returns true used to trigger media query for branch test
+});
 
 describe('RegisterStudent Component', () => {
+  it('should render correctly on mobile view', () => {
+    jest.mock('@mui/material/useMediaQuery', () => jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : false));
+
+    render(<RegisterStudent handleLoginRedirect={() => { } } handleReset={() => { } } onSubmit={()=>{}} />);
+  });
     it('updates extrainfoobj faculty  state on select change', async () => {
         const { getByLabelText, getByRole } = render(<RegisterStudent handleLoginRedirect={() => { } } handleReset={() => { } } onSubmit={()=>{}} />);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));

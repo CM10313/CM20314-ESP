@@ -7,7 +7,9 @@ import { Faculty } from '../State/UserExtraInfo';
 import { ResearcherData } from '../pages/register';
 
 const mockSetDepartment = jest.fn();
-
+jest.mock('@mui/material/useMediaQuery', () => {
+  return jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : true);//returns true used to trigger media query for branch test
+});
 
 describe('RegisterResearcher Component', () => {
     it('opens the faculty dropdown', async () => {
@@ -20,6 +22,11 @@ describe('RegisterResearcher Component', () => {
         // Assert that the dropdown is open
         const dropdownList = document.querySelector('[role="listbox"]');
         expect(dropdownList).toBeInTheDocument();
+      });
+      it('should render correctly on mobile view', () => {
+        jest.mock('@mui/material/useMediaQuery', () => jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : false));
+
+        render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}} />);
       });
       it('updates faculty dropdown', async () => {
         const { getByLabelText, getByRole } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>);
@@ -294,4 +301,5 @@ describe('RegisterResearcher Component', () => {
     
     expect(sortCodeInput.value).toBe('123456');
   });
+  
 });
