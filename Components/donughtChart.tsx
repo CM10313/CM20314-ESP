@@ -78,10 +78,12 @@ const DonughtChart: React.FC<BarGraphProps> = ({graphData}) => {
     return (
         <Box sx={{
             display:'flex',
-            width: '30em',
+            width: '470px',
+            height:'300px',
             boxShadow: '0.5em 0.5em 1em 0.1em grey',
+            borderRadius:'5px'
         }}>
-            <Grid width="100%" padding="0.8em" sx = {{backgroundColor: "white",}}>
+            <Grid width="100%" padding="0.8em" sx = {{backgroundColor: "#F2F2F2",borderRadius:'5px',height:'100%'}}>
                 {/* Titles and ID*/}
                 <Grid item sx={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                     <Typography fontSize="1.5em" fontWeight="Bold"> {graphData.title} </Typography>
@@ -91,7 +93,7 @@ const DonughtChart: React.FC<BarGraphProps> = ({graphData}) => {
                         borderRadius: "0.2em",
                         width: "6em",
                         textAlign: "center",
-                        fontWeight: "bold"
+                        fontWeight: "bold",mr:4
                     }}> 
                         #123456 
                     </Typography>
@@ -99,7 +101,7 @@ const DonughtChart: React.FC<BarGraphProps> = ({graphData}) => {
 
                 {/* Graph */}
                 <Box>
-                    <Grid display="flex" justifyContent="space-evenly" flexDirection="row" alignItems="center">
+                    <Grid display="flex" justifyContent="space-evenly" flexDirection="row" alignItems="center" sx={{height:'225px',mt:1}}>
                         <Grid item width="40%" >
                             <Doughnut
                                 data={incomeData}
@@ -108,9 +110,9 @@ const DonughtChart: React.FC<BarGraphProps> = ({graphData}) => {
                         </Grid>
 
 
-                        <Grid item width = "40%" height="100%" sx={{backgroundColor: "#DAE1E9", padding:"0.5em", margin:"0.2em", borderRadius: "0.5em"}}>
+                        <Grid item width = "40%" height="100%" sx={{backgroundColor: "#DAE1E9", padding:"0.5em", margin:"0.2em", borderRadius: "0.5em",overflowY:'auto'}}>
                             {graphData.xAxisLabels.map((xAxisLabel, index) => (
-                                <Typography  key={index}display="flex" justifyContent="space-between"> 
+                                <Typography  key={index}display="flex" justifyContent="space-between" sx={{mt:1}}> 
                                     <span> {`${xAxisLabel}`} </span>
                                     <span> {`${graphData.yAxisLabels[index]}`}% </span>
                                 </Typography>

@@ -5,12 +5,12 @@ export const diversityScore = 30 // The overall diversity score (needs to be cal
 export const incomeGraphLabelData = {
         yAxisLabels : [1, 2, 3, 60,3,6],
         xAxisLabels : [
-                "0 - 10",
-                "11 - 15",
-                "16 - 20",
-                "21 - 25", 
-                "25 - 30", 
-                "30 +"
+                "0 - 10k",
+                "11 - 15k",
+                "16 - 20k",
+                "21 - 25k", 
+                "25 - 30k", 
+                "30k +"
             ],
         title: "Income",
         studyId: studyId,

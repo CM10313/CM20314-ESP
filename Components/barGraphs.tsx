@@ -68,10 +68,13 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
     return (
         <Box sx={{
             display:'flex',
-            width: '25em',
-            boxShadow: '0.5em 0.5em 1em 0.1em grey'
+            width: '400px',
+            backgroundColor: '#F6F6F6',
+            boxShadow: '0.5em 0.5em 1em 0.1em grey',
+            borderRadius:'5px',
+            height:'300px'
         }}>
-            <Grid width="100%" padding="0.8em" sx = {{backgroundColor: "white",}}>
+            <Grid width="100%" padding="0.8em" sx = {{backgroundColor: "#F2F2F2",borderRadius:'5px',height:'100%'}}>
                 {/* Titles and ID*/}
                 <Grid item sx={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                     <Typography fontSize="1.5em" fontWeight="Bold"> {graphData.title} </Typography>
@@ -88,11 +91,12 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
                 </Grid>
 
                 {/* Graph */}
-                <Grid item >
+                <Grid item  sx={{height:'230px'}}>
+                    <Box sx={{height:'100%',mt:1}}>
                     <Bar 
                         data={incomeData}
-                        options = {barChartOptions}  
-                    />
+                        options = {barChartOptions} 
+                    /></Box>
                 </Grid>
             </Grid>
         </Box>

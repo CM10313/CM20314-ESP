@@ -76,10 +76,12 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
     return (
         <Box sx={{
             display: 'flex',
-            width: '25em',
-            boxShadow: '0.5em 0.5em 1em 0.1em grey'
+            width: '354px',
+            height:'162px',
+            boxShadow: '0.5em 0.5em 1em 0.1em grey',
+            borderRadius:'5px'
         }}>
-            <Grid width="100%" padding="0.8em" sx={{ backgroundColor: "white", }}>
+            <Grid width="100%" padding="0.8em" sx={{ backgroundColor: "#F2F2F2",borderRadius:'5px' }}>
                 {/* Titles and ID*/}
                 <Grid item sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                     <Typography fontSize="1.5em" fontWeight="Bold"> {graphData.title} </Typography>

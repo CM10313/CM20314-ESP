@@ -1,4 +1,4 @@
-import {Box, Grid} from "@mui/material";
+import {Box, Grid, useMediaQuery} from "@mui/material";
 import TriangleBackground from "../Components/TriangleBackground";
 import HorizontalBarGraph from "../Components/horizontalBarGraph";
 import DonughtChart from "../Components/donughtChart";
@@ -15,23 +15,24 @@ import OverallDiversityScore from "../Components/diversityScore";
 
 
 export default function DiversityView(){
+    const isMobile = useMediaQuery('(max-width:1000px)')
     return (
-        <Box> 
+        <Box sx={{height:'810px'}}> 
             <Navbar name={"John Doe"} rating={4.1} />
             <TriangleBackground />
-            <Grid display="flex" flexDirection="row" justifyContent="center">
-                <Grid item display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em" >
+            <Grid container sx={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%',width:'100%'}}>
+                <Grid item xs={isMobile?12:4}display="flex" flexDirection="column" justifyContent="space-evenly" >
                     <BarGraph graphData={incomeGraphLabelData} />
                     <BarGraph graphData={ageGraphLabelData} />
                 </Grid>
 
-                <Grid item display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em">
+                <Grid item xs={isMobile?12:4} display="flex" flexDirection="column" justifyContent="space-evenly" >
                     <OverallDiversityScore score={diversityScore} />
                     <HorizontalBarGraph graphData={raceGraphLabelData} />
                     <HorizontalBarGraph graphData={religionGraphLabelData} />
                 </Grid>
 
-                <Grid item display="flex" flexDirection="column" justifyContent="space-evenly" padding="1em">
+                <Grid item xs={isMobile?12:4} display="flex" flexDirection="column" justifyContent="space-evenly" >
                     <DonughtChart graphData = {sexualityGraphLabelData} />
                     <DonughtChart graphData = {genderGraphLabelData} />
                 </Grid>
