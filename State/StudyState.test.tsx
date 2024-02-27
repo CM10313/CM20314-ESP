@@ -56,7 +56,7 @@ describe('useStudyState', () => {
 
     // Check if state is updated correctly
     const stateElement = getByTestId('state');
-    const updatedState = JSON.parse(stateElement.textContent);
+    const updatedState = JSON.parse(stateElement.textContent as string);
     
     expect(updatedState).toEqual({
       DiversityObject: {
