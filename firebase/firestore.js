@@ -18,7 +18,7 @@ export const createNestedDocument = async (parentCollectionName, collectionName,
     const docRef = await addDoc(childCollectionRef, data);
     console.log('Document created with ID:', docRef.id);
   } catch (error) {
-    console.error('Error creating study:', error);
+    console.error('Error creating study: ', error);
   }
 };
 

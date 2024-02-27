@@ -11,7 +11,7 @@ jest.mock('next/router', () => ({
   }));
 // Mocking the useMediaQuery hook
 jest.mock('@mui/material/useMediaQuery', () => {
-    return jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : true);
+    return jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : true);//returns true used to trigger media query for branch test
   });
 describe('Study Dialogue Component', () => {
     it('should render correctly on non-mobile view', () => {
