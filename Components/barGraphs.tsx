@@ -57,7 +57,7 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
         scales: {
             y: {ticks: {
                     callback: function (value:number){ return value + '%' }
-                }},
+                }}as ScaleOptions<'linear'>,
             
             x : {
                 grid: { display: false }

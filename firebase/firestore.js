@@ -1,5 +1,5 @@
 import { db } from './config'; // Assuming you export your Firestore instance as 'db' in config.js
-import { collection, setDoc, getDoc, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
+import { collection, setDoc, getDoc, getDocs, updateDoc, doc, deleteDoc,addDoc } from 'firebase/firestore';
 
 // Add a document to a collection
 const addDocument = async (collectionName, data, uid) => {
@@ -9,6 +9,16 @@ const addDocument = async (collectionName, data, uid) => {
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
+  }
+};
+export const createNestedDocument = async (parentCollectionName, collectionName, data, uid) => {
+  try {
+    const parentDocRef = doc(db, parentCollectionName, uid);
+    const childCollectionRef = collection(parentDocRef, collectionName);
+    const docRef = await addDoc(childCollectionRef, data);
+    console.log('Document created with ID:', docRef.id);
+  } catch (error) {
+    console.error('Error creating study: ', error);
   }
 };
 

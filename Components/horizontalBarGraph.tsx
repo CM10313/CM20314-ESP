@@ -1,10 +1,7 @@
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Box, Grid, Typography } from "@mui/material";
 import { Bar } from 'react-chartjs-2';
-import { Chart} from 'chart.js';
-//Chart.register(...registerables);
-//Chart.register(ChartDataLabels);
-
+import { Chart } from 'chart.js';
 
 interface BarGraphProps {
     graphData: {
@@ -16,22 +13,24 @@ interface BarGraphProps {
     }
 }
 
-const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
-    if(graphData.hasData == false){
-        return <Box sx={{
-            display:'flex',
-            width: '25em',
-            boxShadow: '0.5em 0.5em 1em 0.1em grey',
-            backgroundColor: '#1F5095',
-            height: "10em",
-            padding: "0.3em",
-            borderRadius: "0.2em",
-            textAlign: "left",
-            color: "white"
-        }}>
-            <Typography> When this advert was created you did not enable tracking for this metric. <br />
-        If in future you wish to see this, enable this feature when creating your advert.</Typography>
-        </Box>
+const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
+    if (!graphData.hasData) {
+        return (
+            <Box sx={{
+                display: 'flex',
+                width: '25em',
+                boxShadow: '0.5em 0.5em 1em 0.1em grey',
+                backgroundColor: '#1F5095',
+                height: "10em",
+                padding: "0.3em",
+                borderRadius: "0.2em",
+                textAlign: "left",
+                color: "white"
+            }}>
+                <Typography>When this advert was created you did not enable tracking for this metric. <br />
+                    If in future you wish to see this, enable this feature when creating your advert.</Typography>
+            </Box>
+        );
     }
 
     const thisGraphData = {
@@ -51,18 +50,16 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
         ], 
     }
 
-    const barChartOptions = {
+    const barChartOptions: Chart.ChartOptions<'bar'> = {
         responsive: true,
-        indexAxis: 'y',
+        indexAxis: "y",
         plugins: {
           legend: {display:false},
           title: { display: false},
         },
-
         elements: {
             bar: { borderRadius: 10 }
         },
-
         scales: {
             y: {
                 labels: graphData.xAxisLabels, 
@@ -79,10 +76,10 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({graphData}) => {
             },
         },
     }
-    
+
     return (
         <Box sx={{
-            display:'flex',
+            display: 'flex',
             width: '25em',
             boxShadow: '0.5em 0.5em 1em 0.1em grey'
         }}>

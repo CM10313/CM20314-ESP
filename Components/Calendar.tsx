@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, Divider } from "@mui/material";
+import { Box, Grid, Typography, Divider, TextField } from "@mui/material";
 import CalendarTodayTwoToneIcon from '@mui/icons-material/CalendarTodayTwoTone';
 import CalendarCard from "./CalendarCard";
 
@@ -79,7 +79,6 @@ export default function Calendar(){
                             <CalendarCard key={entry.id} event = {entry} />
                         ))}
                         </Box>
-                  
                 </Grid>
 
             </Grid>

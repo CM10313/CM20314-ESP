@@ -3,11 +3,21 @@ import { render, fireEvent, queryByLabelText, screen, waitFor  } from '@testing-
 import RegisterEthics from './RegisterEthics';
 import '@testing-library/jest-dom';
 import { EthicsData } from '../pages/register';
+
+jest.mock('@mui/material/useMediaQuery', () => {
+  return jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : true);//returns true used to trigger media query for branch test
+});
+
 describe('RegisterEthics Component', () => {
   it('renders without crashing', () => {
     render(<RegisterEthics handleLoginRedirect={() => { } } handleReset={() => { } } onSubmit={() => {}} />);
   });
 
+  it('should render correctly on mobile view', () => {
+    jest.mock('@mui/material/useMediaQuery', () => jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : false));
+
+    render(<RegisterEthics handleLoginRedirect={() => { } } handleReset={() => { } } onSubmit={() => {}} />);
+  });
   it('displays the username input field', () => {
     const { getByLabelText } = render(<RegisterEthics handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={() => {}}/>);
     expect(getByLabelText('Username')).toBeInTheDocument();

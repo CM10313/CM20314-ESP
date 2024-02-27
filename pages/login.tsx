@@ -15,22 +15,9 @@ import { fetchDocumentById } from '../firebase/firestore';
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
   const [loginError, setLoginError] = useState('');
   const router = useRouterWrapper();
   //const { isLoggedIn,setUserLoggedIn} = useContext(AuthContext);
-  useEffect(() => {
-    // Validate the password whenever it changes
-      if (validatePassword(password)) {
-        setPasswordError('');
-      } else {
-        setPasswordError('Invalid Password');
-      }
-  }, [password]);
- 
- 
-
 
   const handlePasswordChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -41,6 +28,20 @@ const LoginForm: React.FC = () => {
  
 const handleSignupRedirect=()=>{
   router.push('/register');
+}
+const makeLoginErrorFriendly=(loginError:string)=>{
+  switch (loginError){
+    case "Firebase: Error (auth/invalid-email).":
+      return "The Email you used doesn't seem to exist";
+    case "Firebase: Error (auth/invalid-credential).":
+      return "You have entered an incorrect Username or Password";
+    case  "Firebase: Error (auth/network-request-failed).":
+      return "There is a network issue"; 
+    case "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests).":
+      return "Account has been temporarily disabled due to too many failed login attempts.";
+   default:
+    return "Unknown error";
+  }
 }
 
 
@@ -64,7 +65,7 @@ const handleLoginRedirect = async () => {
   }
   catch (error) {
     if (error instanceof Error){
-      setLoginError(error.message);
+      setLoginError(makeLoginErrorFriendly(error.message));
     }
     else{
       setLoginError('An unexpected error occurred');
@@ -83,7 +84,7 @@ return (
         alignItems: "center",
         background: 'linear-gradient(to right, #FFFFFF, #9F9F9F)'
       }}
-    >
+    > 
     <Grid
         container
         rowSpacing={0}
@@ -174,20 +175,28 @@ return (
       <Grid
       item
       xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography fontFamily={"Yapari"} fontWeight={'bold'} sx={{color:'#000000'}} fontSize={45}>LOGIN</Typography></Grid>
+     {loginError ? (
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'start', flexDirection:'column',alignItems:'flex-start' }}>
+          <Typography fontWeight={'bold'} sx={{ color: 'black', justifyContent: 'start', display: 'flex', borderRadius: '5px', ml: 5 }} fontSize={20}>
+            Oops!
+          </Typography>
+          <Typography fontWeight={'bold'} sx={{ color: '#ed8787', justifyContent: 'start', display: 'flex', borderRadius: '5px', ml: 5 }} fontSize={15}>
+            {loginError}
+          </Typography>
+        </Grid>
+      ) : null}
       <Grid
       item
       xs={isMobile ?12:12}>
       <Grid container spacing={2} >
         <Grid item xs={12}>
         <Grid container spacing={0} >
-        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><Box sx={{mb:emailError ? 3: 0}}></Box>
+        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                   <TextField
                     label="Email"
                     variant="outlined"
                     value={email}
                     onChange={handleEmailChange}
-                    error={Boolean(emailError)}
-                    helperText={emailError}
                     sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9'}}
                     
                   /></Grid>
@@ -202,8 +211,6 @@ return (
                   type="password"
                   value={password}
                   onChange={handlePasswordChange}
-                  error={Boolean(passwordError)}
-                    helperText={passwordError}
                     sx={{width:'80%',backgroundColor:'#DAE1E9'}}
                     
                 />
@@ -219,9 +226,7 @@ return (
             container
             rowSpacing={0} sx={{justifyContent:'center',textAlign:'center'}}>
             <Grid item xs={12}>
-
-                    <Button onClick={handleLoginRedirect} variant={'contained'}sx={{whiteSpace:'nowrap',overflow:'auto',width:'60%',height:'55px',backgroundColor:'#0B254A',borderRadius:'10px'}} type="submit">
-
+                    <Button onClick={handleLoginRedirect} variant={'contained'}sx={{whiteSpace:'nowrap',overflow:'auto',width:'60%',height:'55px',backgroundColor:'#0B254A',borderRadius:'10px'}} >
                         Login
                     </Button>
             </Grid>

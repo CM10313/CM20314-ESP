@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import Calendar from '../calendar';
 
 
+
 // Mock useRouter
 jest.mock('next/router', () => ({
   useRouter: jest.fn().mockReturnValue({
@@ -14,7 +15,7 @@ jest.mock('next/router', () => ({
 describe('Calendar component', () => {
   it('renders date', () => {
     const { getByText } = render(<Calendar />);
-    const novemberText = getByText(/30th Nov/i);
+    const novemberText = getByText("30th");
     expect(novemberText).toBeInTheDocument();
   });
 

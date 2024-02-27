@@ -2,15 +2,15 @@ import React from 'react';
 import { render, fireEvent, queryByLabelText, screen, waitFor, within  } from '@testing-library/react';
 import RegisterResearcher from '../RegisterResearcher';
 import '@testing-library/jest-dom';
-import userEvent from '@testing-library/user-event'; 
-import { Faculty } from '../../State/UserExtraInfo';
 
 const mockSetDepartment = jest.fn();
-
+jest.mock('@mui/material/useMediaQuery', () => {
+  return jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : true);//returns true used to trigger media query for branch test
+});
 
 describe('RegisterResearcher Component', () => {
     it('opens the faculty dropdown', async () => {
-        const { getByLabelText, getByRole } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />);
+        const { getByLabelText, getByRole } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}} />);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
     
         // Simulate opening the dropdown
@@ -20,8 +20,13 @@ describe('RegisterResearcher Component', () => {
         const dropdownList = document.querySelector('[role="listbox"]');
         expect(dropdownList).toBeInTheDocument();
       });
+      it('should render correctly on mobile view', () => {
+        jest.mock('@mui/material/useMediaQuery', () => jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : false));
+
+        render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}} />);
+      });
       it('updates faculty dropdown', async () => {
-        const { getByLabelText, getByRole } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />);
+        const { getByLabelText, getByRole } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
     
         // Simulate opening the dropdown
@@ -47,7 +52,7 @@ describe('RegisterResearcher Component', () => {
         
       });
       it('updates department state on select change', async () => {
-        const { getByLabelText, getByRole } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />);
+        const { getByLabelText, getByRole } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}} />);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
     
         // Simulate opening the dropdown
@@ -73,16 +78,16 @@ describe('RegisterResearcher Component', () => {
     
       
   it('renders without crashing', () => {
-    render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>);
   });
 
   it('displays the username input field', () => {
-    const { getByLabelText } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>);
     expect(getByLabelText('Username')).toBeInTheDocument();
   });
   it('displays the orginisation input field', () => {
     const { getByLabelText, getByRole } = render(
-      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}}onSubmit={()=>{}} />
     );
   
     // Check that the email input field is not initially present
@@ -94,7 +99,7 @@ describe('RegisterResearcher Component', () => {
   });
   it('displays the phoneNumber input field', () => {
     const { getByLabelText, getByRole } = render(
-      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}}onSubmit={()=>{}} />
     );
   
     // Check that the email input field is not initially present
@@ -106,13 +111,13 @@ describe('RegisterResearcher Component', () => {
   });
 
   it('displays the password input field', () => {
-    const { getByLabelText } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>);
     expect(getByLabelText('Password')).toBeInTheDocument();
   });
 
   it('displays the email input field after clicking next', () => {
     const { getByLabelText, getByRole } = render(
-      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>
     );
   
     // Check that the email input field is not initially present
@@ -130,7 +135,7 @@ describe('RegisterResearcher Component', () => {
     
     // Render the component with the mock function
     const { getByText } = render(
-      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={handleResetMock} />
+      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={handleResetMock}onSubmit={()=>{}} />
     );
 
     // Find the button element
@@ -144,7 +149,7 @@ describe('RegisterResearcher Component', () => {
   });
   // Add more tests for other input fields and functionality
   it('displays password error when an incorrect password is entered', () => {
-    const { getByLabelText, getByText } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText, getByText } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>);
     const passwordInput = getByLabelText('Password');
 
     // Enter an incorrect password
@@ -154,7 +159,7 @@ describe('RegisterResearcher Component', () => {
     expect(getByText('Invalid Password')).toBeInTheDocument();
   });
   it('updates the password state when a key is pressed in the password field', () => {
-    const { getByLabelText } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>);
     const passwordInput = getByLabelText('Password') as HTMLInputElement; // Cast to HTMLInputElement
 
     // Simulate typing in the password field
@@ -164,7 +169,7 @@ describe('RegisterResearcher Component', () => {
     expect(passwordInput.value).toBe('newPassword');
   });
   it('updates the username state when a key is pressed in the username field', () => {
-    const { getByLabelText } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />);
+    const { getByLabelText } = render(<RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>);
     const usernameInput = getByLabelText('Username') as HTMLInputElement; // Cast to HTMLInputElement
 
     // Simulate typing in the password field
@@ -175,7 +180,7 @@ describe('RegisterResearcher Component', () => {
   });
   it('displays nothing when a correct password is entered', () => {
     const { getByLabelText, queryByText } = render(
-      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>
     );
     const passwordInput = getByLabelText('Password');
   
@@ -189,7 +194,7 @@ describe('RegisterResearcher Component', () => {
   // Add more tests for other input fields and functionality
   it('displays email error when an incorrect email is entered', () => {
     const { getByLabelText, getByRole , getByText } = render(
-      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>
     );
   
     // Check that the email input field is not initially present
@@ -206,7 +211,7 @@ describe('RegisterResearcher Component', () => {
   });
   it('displays no error when a correct email is entered', () => {
     const { getByLabelText, getByRole , queryByText } = render(
-      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>
     );
   
     // Check that the email input field is not initially present
@@ -223,7 +228,7 @@ describe('RegisterResearcher Component', () => {
   });
   it('displays no error when a correct phone number is entered', () => {
     const { getByLabelText, getByRole , queryByText } = render(
-      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>
     );
   
     // Check that the email input field is not initially present
@@ -241,7 +246,7 @@ describe('RegisterResearcher Component', () => {
   
   it('updates the email state when a key is pressed in the email field', () => {
     const { getByLabelText, getByRole , getByText } = render(
-      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}}onSubmit={()=>{}} />
     );
   
     // Check that the email input field is not initially present
@@ -259,7 +264,7 @@ describe('RegisterResearcher Component', () => {
   });
   it('updates the phone number state when a key is pressed in the phone number field', () => {
     const { getByLabelText, getByRole , getByText } = render(
-      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>
     );
   
     // Check that the email input field is not initially present
@@ -278,7 +283,7 @@ describe('RegisterResearcher Component', () => {
   it('correctly updates the Sort Code in BankDetails', () => {
     // Render the component
     const { getByLabelText,getByRole } = render(
-      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} />
+      <RegisterResearcher handleLoginRedirect={() => {}} handleReset={() => {}} onSubmit={()=>{}}/>
     );
     fireEvent.click(getByRole('button', { name: 'NEXT' }));
     fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -293,4 +298,5 @@ describe('RegisterResearcher Component', () => {
     
     expect(sortCodeInput.value).toBe('123456');
   });
+  
 });
