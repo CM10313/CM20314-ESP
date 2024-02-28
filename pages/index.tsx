@@ -1,12 +1,12 @@
 import React from 'react';
 import LoginForm from './login';
+import { AuthProvider } from '../Context/AuthContext';
 
-const HomePage: React.FC = () => {
+function HomePage(){
   return (
-    <div>
-      <LoginForm />
-    </div>
+      <div>
+        <LoginForm />
+      </div>
   );
-};
-
+}
 export default HomePage;

@@ -10,7 +10,10 @@ import Navbar from '../Components/navbar';
 import TriangleBackground from '../Components/TriangleBackground';
 import Calendar from '../Components/Calendar';
 import SearchableList from '../Components/SearchableList';
+import { useAuth } from '../Context/AuthContext';
+import { useEffect } from 'react';
 const ResearchHome: React.FC = () => {
+  const {isLoggedIn,setAuth,username,overallRating} = useAuth();
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
   const handleCardClick = (title: string) => {
@@ -99,7 +102,7 @@ const ResearchHome: React.FC = () => {
   ];
   return (
     <>
-     <Navbar name={'John Doe'} rating={4.1} />
+     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
             <TriangleBackground />
       <div style={{ height: '810px' }}>
         <Grid container spacing={2} sx={{height:'100%'}}>

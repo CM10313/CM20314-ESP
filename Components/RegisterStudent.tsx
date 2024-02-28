@@ -1,12 +1,12 @@
 import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import BoxedNumber from "./FormDialogue";
 import { SetStateAction, useEffect, useState } from "react";
-import { useExtraInfoState,ExtraInfoState, Sexuality, Faculty, Religion, Anonymity, Gender, Race, HighestEducation, ParticipantJoinedStudyData, ParticipantRejectionData } from "../State/UserExtraInfo";
+import { useExtraInfoState,ExtraInfoState, Sexuality, Faculty, Religion, Anonymity, Gender, Race, HighestEducation, ParticipantJoinedStudyData, ParticipantRejectionData } from "../DataState/UserExtraInfo";
 import validateEmail from "../Utils/ValidateEmail";
 import validatePassword from "../Utils/ValidatePassword";
 import validatePhoneNumber from "../Utils/ValidatePhoneNumber";
 import validateUsername from "../Utils/ValidateUsername";
-import { useBankInfoState,BankInfoState } from "../State/BankInfo";
+import { useBankInfoState,BankInfoState } from "../DataState/BankInfo";
 import FormDialogue from "./FormDialogue";
 import {ReviewObject, StudentData} from '../pages/register'
 
