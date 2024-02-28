@@ -2,7 +2,6 @@ import React from 'react';
 import { render, fireEvent,screen, getByRole } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import AdvertCreate from '../AdvertCreate';
-import mockRouter from 'next-router-mock';
 import { useRouter } from 'next/router';
 jest.mock('next/router', () => ({
   ...jest.requireActual('next/router'),
@@ -69,9 +68,6 @@ describe('AdvertCreate Component', () => {
     fireEvent.click(getByText('Webinar'));
     fireEvent.click(createButton);
 
-    expect(pushMock).toHaveBeenCalledWith({
-      pathname: '/advertCreate',
-      query: { type: 'Webinar' }
-    });
+    expect(pushMock).toHaveBeenCalledWith("/webinarCreator");
   });
 });

@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, fireEvent, queryByLabelText, screen, waitFor, within  } from '@testing-library/react';
-import RegisterStudent from './RegisterStudent';
+import RegisterStudent from '../RegisterStudent';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event'; 
-import StudyDialog from './StudyDialog';
-import { StudyData } from '../pages/studyCreator';
+import StudyDialog from '../StudyDialog';
+import { StudyData } from '../../pages/studyCreator';
 jest.mock('next/router', () => ({
     ...jest.requireActual('next/router'),
     useRouter: jest.fn(),
@@ -201,6 +201,27 @@ describe('Study Dialogue Component', () => {
         // Simulate typing in the password field
         fireEvent.change(descriptionInput, { target: { value: '' } });
         expect(getByText('A Description Is Required')).toBeInTheDocument();
+      });
+      it('updates the location state when a key is pressed in the location field', () => {
+        const { getByLabelText, getByRole , getByText } = render(
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+        );
+        const locationInput = getByLabelText('Location') as HTMLInputElement; // Cast to HTMLInputElement
+        // Simulate typing in the password field
+        fireEvent.change(locationInput, { target: { value: 'Location' } });
+    
+        // Check if the password state is updated
+        expect(locationInput.value).toBe('Location');
+      });
+      it('displays location error when an incorrect locaiton is entered', () => {
+        const { getByLabelText, getByRole , getByText } = render(
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+        );
+        const locationInput = getByLabelText('Location') as HTMLInputElement; // Cast to HTMLInputElement
+    
+        // Simulate typing in the password field
+        fireEvent.change(locationInput, { target: { value: '' } });
+        expect(getByText('A Location Is Required')).toBeInTheDocument();
       });
       it('updates extrainfoobj faculty  state on select change', async () => {
         const { getByLabelText, getByRole } = render(<StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);

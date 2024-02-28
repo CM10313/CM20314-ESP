@@ -1,9 +1,9 @@
 import { Box, Button, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography, useMediaQuery } from "@mui/material";
 import {  SetStateAction,useEffect,useState } from "react";
-import { Faculty} from "../State/UserExtraInfo";
+import { Faculty} from "../DataState/UserExtraInfo";
 import FormDialogue from "./FormDialogue";
 import Checkbox from '@mui/material/Checkbox';
-import { useStudyState, StudyState, RequirementsObject } from "../State/StudyState";
+import { useStudyState, StudyState, RequirementsObject } from "../DataState/StudyState";
 import { StudyData } from "../pages/studyCreator";
 import validateDate, { getTodayDate } from "../Utils/ValidateDate";
 import validateNumberInRange from "../Utils/ValidateNumberInput";

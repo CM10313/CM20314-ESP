@@ -16,7 +16,7 @@ export const addSpecialDocument = async (collectionName, data) => {
     const docRef = await addDoc(collection(db, collectionName), data);
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
-    console.error("Error adding document: ", e);
+    console.error("Error adding nested document: ", e);
   }
 };
 export const createNestedDocument = async (parentCollectionName, collectionName, data, uid) => {

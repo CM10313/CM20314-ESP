@@ -10,7 +10,7 @@ import {
     diversityScore, incomeGraphLabelData, ageGraphLabelData,  
     raceGraphLabelData, sexualityGraphLabelData, 
     genderGraphLabelData, religionGraphLabelData
-} from "../Components/graphData";
+} from "../DataState/graphData";
 import OverallDiversityScore from "../Components/diversityScore";
 
 

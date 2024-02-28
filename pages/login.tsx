@@ -10,9 +10,11 @@ import {getUID, signIn} from '../firebase/auth';
 
 import { useRouter } from 'next/router';
 import { fetchDocumentById } from '../firebase/firestore';
+import { useAuth } from '../Context/AuthContext';
 
 
 const LoginForm: React.FC = () => {
+  const {isLoggedIn,setAuth,username} = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -49,8 +51,13 @@ const handleLoginRedirect = async () => {
   try {
     await signIn(email, password);
     //check account type then push research/ethics/participant home page
-    let doc_data = await fetchDocumentById('users', getUID());
+    let doc_data:any  = await fetchDocumentById('users', getUID());
     let account_type = (doc_data as any).accountType
+    let department = (doc_data as any).department
+    let username = (doc_data as any).username
+    let overallRating = (doc_data as any).reviewObject.overallRating //wont work for ethics
+    setAuth(true,username,overallRating,department,account_type, getUID());
+    console.log(isLoggedIn)
     switch (account_type) {
       case "participant":
         break;

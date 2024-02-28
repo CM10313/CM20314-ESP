@@ -3,8 +3,8 @@ import Image from 'next/image';
 
 import { TextField, Button, Grid, Typography, Box, useMediaQuery, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 
-import { ExtraInfoState, Faculty, ParticipantJoinedStudyData, ParticipantRejectionData } from '../State/UserExtraInfo';
-import { BankInfoState } from '../State/BankInfo';
+import { ExtraInfoState, Faculty, ParticipantJoinedStudyData, ParticipantRejectionData } from '../DataState/UserExtraInfo';
+import { BankInfoState } from '../DataState/BankInfo';
 
 
 import { useRouter } from 'next/router';

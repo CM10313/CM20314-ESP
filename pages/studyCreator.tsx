@@ -6,8 +6,8 @@ import StudyDialog from '../Components/StudyDialog';
 import { EthicsData } from './register';
 
 import { useMediaQuery } from '@mui/material';
-import { StudyState } from '../State/StudyState';
-import { Faculty } from '../State/UserExtraInfo';
+import { StudyState } from '../DataState/StudyState';
+import { Faculty } from '../DataState/UserExtraInfo';
 import { addDocument, addSpecialDocument, createNestedDocument } from '../firebase/firestore';
 import { useRouter } from 'next/router';
 interface Props {

@@ -3,7 +3,7 @@ import { render, fireEvent, queryByLabelText, screen, waitFor, within  } from '@
 import RegisterStudent from '../RegisterStudent';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event'; 
-import { Faculty } from '../../State/UserExtraInfo';
+import { Faculty } from '../../DataState/UserExtraInfo';
 
 jest.mock('@mui/material/useMediaQuery', () => {
   return jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : true);//returns true used to trigger media query for branch test
