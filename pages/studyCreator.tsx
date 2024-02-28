@@ -8,7 +8,7 @@ import { EthicsData } from './register';
 import { useMediaQuery } from '@mui/material';
 import { StudyState } from '../State/StudyState';
 import { Faculty } from '../State/UserExtraInfo';
-import { addDocument, createNestedDocument } from '../firebase/firestore';
+import { addDocument, addSpecialDocument, createNestedDocument } from '../firebase/firestore';
 import { useRouter } from 'next/router';
 interface Props {
   jestBypass: boolean;
@@ -38,12 +38,13 @@ enum UserType{
 
   const StudyCreator: React.FC<Props> = ({ jestBypass }) => {
   const router = useRouter();
-  const handleStudySubmit= (data:StudyData,uid:String) =>{
+  const handleStudySubmit= (data:StudyData,uid:String,department:String) =>{
       console.log(data);
-      createNestedDocument("studies",`${uid}-studies`,data,uid)
-      //addDocument("studies",data,"swQ90URzscZLubKOh6t8hSAXr1V2")
-      return;
+      addSpecialDocument(`departments/${department}/Researchers/${uid}/studies`,data)
+     //addDocument("studies",data,"swQ90URzscZLubKOh6t8hSAXr1V2")
+     return;
   }
+ 
   const handleHomeDirect =()=>{
     router.push('/researchHome');//needs to cheange based on user type
   }

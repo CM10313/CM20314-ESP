@@ -8,7 +8,7 @@ import validatePhoneNumber from "../Utils/ValidatePhoneNumber";
 import validateUsername from "../Utils/ValidateUsername";
 import { useBankInfoState,BankInfoState } from "../State/BankInfo";
 import FormDialogue from "./FormDialogue";
-import {ResearcherData} from '../pages/register'
+import {ResearcherData, ReviewObject} from '../pages/register'
 
 interface RegisterStudentProps {
     handleLoginRedirect:() => void;
@@ -30,13 +30,17 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset, on
     //defualt rating
     const [department, setDepartment] = useState(Faculty.NotSpecified)
     const [bankInfoObj, setBankInfoObj] = useBankInfoState();
-
+    const reviewObject: ReviewObject = {
+      overallRating: 0, 
+      numberOfRatings: 0, 
+      reviews: [], 
+  };
     const handleSubmit = () => {
         const researcherData = {
             username, password, email,
             organisation, phoneNumber, 
             id, department,
-            bankInfoObj
+            bankInfoObj,reviewObject,
         };
         onSubmit(researcherData);
         handleLoginRedirect();

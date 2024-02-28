@@ -30,6 +30,12 @@ export interface DiversityObject{
   privacyRequirements:string[];
   accesibilityRequirements:string[];
   }
+  export interface EthicsApprovalObject{
+    status:String;
+    rejectedByID:String;
+    rejectedByName:String;
+    rejectionReason:String;
+  }
   export interface StudyState {
     DiversityObject: {
         hasGender: boolean;
@@ -39,7 +45,12 @@ export interface DiversityObject{
         hasAge: boolean;
         hasSexuality: boolean;
     };
-    EthicsApproval: boolean;
+    EthicsApprovalObject: {
+        status:String;
+        rejectedByID:String;
+        rejectedByName:String;
+        rejectionReason:String;
+    }
     CompensationObject: {
         amount: string;
         currency: string;
@@ -71,7 +82,12 @@ export const useStudyState = (): [StudyState, React.Dispatch<React.SetStateActio
           hasAge: false,
           hasSexuality: false
       },
-      EthicsApproval: false,
+      EthicsApprovalObject:{
+        status:"Waiting",
+        rejectedByID:"",
+        rejectedByName:"",
+        rejectionReason:"",
+      },
       CompensationObject: {
           amount: "",
           currency: "£",

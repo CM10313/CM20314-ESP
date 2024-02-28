@@ -1,14 +1,14 @@
 import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import BoxedNumber from "./FormDialogue";
 import { SetStateAction, useEffect, useState } from "react";
-import { useExtraInfoState,ExtraInfoState, Sexuality, Faculty, Religion, Anonymity, Gender, Race, HighestEducation } from "../State/UserExtraInfo";
+import { useExtraInfoState,ExtraInfoState, Sexuality, Faculty, Religion, Anonymity, Gender, Race, HighestEducation, ParticipantJoinedStudyData, ParticipantRejectionData } from "../State/UserExtraInfo";
 import validateEmail from "../Utils/ValidateEmail";
 import validatePassword from "../Utils/ValidatePassword";
 import validatePhoneNumber from "../Utils/ValidatePhoneNumber";
 import validateUsername from "../Utils/ValidateUsername";
 import { useBankInfoState,BankInfoState } from "../State/BankInfo";
 import FormDialogue from "./FormDialogue";
-import {StudentData} from '../pages/register'
+import {ReviewObject, StudentData} from '../pages/register'
 
 interface RegisterStudentProps {
     handleLoginRedirect:() => void;
@@ -33,13 +33,19 @@ export default function RegisterStudent ( {handleLoginRedirect,handleReset, onSu
     //defualt rating
     const [extraInfoObj, setExtraInfoObj] = useExtraInfoState();
     const [bankInfoObj, setBankInfoObj] = useBankInfoState();
-    
+    const joinedStudies: ParticipantJoinedStudyData[] = [];
+    const rejectedStudies: ParticipantRejectionData[] = [];
+    const reviewObject: ReviewObject = {
+        overallRating: 0, 
+        numberOfRatings: 0, 
+        reviews: [], 
+    };
     const handleSubmit = () => {
         const studentData = {
             username, password, email,
             organisation, phoneNumber, 
             id, extraLanguage, extraInfoObj,
-            bankInfoObj
+            bankInfoObj,joinedStudies,rejectedStudies,reviewObject
         };
         onSubmit(studentData);
         handleLoginRedirect();

@@ -25,16 +25,20 @@ export default function RegisterEthics ( {handleLoginRedirect,handleReset, onSub
     const [emailError, setEmailError] = useState("");
     const [phoneNumber, setPhoneNumber]= useState("");
     const [phoneNumberError, setPhoneNumberError]= useState("");
+    const [department, setDepartment] = useState(Faculty.NotSpecified)
     const [id, setId]= useState(-1);
 
         const handleSubmit = () => {
             const ethicsData = {
                 username, password, email,
                 organisation, phoneNumber, 
-                id
+                id,department,
             };
             onSubmit(ethicsData);
             handleLoginRedirect();
+        }
+        const handleDepartmentChange = (event: React.ChangeEvent<{ value: Faculty }>) => {
+          setDepartment(event.target.value as Faculty); // Update department state with the selected value
         }
       useEffect(() => {
         // Validate the password whenever it changes
@@ -184,6 +188,40 @@ export default function RegisterEthics ( {handleLoginRedirect,handleReset, onSub
                           margin:0,
                         },}}
                         />
+                    </Grid>
+                    <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
+                        <FormControl sx={{width:'80%'}}>
+                            <InputLabel id="demo-simple-select-label">Faculty</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={department}
+                                label="Faculty"
+                                onChange={(event) => handleDepartmentChange(event as React.ChangeEvent<{ value: Faculty }>)}
+                                >
+                                <MenuItem value={Faculty.ArchitectureCivilEngineering}>Architecture & Civil Engineering</MenuItem>
+                                <MenuItem value={Faculty.ChemicalEngineering}>Chemical Engineering</MenuItem>
+                                <MenuItem value={Faculty.ElectronicElectricalEngineering}>Electronic & Electrical Engineering</MenuItem>
+                                <MenuItem value={Faculty.MechanicalEngineering}>Mechanical Engineering</MenuItem>
+                                <MenuItem value={Faculty.Economics}>Economics</MenuItem>
+                                <MenuItem value={Faculty.Education}>Education</MenuItem>
+                                <MenuItem value={Faculty.Health}>Health</MenuItem>
+                                <MenuItem value={Faculty.PoliticsLanguagesInternationalStudies}>Politics, Languages & International Studies</MenuItem>
+                                <MenuItem value={Faculty.Psychology}>Psychology</MenuItem>
+                                <MenuItem value={Faculty.SocialPolicySciences}>Social & Policy Sciences</MenuItem>
+                                <MenuItem value={Faculty.Chemistry}>Chemistry</MenuItem>
+                                <MenuItem value={Faculty.ComputerScience}>Computer Science</MenuItem>
+                                <MenuItem value={Faculty.LifeSciences}>Life Sciences</MenuItem>
+                                <MenuItem value={Faculty.MathematicalSciences}>Mathematical Sciences</MenuItem>
+                                <MenuItem value={Faculty.NaturalSciences}>Natural Sciences</MenuItem>
+                                <MenuItem value={Faculty.Physics}>Physics</MenuItem>
+                                <MenuItem value={Faculty.AccountingFinanceLaw}>Accounting, Finance & Law</MenuItem>
+                                <MenuItem value={Faculty.MarketingBusinessSociety}>Marketing, Business & Society</MenuItem>
+                                <MenuItem value={Faculty.InformationDecisionsOperations}>Information, Decisions & Operations</MenuItem>
+                                <MenuItem value={Faculty.StrategyOrganisation}>Strategy & Organisation</MenuItem>
+                                <MenuItem value={Faculty.NotSpecified}>Prefer Not To Say</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Grid>
                     
                     <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%'}}>

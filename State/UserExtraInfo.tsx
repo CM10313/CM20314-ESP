@@ -25,6 +25,16 @@ export enum Faculty {
     NotSpecified = ''
   }
   
+  export interface ParticipantRejectionData{
+    rejectedBy:String;
+    rejectorId:String;
+    reasonForRejection:String;
+    dateOfRejection:String;
+  }
+  export interface ParticipantJoinedStudyData{
+   studyId:String;
+   departmentName:Faculty;
+  }
 
 export enum Gender {
     Male = 'male',

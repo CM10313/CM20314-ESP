@@ -10,7 +10,7 @@ import validateNumberInRange from "../Utils/ValidateNumberInput";
 import validateURL from "../Utils/ValidateURL";
 
 interface StudyDialogProps {
-    onSubmit: (data: StudyData,uid:String) => void;
+    onSubmit:(data: StudyData, uid: String, department: StudyData["department"]) => void
     handleHomeRedirect:() => void;
     jestBypass:boolean;
 }
@@ -22,6 +22,7 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
     const [preliminaryDate, setPreliminaryDate] = useState("");
     const [externalLink, setExternalLink] = useState("");
     const [description, setDescription]=useState("");
+    const [location, setLocation]=useState("");
     const [ department,setDepartment]=useState(Faculty.NotSpecified);
     const [relatedFields, setRelatedFields] = useState<string[]>([]);
     const [minimumAge,setMinimumAge]= useState(18);
@@ -35,6 +36,7 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
     const [externalLinkError,setExternalLinkError]= useState("");
     const [titleError,setTitleError]= useState("");
     const [descriptionError,setDescriptionError]= useState("");
+    const [locationError,setLocationError]= useState("");
     const [submitError, setSubmitError]= useState("");
 
     const dateOfPublish = getTodayDate();
@@ -44,21 +46,21 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
             const studyData = {
                title,closingDate,preliminaryDate,description,department,externalLink,
                 maxNoParticipants,minimumAge,
-                relatedFields,studyObj,dateOfPublish,publisherId,publisherRating
+                relatedFields,studyObj,dateOfPublish,publisherId,publisherRating,location
             };
-            onSubmit(studyData,"swQ90URzscZLubKOh6t8hSAXr1V2");//needs to change to reference the current user
+            onSubmit(studyData,"swQ90URzscZLubKOh6t8hSAXr1V2",studyData.department);//needs to change to reference the current user
             //redirect
             handleHomeRedirect(); //needs to be changed to redirect based on user type but only for shared advert types
             return;
         }
         
         useEffect(()=>{
-            if (!closingDateError && !preliminaryDateError && !maxNoError && !minimumAgeError && !externalLinkError && !titleError && !descriptionError) {
+            if (!closingDateError && !preliminaryDateError && !maxNoError && !minimumAgeError && !externalLinkError && !titleError && !descriptionError && !locationError) {
                 setSubmitError("");
             } else {
                 setSubmitError("You cannot submit as required fields are not fullfilled or data is in an invalid format.");
             }
-        },[closingDate,preliminaryDate,maxNoError,minimumAgeError,externalLinkError,titleError,descriptionError])
+        },[closingDate,preliminaryDate,maxNoError,minimumAgeError,externalLinkError,titleError,descriptionError,locationError])
       
         type SetterFunction<T> = React.Dispatch<React.SetStateAction<T>>;
 
@@ -122,6 +124,14 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
                 setDescriptionError('A Description Is Required');
                 }
             }, [description]);
+        useEffect(() => {
+        
+            if (location!="") {
+            setLocationError('');
+            } else {
+            setLocationError('A Location Is Required');
+            }
+        }, [location]);
      
       
       const handleAddExtraField = () => {
@@ -276,20 +286,21 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
                                 </Grid>
                                 <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%',mt:4}}>
                                 <TextField
-                            label="Description"
+                            label="Location"
                             variant="outlined"
-                            value={description}
-                            error={Boolean(descriptionError)}
-                            helperText={descriptionError}
+                            value={location}
+                            error={Boolean(locationError)}
+                            helperText={locationError}
                             multiline
                             rows={3}
-                            onChange={handleInputChange(setDescription)}
+                            onChange={handleInputChange(setLocation)}
                             sx={{width:isMobile?'80%':'80%',padding:0,backgroundColor:'#DAE1E9',borderRadius:1,"&  .MuiFormHelperText-root.Mui-error": {
                                 backgroundColor: "#F6F6F6",
                                 margin:0,
                               },}}
                         />
                                 </Grid>
+                                
                                 <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%',mt:4}}>
                                 <TextField
                             label="Max Number Of Participants"
@@ -310,6 +321,22 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
                             }}
                         />
                             </Grid>
+                            <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%',mt:4}}>
+                                <TextField
+                            label="Description"
+                            variant="outlined"
+                            value={description}
+                            error={Boolean(descriptionError)}
+                            helperText={descriptionError}
+                            multiline
+                            rows={3}
+                            onChange={handleInputChange(setDescription)}
+                            sx={{width:isMobile?'90%':'90%',padding:0,backgroundColor:'#DAE1E9',borderRadius:1,mt:-2,"&  .MuiFormHelperText-root.Mui-error": {
+                                backgroundColor: "#F6F6F6",
+                                margin:0,
+                              },}}
+                        />
+                                </Grid>
                             <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',mt:-2}}>
                                 <Typography fontSize={12}>
                                     {"Don't want to continue ?"}

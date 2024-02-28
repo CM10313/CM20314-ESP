@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 import { TextField, Button, Grid, Typography, Box, useMediaQuery, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 
-import { ExtraInfoState, Faculty } from '../State/UserExtraInfo';
+import { ExtraInfoState, Faculty, ParticipantJoinedStudyData, ParticipantRejectionData } from '../State/UserExtraInfo';
 import { BankInfoState } from '../State/BankInfo';
 
 
@@ -26,6 +26,9 @@ export interface StudentData {
   extraLanguage: String;
   extraInfoObj: ExtraInfoState;
   bankInfoObj: BankInfoState;
+  joinedStudies:ParticipantJoinedStudyData[];
+  rejectedStudies:ParticipantRejectionData[];
+  reviewObject:ReviewObject;
 }
 
 export interface ResearcherData {
@@ -37,6 +40,7 @@ export interface ResearcherData {
   id: Number;
   department: Faculty;
   bankInfoObj: BankInfoState;
+  reviewObject:ReviewObject;
 }
 
 export interface EthicsData {
@@ -46,6 +50,18 @@ export interface EthicsData {
   organisation: String;
   phoneNumber: String;
   id: Number;
+  department:Faculty;
+}
+export interface ReviewDetailsObject{
+  reviewerId:String;
+  reviewerName:String;
+  review:String;
+  rating:Number;
+}
+export interface ReviewObject{
+  overallRating:Number;
+  numberOfRatings:Number;
+  reviews:ReviewDetailsObject[];
 }
 
 enum UserType{

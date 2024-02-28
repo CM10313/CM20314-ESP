@@ -11,6 +11,14 @@ const addDocument = async (collectionName, data, uid) => {
     console.error("Error adding document: ", e);
   }
 };
+export const addSpecialDocument = async (collectionName, data) => {
+  try {
+    const docRef = await addDoc(collection(db, collectionName), data);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
 export const createNestedDocument = async (parentCollectionName, collectionName, data, uid) => {
   try {
     const parentDocRef = doc(db, parentCollectionName, uid);
@@ -21,7 +29,6 @@ export const createNestedDocument = async (parentCollectionName, collectionName,
     console.error('Error creating study: ', error);
   }
 };
-
 // retrieve document by ID
 const fetchDocumentById = async (collectionName, documentId) => {
   try {
