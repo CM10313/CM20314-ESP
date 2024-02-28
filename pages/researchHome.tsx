@@ -141,7 +141,6 @@ const ResearchHome: React.FC = () => {
           </Box>
           </Grid>
         </Grid>
-        {id}
       </div>
     </>
   );
