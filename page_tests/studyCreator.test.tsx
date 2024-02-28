@@ -3,7 +3,7 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { useRouter } from 'next/router'; // Import the useRouter hook from 'next/router'
 import StudyCreator from '../pages/studyCreator';
-import { createNestedDocument } from '../firebase/firestore';
+import { addSpecialDocument, createNestedDocument } from '../firebase/firestore';
 
 jest.mock('next/router', () => ({
   __esModule: true,
@@ -11,11 +11,11 @@ jest.mock('next/router', () => ({
   useRouter: jest.fn(), 
 }));
 jest.mock('../firebase/firestore', () => ({
-  createNestedDocument: jest.fn(),
+ addSpecialDocument: jest.fn(),
 }));
 
 
-describe('renders login page', () => {
+describe('study creator', () => {
   it('renders without crashing', () => {
     // Mock the useRouter implementation
     (useRouter as jest.Mock).mockReturnValue({
@@ -44,7 +44,7 @@ describe('renders login page', () => {
     await waitFor(() => {
       // Assert that the submit button is not disabled when canSubmit is true
       expect(submitButton).not.toHaveAttribute('disabled');
-      expect(createNestedDocument).toHaveBeenCalled();
+      expect(addSpecialDocument).toHaveBeenCalled();
     });
 });
 

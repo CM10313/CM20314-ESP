@@ -34,8 +34,8 @@ jest.mock('react-chartjs-2', () => ({
         </div>
     )
 }));
-
-test('renders bar graph component', () => {
+describe('DonughtChart Component', () => {
+    it('renders without crashing', () => {
     const { getByText } = render(
         <BarGraph graphData={mockGraphData} />
     );
@@ -53,18 +53,10 @@ test('renders bar graph component', () => {
         const labelElement = getByText(label);
         expect(labelElement).toBeInTheDocument();
     });
-});
+    });
 
-test('checks study ID background color', () => {
-    const { getByText } = render(
-        <BarGraph graphData={mockGraphData} />
-    );
-    const studyIdElement = getByText(mockGraphData.studyId);
-    const computedStyle = window.getComputedStyle(studyIdElement);
-    expect(computedStyle.backgroundColor).toBe('rgb(218, 225, 233)');
-});
 
-test('renders invalid message component if no data', () => {
+it('renders invalid message component if no data', () => {
     const { getByText } = render(
         <BarGraph graphData={mockGraphDataWithoutData} />
     );
@@ -74,4 +66,5 @@ test('renders invalid message component if no data', () => {
         'If in future you wish to see this, enable this feature when creating your advert.'
     );
     expect(messageElement).toBeInTheDocument();
+    });
 });

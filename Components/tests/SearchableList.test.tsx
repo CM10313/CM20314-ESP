@@ -1,6 +1,6 @@
 import { fireEvent, render } from '@testing-library/react';
-import SearchableList from './SearchableList';
-import StudyMediumCard from './StudyMediumCard';
+import SearchableList from '../SearchableList';
+import StudyMediumCard from '../StudyMediumCard';
 import '@testing-library/jest-dom';
 
 describe('SearchableList Component', () => {

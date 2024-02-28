@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import ResearchHome from '../pages/researchHome';
+import { AuthContext } from '../Context/AuthContext';
 
 // Mock useRouter
 jest.mock('next/router', () => ({
@@ -8,6 +9,7 @@ jest.mock('next/router', () => ({
     push: jest.fn(),
   }),
 }));
+
 jest.mock('@mui/material', () => {
     const actual = jest.requireActual('@mui/material');
     return {
@@ -15,6 +17,7 @@ jest.mock('@mui/material', () => {
       useMediaQuery: jest.fn(),
     };
   });
+
 describe('ResearchHome component', () => {
   it('renders without crashing', () => {
     render(<ResearchHome />);
@@ -35,6 +38,7 @@ describe('ResearchHome component', () => {
     const { getByText } = render(<ResearchHome />);
     fireEvent.click(getByText('Want to publish something new'));
   });
+
   it('renders properly when isMobile is true', () => {
     // Mock useMediaQuery to return true (indicating mobile view)
     require('@mui/material').useMediaQuery.mockReturnValue(true);
@@ -42,5 +46,35 @@ describe('ResearchHome component', () => {
     const { getByText } = render(<ResearchHome />);
     fireEvent.click(getByText('Want to publish something new'));
   });
-  
-});
+ 
+    it('renders without crashing', () => {
+      // Mock useAuth to return the expected values
+      jest.mock('../Context/AuthContext', () => ({
+        useAuth: () => ({
+          isLoggedIn: true,
+          username: "fake",
+          overallRating: -1,
+          department: "fake",
+          accountType: "fake",
+          id: "fake",
+          setAuth: jest.fn((isLoggedIn, username, overallRating, department, accountType, id) => {})
+        })
+      }));
+
+    // Mock useAuth to return values matching destructuring in ResearchHome
+    
+    // Wrap your component with the mocked useAuth context provider
+    render(
+        <AuthContext.Provider value={{ // Add value prop here
+          isLoggedIn: true,
+          username: "fake",
+          overallRating: -1,
+          department: "fake",
+          accountType: "fake",
+          id: "fake",
+          setAuth: jest.fn((isLoggedIn, username, overallRating, department, accountType, id) => {})
+        }}>
+            <ResearchHome />
+        </AuthContext.Provider>)
+    });
+  });

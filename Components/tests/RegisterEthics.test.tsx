@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, fireEvent, queryByLabelText, screen, waitFor  } from '@testing-library/react';
-import RegisterEthics from './RegisterEthics';
+import RegisterEthics from '../RegisterEthics';
 import '@testing-library/jest-dom';
-import { EthicsData } from '../pages/register';
 
 jest.mock('@mui/material/useMediaQuery', () => {
   return jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : true);//returns true used to trigger media query for branch test

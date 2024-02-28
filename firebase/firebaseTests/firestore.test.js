@@ -6,7 +6,8 @@ import {
   fetchDocuments, 
   updateDocument, 
   deleteDocument, 
-  createNestedDocument
+  createNestedDocument,
+  addSpecialDocument
 } from '../firestore';
 import { 
   collection, 
@@ -251,7 +252,32 @@ describe('Firestore Functions', () => {
     });
     
     
+    it('should add a document to a specific collection path', async () => {
+        const collectionPath = 'departments/fakeDepartment/Researchers/fakeUid/studies';
+        const data = { testData: 'testValue' };
+        const expectedDocRef = 'testDocRef';
+    // Mocking doc() function
     
+    await addSpecialDocument(collectionPath, data);
+    expect(setDoc).toHaveBeenCalledWith(expectedDocRef, {"data": "testData"});
+      });
+      
+      it('should throw error when adding a document to a specific collection path', async () => {
+        // Mock document reference and setDoc to throw an error
+        const expectedDocRef = 'testDocRef';
+        const error = new Error('Test error');
+        doc.mockReturnValueOnce(expectedDocRef);
+        setDoc.mockRejectedValueOnce(error);
     
-  // Similarly, write tests for other functions like fetchDocumentById, fetchDocuments, updateDocument, and deleteDocument
+        // Call the function and expect it to throw an error
+        try {
+          await addSpecialDocument('collectionPath', { testData: 'testValue' });
+          // If the promise resolves, fail the test
+        } catch (e) {
+          // Check if the error message matches the expected error message
+          expect(e.message).toEqual(error.message);
+          // Check if console.error is called with the correct parameters
+          expect(console.error).toHaveBeenCalledWith('Error adding nested document: ', error);
+        }
+      });
 });
