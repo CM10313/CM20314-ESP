@@ -13,7 +13,7 @@ import SearchableList from '../Components/SearchableList';
 import { useAuth } from '../Context/AuthContext';
 import { useEffect } from 'react';
 const ResearchHome: React.FC = () => {
-  const {isLoggedIn,setAuth,username,overallRating} = useAuth();
+  const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
   const handleCardClick = (title: string) => {
@@ -141,6 +141,7 @@ const ResearchHome: React.FC = () => {
           </Box>
           </Grid>
         </Grid>
+        {id}
       </div>
     </>
   );
