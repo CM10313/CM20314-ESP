@@ -3,31 +3,36 @@ import HistoryCards from "../Components/historyCards";
 import SearchableList from "../Components/SearchableList";
 import HiddenStudiesCards from "../Components/hiddenStudies";
 import DisputeContactCard from "../Components/disputeContact";
+import Navbar from "../Components/navbar";
 
 export default function ResearherHistoryScreen() {
-    const studyId = "123456";
+    const studyIdList = [
+        "123456",
+        "7890123",
+        "23433423",
+        "34324423", 
+        "432423423"
+    ]
 
-    const historyCardList = [                    
-        <HistoryCards studyId={studyId} />,
-        <HistoryCards studyId={studyId} />,
-        <HistoryCards studyId={studyId} />,
-        <HistoryCards studyId={studyId} />,
-        <HistoryCards studyId={studyId} />,
-        <HistoryCards studyId={studyId} />,
+    const hiddenIdList = [
+        "123456",
+        "7890123",
+        "23433423",
+        "34324423", 
+        "432423423"
+    ]
+
+    const historyCardList = studyIdList.map((studyId) => (
         <HistoryCards studyId={studyId} />
-    ]
+    ))
 
-    const hiddenStudiesList = [
-        <HiddenStudiesCards studyId={studyId} />,
-        <HiddenStudiesCards studyId={studyId} />,
-        <HiddenStudiesCards studyId={studyId} />,
-        <HiddenStudiesCards studyId={studyId} />,
-        <HiddenStudiesCards studyId={studyId} />,
-        <HiddenStudiesCards studyId={studyId} />
-    ]
+    const hiddenStudiesList = hiddenIdList.map((hiddenStudyId) => (
+        <HiddenStudiesCards studyId={hiddenStudyId} />
+    ))
 
     return (
         <Grid container>
+            <Navbar />
             <Grid item sm={12} md={8}>
                 <SearchableList 
                     rowSpacing={0} 

@@ -1,12 +1,9 @@
-import {Grid, Button } from "@mui/material";
+import {Grid} from "@mui/material";
 import { useRouter } from "next/router";
 import HistoryCardsStudy from "./historyCardsStudy";
 import HistorySmallButtons from "./historySmallButtons";
 
 const HiddenStudiesCards: React.FC<{ studyId: string }> = ({ studyId }) => {
-    
-    studyId = "123456";
-
     const router = useRouter();
     const handleReview = () => {
         router.push(`/review/${studyId}`);
