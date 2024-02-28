@@ -8,13 +8,13 @@ export default function ResearherHistoryScreen() {
     const studyId = "123456";
 
     const historyCardList = [                    
-        <HistoryCards studyID={studyId} />,
-        <HistoryCards studyID={studyId} />,
-        <HistoryCards studyID={studyId} />,
-        <HistoryCards studyID={studyId} />,
-        <HistoryCards studyID={studyId} />,
-        <HistoryCards studyID={studyId} />,
-        <HistoryCards studyID={studyId} />
+        <HistoryCards studyId={studyId} />,
+        <HistoryCards studyId={studyId} />,
+        <HistoryCards studyId={studyId} />,
+        <HistoryCards studyId={studyId} />,
+        <HistoryCards studyId={studyId} />,
+        <HistoryCards studyId={studyId} />,
+        <HistoryCards studyId={studyId} />
     ]
 
     const hiddenStudiesList = [
