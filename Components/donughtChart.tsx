@@ -78,7 +78,8 @@ const DonughtChart: React.FC<BarGraphProps> = ({graphData}) => {
     return (
         <Box sx={{
             display:'flex',
-            width: '470px',
+            width: '95%',
+            maxWidth: '500px',
             height:'300px',
             boxShadow: '0.5em 0.5em 1em 0.1em grey',
             borderRadius:'5px'
@@ -102,14 +103,12 @@ const DonughtChart: React.FC<BarGraphProps> = ({graphData}) => {
                 {/* Graph */}
                 <Box>
                     <Grid display="flex" justifyContent="space-evenly" flexDirection="row" alignItems="center" sx={{height:'225px',mt:1}}>
-                        <Grid item width="40%" >
+                        <Grid item width="40%" height="100%" >
                             <Doughnut
                                 data={incomeData}
                                 options = {barChartOptions}               
                             />
                         </Grid>
-
-
                         <Grid item width = "40%" height="100%" sx={{backgroundColor: "#DAE1E9", padding:"0.5em", margin:"0.2em", borderRadius: "0.5em",overflowY:'auto'}}>
                             {graphData.xAxisLabels.map((xAxisLabel, index) => (
                                 <Typography  key={index}display="flex" justifyContent="space-between" sx={{mt:1}}> 

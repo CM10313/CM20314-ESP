@@ -80,14 +80,15 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
     return (
         <Box sx={{
             display: 'flex',
-            width: '354px',
+            maxWidth: '400px',
+            width: '95%',
             height:'162px',
             boxShadow: '0.5em 0.5em 1em 0.1em grey',
             borderRadius:'5px'
         }}>
-            <Grid width="100%" padding="0.8em" sx={{ backgroundColor: "#F2F2F2",borderRadius:'5px' }}>
+            <Grid container width="100%" padding="0.8em" sx={{ backgroundColor: "#F2F2F2",borderRadius:'5px' }}>
                 {/* Titles and ID*/}
-                <Grid item md={12} sx={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
+                <Grid item xs={12} sx={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                     <Typography fontSize="1.5em" fontWeight="Bold"> {graphData.title} </Typography>
                     <Typography sx={{
                         backgroundColor: "#DAE1E9",
@@ -102,11 +103,13 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
                 </Grid>
 
                 {/* Graph */}
-                <Grid item >
+                <Grid item xs={12} height="99%"  sx={{maxHeight:'110px',overflowY:'auto', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#1F5095', borderRadius: '5px' } }}>
+                    <Box sx={{height:'200px'}}>
                     <Bar data={thisGraphData}
                         options = {barChartOptions}
                         plugins={[ChartDataLabels]}                           
                     />
+                    </Box>
                 </Grid>
             </Grid>
         </Box>

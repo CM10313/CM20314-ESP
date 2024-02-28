@@ -68,7 +68,8 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
     return (
         <Box sx={{
             display:'flex',
-            width: '400px',
+            width: '95%',
+            maxWidth: '500px',
             backgroundColor: '#F6F6F6',
             boxShadow: '0.5em 0.5em 1em 0.1em grey',
             borderRadius:'5px',
