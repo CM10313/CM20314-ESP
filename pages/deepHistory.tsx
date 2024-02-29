@@ -1,7 +1,8 @@
-import {Grid} from "@mui/material";
+import {Grid, Box} from "@mui/material";
 import SearchableList from "../Components/SearchableList";
 import DeepHistoryRow from "../Components/deepHistoryRow";
 import Navbar from "../Components/navbar";
+import ProgressBar from "../Components/deepHistoryJoined";
 
 export default function DeepHistoryScreen() {
 
@@ -22,6 +23,9 @@ export default function DeepHistoryScreen() {
       <Grid container>
         <Navbar />
         <Grid item sm={12} md={8}>
+          <Box sx={{width:"100%", height:"10%", justifyContent:"start", display:"flex", alignItems:"center"}}> 
+            <ProgressBar joinedCount={20} requiredCount={20} title="Joined" />
+          </Box>
             <SearchableList 
                 rowSpacing={0} 
                 cardInputList={rowList} 

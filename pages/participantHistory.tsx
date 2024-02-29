@@ -4,8 +4,10 @@ import SearchableList from "../Components/SearchableList";
 import HiddenStudiesCards from "../Components/hiddenStudies";
 import DisputeContactCard from "../Components/disputeContact";
 import Navbar from "../Components/navbar";
+import ParticipantHistoryRow from "../Components/participantHistoryRow";
+import DisputeRow from "../Components/pDisputeRow";
 
-export default function ResearherHistoryScreen() {
+export default function ParticipantHistoryScreen() {
     
     // Once data is fetched all we need is ID of those to be inseerted into these accordingly
     // front end will need to be modified below to retrieve the author and date from the IDs in <HistoryCards /> and <HiddenStudiesCards />
@@ -26,11 +28,11 @@ export default function ResearherHistoryScreen() {
     ]
 
     const historyCardList = studyIdList.map((studyId) => (
-        <HistoryCards studyId={studyId} author={"study author"} date={"study date"} />
+        <ParticipantHistoryRow studyId={studyId} author={"study author"} date={"study date"} />
     ))
 
     const hiddenStudiesList = hiddenIdList.map((hiddenStudyId) => (
-        <HiddenStudiesCards studyId={hiddenStudyId} author={"study author"} date={"study date"} />
+        <DisputeRow studyId={hiddenStudyId} author={"study author"} date={"study date"} />
     ))
 
     return (
@@ -54,7 +56,7 @@ export default function ResearherHistoryScreen() {
                     cardInputList={hiddenStudiesList} 
                     numberOfItemsPerRow={1} 
                     width={"100%"} 
-                    title={"Hidden"} 
+                    title={"Disputed"} 
                     titleSize={45} 
                     marginTop={5}>
                 </SearchableList>
