@@ -8,7 +8,6 @@ import { StudyData } from "../pages/studyCreator";
 import validateDate, { getTodayDate } from "../Utils/ValidateDate";
 import validateNumberInRange from "../Utils/ValidateNumberInput";
 import validateURL from "../Utils/ValidateURL";
-import { useAuth } from "../Context/AuthContext";
 
 interface StudyDialogProps {
     onSubmit:(data: StudyData, uid: String, department: StudyData["department"]) => void
@@ -39,9 +38,9 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
     const [descriptionError,setDescriptionError]= useState("");
     const [locationError,setLocationError]= useState("");
     const [submitError, setSubmitError]= useState("");
-    const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+
     const dateOfPublish = getTodayDate();
-    const publisherId = id//needs to be based on current user
+    const publisherId = "swQ90URzscZLubKOh6t8hSAXr1V2"//needs to be based on current user
     const publisherRating = 4.1
         const handleStudySubmit = () => {
             const studyData = {
@@ -49,7 +48,7 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
                 maxNoParticipants,minimumAge,
                 relatedFields,studyObj,dateOfPublish,publisherId,publisherRating,location
             };
-            onSubmit(studyData,publisherId,studyData.department);//needs to change to reference the current user
+            onSubmit(studyData,"swQ90URzscZLubKOh6t8hSAXr1V2",studyData.department);//needs to change to reference the current user
             //redirect
             handleHomeRedirect(); //needs to be changed to redirect based on user type but only for shared advert types
             return;
@@ -706,5 +705,3 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
     </>
     );
 }
-
-

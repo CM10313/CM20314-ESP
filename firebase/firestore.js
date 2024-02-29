@@ -1,5 +1,5 @@
 import { db } from './config'; // Assuming you export your Firestore instance as 'db' in config.js
-import { collection, setDoc, getDoc, getDocs, updateDoc, doc, deleteDoc,addDoc } from 'firebase/firestore';
+import { collection, setDoc, getDoc, getDocs, updateDoc, doc, deleteDoc,addDoc,query,where } from 'firebase/firestore';
 
 // Add a document to a collection
 const addDocument = async (collectionName, data, uid) => {
@@ -66,6 +66,7 @@ const fetchDocuments = async (collectionName) => {
   }
 };
 
+
 // Update a document
 const updateDocument = async (collectionName, docId, newData) => {
   try {
@@ -86,5 +87,46 @@ const deleteDocument = async (collectionName, docId) => {
     console.error("Error deleting document: ", e);
   }
 };
+const fetchUserByDepartment = async (department) => {
+  try {
+    const querySnapshot = await getDocs(
+      query(collection(db, 'users'), where('department', '==', department))
+    );
+    console.log(querySnapshot)
+    let user = null;
 
-export { addDocument, fetchDocumentById, fetchDocuments, updateDocument, deleteDocument };
+    querySnapshot.forEach((doc) => {
+      user = {
+        id: doc.id
+      };
+    });
+    console.log(user)
+    return user;
+  } catch (e) {
+    console.error("Error fetching user: ", e);
+    return null;
+  }
+};
+const fetchUsersByDepartment = async (department) => {
+  try {
+    const q = query(collection(db, 'users'), where('department', '==', department));
+    const querySnapshot = await getDocs(q);
+
+    let users = [];
+
+    querySnapshot.forEach((doc) => {
+      users.push({
+        id: doc.id,
+      });
+    });
+    console.log(users);
+    return users;
+  } catch (e) {
+    console.error("Error fetching users: ", e);
+    return [];
+  }
+};
+
+
+
+export { addDocument, fetchDocumentById, fetchDocuments, updateDocument, deleteDocument,fetchUserByDepartment,fetchUsersByDepartment };

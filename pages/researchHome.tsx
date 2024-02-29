@@ -12,6 +12,7 @@ import Calendar from '../Components/Calendar';
 import SearchableList from '../Components/SearchableList';
 import { useAuth } from '../Context/AuthContext';
 import { useEffect } from 'react';
+import { fetchDocuments, fetchUserByDepartment, fetchUsersByDepartment } from '../firebase/firestore';
 const ResearchHome: React.FC = () => {
   const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
   const isMobile = useMediaQuery('(max-width:1000px)')
@@ -100,6 +101,28 @@ const ResearchHome: React.FC = () => {
   />,
     // Add more StudyMediumCard components here as needed
   ];
+
+  const fetchData = async (uid:string)=>{
+    try{
+      const departments = await fetchDocuments(`departments/Computer Science/Researchers/${uid}/studies`)///swQ90URzscZLubKOh6t8hSAXr1V2/studies
+      console.log("Departments",departments)
+    }catch (error){
+console.error(error)
+    }
+  }
+  const listAllDepartmentStudies = async (department:string) => {
+    try {
+      const users = await fetchUsersByDepartment(department);
+      for (const user of users) {
+        fetchData(user.id);
+        console.log(user.id)
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  listAllDepartmentStudies('Computer Science');
+  
   return (
     <>
      <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />

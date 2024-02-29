@@ -11,6 +11,7 @@ import { Faculty } from '../DataState/UserExtraInfo';
 import { addDocument, addSpecialDocument, createNestedDocument } from '../firebase/firestore';
 import { useRouter } from 'next/router';
 import { useAuth } from '../Context/AuthContext';
+import WebinarDialog from '../Components/WebinarDialog';
 interface Props {
   jestBypass: boolean;
 }
@@ -37,7 +38,7 @@ enum UserType{
     studyObj:StudyState;
   }
 
-  const StudyCreator: React.FC<Props> = ({ jestBypass }) => {
+  const WebinarCreator: React.FC<Props> = ({ jestBypass }) => {
     const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
   const router = useRouter();
   const handleStudySubmit= (data:StudyData,uid:String,department:String) =>{
@@ -48,7 +49,7 @@ enum UserType{
   }
  
   const handleHomeDirect =()=>{
-    router.push('/researchHome');//needs to cheange based on user type
+    router.push('/researchHome');//needs to change based on user type
   }
 
     //need a way to go back to start of input sequence
@@ -56,13 +57,13 @@ enum UserType{
     return (
         <>
        
-     <Navbar name={username ?username : 'Guest'} rating={overallRating? overallRating:-1} />
+     <Navbar  name={username ?username : 'Guest'} rating={overallRating? overallRating:-1}  />
             <TriangleBackground />
       <div style={{ height: '810px' }}>
-        <StudyDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} ></StudyDialog>
+        <WebinarDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} ></WebinarDialog>
         </div>    
 </>
         );
 };
 
-export default StudyCreator;
+export default WebinarCreator;
