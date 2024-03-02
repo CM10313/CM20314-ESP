@@ -11,6 +11,8 @@ import { Faculty } from '../DataState/UserExtraInfo';
 import { addDocument, addSpecialDocument, createNestedDocument } from '../firebase/firestore';
 import { useRouter } from 'next/router';
 import { useAuth } from '../Context/AuthContext';
+import OtherDialog from '../Components/OtherDialog';
+import { WebinarData } from './webinarCreator';
 interface Props {
   jestBypass: boolean;
 }
@@ -38,9 +40,9 @@ enum UserType{
   }
 
   const OtherCreator: React.FC<Props> = ({ jestBypass }) => {
-    const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+    const {isLoggedIn,setAuth,username,overallRating,id,department} = useAuth();
   const router = useRouter();
-  const handleStudySubmit= (data:StudyData,uid:String,department:String) =>{
+  const handleStudySubmit= (data:WebinarData,uid:String,department:String) =>{
       console.log(data);
       addSpecialDocument(`departments/${department}/Researchers/${uid}/events`,data)
      //addDocument("studies",data,"swQ90URzscZLubKOh6t8hSAXr1V2")
@@ -59,7 +61,7 @@ enum UserType{
      <Navbar  name={username ?username : 'Guest'} rating={overallRating? overallRating:-1}  />
             <TriangleBackground />
       <div style={{ height: '810px' }}>
-        <OtherDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} ></OtherDialog>
+        <OtherDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} uid={id} department={department} ></OtherDialog>
         </div>    
 </>
         );

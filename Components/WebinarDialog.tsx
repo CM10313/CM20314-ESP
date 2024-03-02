@@ -14,27 +14,25 @@ interface WebinarDialogProps {
     handleHomeRedirect:() => void;
     jestBypass:boolean;
     uid:String;
+    department:String;
 }
 
 // add tests, needs
-export default function WebinarDialog({ onSubmit,handleHomeRedirect,jestBypass,uid }: WebinarDialogProps) {
+export default function WebinarDialog({ onSubmit,handleHomeRedirect,jestBypass,uid,department }: WebinarDialogProps) {
     const [title,setTitle] = useState("");
     const [closingDate, setClosingDate]= useState("");
     const [preliminaryDate, setPreliminaryDate] = useState("");
     const [externalLink, setExternalLink] = useState("");
     const [description, setDescription]=useState("");
     const location = "Online";
-    const [ department,setDepartment]=useState(Faculty.NotSpecified);
     const [relatedFields, setRelatedFields] = useState<string[]>([]);
     const [extraFieldName,setExtraFieldName]= useState("");
-    const [studyObj, setStudyObj] = useStudyState();
     const [closingDateError,setClosingDateError]= useState("");
     const [preliminaryDateError,setPreliminaryDateError]= useState("");
     const [externalLinkError,setExternalLinkError]= useState("");
     const [titleError,setTitleError]= useState("");
     const [descriptionError,setDescriptionError]= useState("");
     const [submitError, setSubmitError]= useState("");
-    const [facultyError, setFacultyError]= useState("");
     const dateOfPublish = getTodayDate();
     const EthicsApprovalObject = {
         status:"Waiting",
@@ -110,14 +108,6 @@ export default function WebinarDialog({ onSubmit,handleHomeRedirect,jestBypass,u
                 setDescriptionError('A Description Is Required');
                 }
             }, [description]);
-        useEffect(() => {
-        
-            if (department!= Faculty.NotSpecified) {
-            setFacultyError('');
-            } else {
-            setFacultyError('A Department is Required');
-            }
-        }, [department]);
      
       
       const handleAddExtraField = () => {
@@ -135,55 +125,7 @@ export default function WebinarDialog({ onSubmit,handleHomeRedirect,jestBypass,u
       const handleExtraFieldChange = (e: { target: { value: SetStateAction<string>; }; }) => {
         setExtraFieldName(e.target.value);
       };
-      const handleFacultyChange = <T extends Faculty >(
-        event: SelectChangeEvent<T>,
-      ) => {
-        const selectedData = event.target.value as T;
-        setDepartment(selectedData);
-      };
 
-      
-      
-      const handleCheckboxChange = (category: keyof StudyState, field: string, value: boolean) => {
-        // Update study state object based on the provided value
-        updateStudyState(category, field, value);
-    };
-    const handleGroupedCheckBox = (
-        category: keyof StudyState,
-        field: keyof RequirementsObject,
-        checked: boolean,
-        value: string,
-    ) => {
-        setStudyObj((prevStudyObj: StudyState) => {
-            const updatedCategory = { ...(prevStudyObj[category] as any) };
-            const updatedField = checked
-                ? [...updatedCategory[field], value] // Add value to the array
-                : updatedCategory[field].filter((item: string) => item !== value); // Remove value from the array
-            return {
-                ...prevStudyObj,
-                [category]: {
-                    ...updatedCategory,
-                    [field]: updatedField,
-                },
-            };
-        });
-    };
-    console.log(department)
-    console.log(Faculty.NotSpecified)
-    
-    const updateStudyState = (category: keyof StudyState, field: string, value: string | number|string[] | boolean) => {
-        setStudyObj((prevStudyObj) => {
-          return {
-            ...prevStudyObj,
-            [category]: {
-                ...(prevStudyObj[category] as any), 
-              [field]: value,
-            },
-          };
-        });
-      };
-
-      
     const isMobile = useMediaQuery('(max-width:1000px)');
     return (
         <>
@@ -310,39 +252,6 @@ export default function WebinarDialog({ onSubmit,handleHomeRedirect,jestBypass,u
                                     <Typography fontSize={30}><Box>Extra</Box></Typography>
                                 </Grid>
                                 <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
-                                <FormControl sx={{width:'80%'}}>
-                        <InputLabel id="demo-simple-select-label">Faculty</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={department}
-                                label="Department"
-                                error={Boolean(facultyError)}
-                                sx={{width:"100%"}}
-                                onChange={(event: SelectChangeEvent<Faculty>) => handleFacultyChange(event)}
-                                >
-                                <MenuItem value={Faculty.ArchitectureCivilEngineering}>Architecture & Civil Engineering</MenuItem>
-                                <MenuItem value={Faculty.ChemicalEngineering}>Chemical Engineering</MenuItem>
-                                <MenuItem value={Faculty.ElectronicElectricalEngineering}>Electronic & Electrical Engineering</MenuItem>
-                                <MenuItem value={Faculty.MechanicalEngineering}>Mechanical Engineering</MenuItem>
-                                <MenuItem value={Faculty.Economics}>Economics</MenuItem>
-                                <MenuItem value={Faculty.Education}>Education</MenuItem>
-                                <MenuItem value={Faculty.Health}>Health</MenuItem>
-                                <MenuItem value={Faculty.PoliticsLanguagesInternationalStudies}>Politics, Languages & International Studies</MenuItem>
-                                <MenuItem value={Faculty.Psychology}>Psychology</MenuItem>
-                                <MenuItem value={Faculty.SocialPolicySciences}>Social & Policy Sciences</MenuItem>
-                                <MenuItem value={Faculty.Chemistry}>Chemistry</MenuItem>
-                                <MenuItem value={Faculty.ComputerScience}>Computer Science</MenuItem>
-                                <MenuItem value={Faculty.LifeSciences}>Life Sciences</MenuItem>
-                                <MenuItem value={Faculty.MathematicalSciences}>Mathematical Sciences</MenuItem>
-                                <MenuItem value={Faculty.NaturalSciences}>Natural Sciences</MenuItem>
-                                <MenuItem value={Faculty.Physics}>Physics</MenuItem>
-                                <MenuItem value={Faculty.AccountingFinanceLaw}>Accounting, Finance & Law</MenuItem>
-                                <MenuItem value={Faculty.MarketingBusinessSociety}>Marketing, Business & Society</MenuItem>
-                                <MenuItem value={Faculty.InformationDecisionsOperations}>Information, Decisions & Operations</MenuItem>
-                                <MenuItem value={Faculty.StrategyOrganisation}>Strategy & Organisation</MenuItem>
-                            </Select>
-                        </FormControl>{facultyError}
                                 </Grid>
                                 <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
                                     <TextField

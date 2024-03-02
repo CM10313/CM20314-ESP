@@ -29,7 +29,7 @@ enum UserType{
     closingDate: String;
     preliminaryDate: String;
     description: String;
-    department:  Faculty;
+    department:  String;
     externalLink: String;
     maxNoParticipants:Number;
     minimumAge:Number;
@@ -38,7 +38,7 @@ enum UserType{
   }
 
   const StudyCreator: React.FC<Props> = ({ jestBypass }) => {
-    const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+    const {isLoggedIn,setAuth,username,overallRating,id,department} = useAuth();
   const router = useRouter();
   const handleStudySubmit= (data:StudyData,uid:String,department:String) =>{
       console.log(data);
@@ -59,7 +59,7 @@ enum UserType{
      <Navbar name={username ?username : 'Guest'} rating={overallRating? overallRating:-1} />
             <TriangleBackground />
       <div style={{ height: '810px' }}>
-        <StudyDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} ></StudyDialog>
+        <StudyDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} department={department} ></StudyDialog>
         </div>    
 </>
         );

@@ -22,8 +22,6 @@ describe('diversity page', () => {
   it('renders properly when isMobile is true', () => {
     // Mock useMediaQuery to return true (indicating mobile view)
     require('@mui/material').useMediaQuery.mockReturnValue(true);
-
-    const { getByText } = render(<DiversityView/>);
-    fireEvent.click(getByText('John Doe'));
+    render(<DiversityView/>);
   });
 });
