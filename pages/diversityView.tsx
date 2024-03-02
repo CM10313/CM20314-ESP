@@ -12,13 +12,15 @@ import {
     genderGraphLabelData, religionGraphLabelData
 } from "../DataState/graphData";
 import OverallDiversityScore from "../Components/diversityScore";
+import { useAuth } from "../Context/AuthContext";
 
 
 export default function DiversityView(){
+    const {isLoggedIn,username,overallRating,id,department} = useAuth();
     const isMobile = useMediaQuery('(max-width:1000px)')
     return (
         <Box sx={{height:'810px',width:'100%'}}> 
-            <Navbar name={"John Doe"} rating={4.1} />
+            <Navbar  name={username ?username : 'Guest'} rating={overallRating? overallRating:-1} />
             <TriangleBackground />
             <Grid container sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
                 <Grid item xs={isMobile?12:4}  sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>

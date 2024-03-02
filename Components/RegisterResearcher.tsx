@@ -26,15 +26,23 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset, on
     const [phoneNumber, setPhoneNumber]= useState("");
     const [phoneNumberError, setPhoneNumberError]= useState("");
     const [id, setId]= useState(-1);
-    //defualt history object
-    //defualt rating
+    const [facultyError, setFacultyError]= useState("");
     const [department, setDepartment] = useState(Faculty.NotSpecified)
     const [bankInfoObj, setBankInfoObj] = useBankInfoState();
+    const [submitError, setSubmitError]= useState("");
     const reviewObject: ReviewObject = {
       overallRating: 0, 
       numberOfRatings: 0, 
       reviews: [], 
   };
+  
+  useEffect(()=>{
+    if (!facultyError && !usernameError && !emailError && !passwordError) {
+        setSubmitError("");
+    } else {
+        setSubmitError("You cannot submit as required fields are not fullfilled or data is in an invalid format.");
+    }
+},[facultyError,usernameError,passwordError,emailError])
     const handleSubmit = () => {
         const researcherData = {
             username, password, email,
@@ -42,7 +50,9 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset, on
             id, department,
             bankInfoObj,reviewObject,
         };
-        onSubmit(researcherData);
+        if(!facultyError && !usernameError && !emailError && !passwordError){
+          onSubmit(researcherData);
+        }
         handleLoginRedirect();
     }
     
@@ -82,6 +92,14 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset, on
             setPhoneNumberError('Invalid Phone Number');
           }
       }, [phoneNumber]);
+      useEffect(() => {
+        // Validate the password whenever it changes
+          if (department != "") {
+            setFacultyError('');
+          } else {
+            setFacultyError('You must select a faculty to belong to');
+          }
+      }, [department]);
     
     
       const handlePasswordChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +133,7 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset, on
    
     return(
         <>
-        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={() => handleSubmit()} hasBorderRadius={false} canSubmit={true}>
+        <FormDialogue width={500} height={600} currentPage={0} onFormSubmit={() => handleSubmit()} hasBorderRadius={false} canSubmit={!Boolean(submitError)}>
         <Box>
             {/* username and password*/}
             <Grid
@@ -224,6 +242,7 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset, on
                                 id="demo-simple-select"
                                 value={department}
                                 label="Faculty"
+                                error={Boolean(facultyError)}
                                 onChange={(event) => handleDepartmentChange(event as React.ChangeEvent<{ value: Faculty }>)}
                                 >
                                 <MenuItem value={Faculty.ArchitectureCivilEngineering}>Architecture & Civil Engineering</MenuItem>
@@ -246,10 +265,14 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset, on
                                 <MenuItem value={Faculty.MarketingBusinessSociety}>Marketing, Business & Society</MenuItem>
                                 <MenuItem value={Faculty.InformationDecisionsOperations}>Information, Decisions & Operations</MenuItem>
                                 <MenuItem value={Faculty.StrategyOrganisation}>Strategy & Organisation</MenuItem>
-                                <MenuItem value={Faculty.NotSpecified}>Prefer Not To Say</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
+                    <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',mt:-3}}>
+                    <Typography fontSize={15} sx={{color:"red"}}>
+                        {facultyError}
+                    </Typography>
+                </Grid>
                     <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
                     <Typography fontSize={12}>
                         {"Want to choose a different account type ?"}
@@ -331,7 +354,7 @@ export default function RegisterResearcher( {handleLoginRedirect,handleReset, on
                         <Box sx={{display:'flex',alignItems:'center',height:'100px'}}><Typography fontSize={24}>Warning !</Typography></Box>
                     </Grid>
                     <Grid item xs={12} sx={{display:'flex',justifyContent:'start',alignItems:'center',backgroundColor:'#D4DBE2'}}>
-                        <Box sx={{display:'flex',alignItems:'center',height:'100px'}}><Typography fontSize={16}>When you sumibt this form your data will be saved to our database </Typography></Box>
+                        <Box sx={{display:'flex',alignItems:'center',height:'100px'}}><Typography fontSize={16}>{submitError?submitError:'All data is valid. When you submit this form your data will be saved to our database'} </Typography></Box>
                     </Grid>
                     <Grid item xs={12} sx={{display:'flex',justifyContent:'start',alignItems:'center',backgroundColor:'#D4DBE2'}}>
                         <Box sx={{display:'flex',alignItems:'center',height:'100px'}}><Typography fontSize={16}>You can alter your stored data or delete it at any point once you have registered</Typography></Box>

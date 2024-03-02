@@ -11,6 +11,7 @@ import { Faculty } from '../DataState/UserExtraInfo';
 import { addDocument, addSpecialDocument, createNestedDocument } from '../firebase/firestore';
 import { useRouter } from 'next/router';
 import { useAuth } from '../Context/AuthContext';
+import WebinarDialog from '../Components/WebinarDialog';
 interface Props {
   jestBypass: boolean;
 }
@@ -21,7 +22,7 @@ enum UserType{
     none = "null"
   }
 
-  export interface StudyData {
+  export interface WebinarData {
     title: String;
     dateOfPublish:String;
     publisherId:String;
@@ -31,24 +32,29 @@ enum UserType{
     description: String;
     department:  String;
     externalLink: String;
-    maxNoParticipants:Number;
-    minimumAge:Number;
+    location:String;
     relatedFields: String[];
-    studyObj:StudyState;
+    EthicsApprovalObject:{
+        status:String;
+        rejectedById:String;
+        rejectedByName:String;
+        rejectionReason:String;
+      },
+    joinedParticipants: string[],
   }
 
-  const StudyCreator: React.FC<Props> = ({ jestBypass }) => {
+  const WebinarCreator: React.FC<Props> = ({ jestBypass }) => {
     const {isLoggedIn,setAuth,username,overallRating,id,department} = useAuth();
   const router = useRouter();
-  const handleStudySubmit= (data:StudyData,uid:String,department:String) =>{
+  const handleStudySubmit= (data:WebinarData,uid:String,department:String) =>{
       console.log(data);
-      addSpecialDocument(`departments/${department}/Researchers/${uid}/studies`,data)
+      addSpecialDocument(`departments/${department}/Researchers/${uid}/webinars`,data)
      //addDocument("studies",data,"swQ90URzscZLubKOh6t8hSAXr1V2")
      return;
   }
  
   const handleHomeDirect =()=>{
-    router.push('/researchHome');//needs to cheange based on user type
+    router.push('/researchHome');//needs to change based on user type
   }
 
     //need a way to go back to start of input sequence
@@ -56,13 +62,13 @@ enum UserType{
     return (
         <>
        
-     <Navbar name={username ?username : 'Guest'} rating={overallRating? overallRating:-1} />
+     <Navbar  name={username ?username : 'Guest'} rating={overallRating? overallRating:-1}  />
             <TriangleBackground />
       <div style={{ height: '810px' }}>
-        <StudyDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} department={department} ></StudyDialog>
+        <WebinarDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} uid={id} department={department}></WebinarDialog>
         </div>    
 </>
         );
 };
 
-export default StudyCreator;
+export default WebinarCreator;

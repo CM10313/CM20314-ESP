@@ -16,7 +16,7 @@ jest.mock('@mui/material/useMediaQuery', () => {
 describe('Study Dialogue Component', () => {
     it('should render correctly on non-mobile view', () => {
         // Render the component
-        render(<StudyDialog onSubmit={() => {}} handleHomeRedirect={() => {}} jestBypass={false} />);
+        render(<StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} />);
       
         // Assert that certain elements are rendered based on non-mobile view
         expect(screen.getByLabelText('Title')).toBeInTheDocument();
@@ -29,14 +29,14 @@ describe('Study Dialogue Component', () => {
         jest.mock('@mui/material/useMediaQuery', () => jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : false));
     
         // Render the component
-        render(<StudyDialog onSubmit={() => {}} handleHomeRedirect={() => {}} jestBypass={false} />);
+        render(<StudyDialog onSubmit={() => {}} handleHomeRedirect={() => {}} jestBypass={false} department={"none"} />);
       
         // Assert that certain elements are rendered based on mobile view
         // Add assertions specific to mobile view rendering
       });
       it('updates the minimum age state when a key is pressed in the minimum age field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
       
         // Check that the email input field is not initially present
@@ -53,7 +53,7 @@ describe('Study Dialogue Component', () => {
       });
       it('displays minimum age error when an incorrect minimum age is entered', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
       
         // Check that the email input field is not initially present
@@ -68,7 +68,7 @@ describe('Study Dialogue Component', () => {
       });
       it('updates the closing date state when a key is pressed in the closing datefield', () => {
         const { getByLabelText, getByRole , getByTestId,getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         // Click the next button
         const closingDateInput = screen.getByTestId('closingDateInput').querySelector('input') as HTMLInputElement; // Cast to HTMLInputElement
@@ -79,7 +79,7 @@ describe('Study Dialogue Component', () => {
       });
       it('displays closing date error when an incorrect closing date is entered', () => {
         const { getByLabelText, getByRole , getByTestId,getAllByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         // Click the next button
         const closingDateInput = screen.getByTestId('closingDateInput').querySelector('input') as HTMLInputElement; // Cast to HTMLInputElement
@@ -90,7 +90,7 @@ describe('Study Dialogue Component', () => {
       });
       it('updates the prelimnary date state when a key is pressed in the closing datefield', () => {
         const { getByLabelText, getByRole , getByTestId,getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         // Click the next button
         const preliminaryDateInput =  screen.getByTestId('preliminaryDateInput').querySelector('input') as HTMLInputElement; // Cast to HTMLInputElement
@@ -101,7 +101,7 @@ describe('Study Dialogue Component', () => {
       });
       it('displays preliminary date error when an incorrect closing date is entered', () => {
         const { getByLabelText, getByRole , getByTestId,getAllByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         // Click the next button
         const preliminaryDateInput = screen.getByTestId('preliminaryDateInput').querySelector('input') as HTMLInputElement; // Cast to HTMLInputElement
@@ -112,7 +112,7 @@ describe('Study Dialogue Component', () => {
       });
       it('updates the Max Number Of Participants state when a key is pressed in the Max Number Of Participants field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         const maxParticipantsInput = getByLabelText('Max Number Of Participants') as HTMLInputElement; // Cast to HTMLInputElement
         // Simulate typing in the password field
@@ -123,7 +123,7 @@ describe('Study Dialogue Component', () => {
       });
       it('displays Max Number Of Participants error when an incorrect Max Number Of Participants is entered', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
       
         // Check that the email input field is not initially present
@@ -137,7 +137,7 @@ describe('Study Dialogue Component', () => {
       });
       it('updates the  externalLink state when a key is pressed in the externalLink field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         expect(queryByLabelText(document.body, 'External Link')).toBeNull();
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -150,7 +150,7 @@ describe('Study Dialogue Component', () => {
       });
       it('displays externalLink error when an incorrect externalLink is entered', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         expect(queryByLabelText(document.body, 'External Link')).toBeNull();
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -162,7 +162,7 @@ describe('Study Dialogue Component', () => {
       });
       it('updates the title state when a key is pressed in the title field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         const titleInput = getByLabelText('Title') as HTMLInputElement; // Cast to HTMLInputElement
         // Simulate typing in the password field
@@ -173,7 +173,7 @@ describe('Study Dialogue Component', () => {
       });
       it('displays title error when an incorrect title is entered', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         const titleInput = getByLabelText('Title') as HTMLInputElement; // Cast to HTMLInputElement
     
@@ -183,7 +183,7 @@ describe('Study Dialogue Component', () => {
       });
       it('updates the description state when a key is pressed in the description field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         const descriptionInput = getByLabelText('Description') as HTMLInputElement; // Cast to HTMLInputElement
         // Simulate typing in the password field
@@ -194,7 +194,7 @@ describe('Study Dialogue Component', () => {
       });
       it('displays description error when an incorrect description is entered', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         const descriptionInput = getByLabelText('Description') as HTMLInputElement; // Cast to HTMLInputElement
     
@@ -204,7 +204,7 @@ describe('Study Dialogue Component', () => {
       });
       it('updates the location state when a key is pressed in the location field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         const locationInput = getByLabelText('Location') as HTMLInputElement; // Cast to HTMLInputElement
         // Simulate typing in the password field
@@ -215,7 +215,7 @@ describe('Study Dialogue Component', () => {
       });
       it('displays location error when an incorrect locaiton is entered', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         const locationInput = getByLabelText('Location') as HTMLInputElement; // Cast to HTMLInputElement
     
@@ -223,34 +223,9 @@ describe('Study Dialogue Component', () => {
         fireEvent.change(locationInput, { target: { value: '' } });
         expect(getByText('A Location Is Required')).toBeInTheDocument();
       });
-      it('updates extrainfoobj faculty  state on select change', async () => {
-        const { getByLabelText, getByRole } = render(<StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
-        fireEvent.click(getByRole('button', { name: 'NEXT' }));
-      
-    
-        // Simulate opening the dropdown
-        const selectEl = await screen.findAllByLabelText('Faculty');// fixes error of multipe elements with same label even though same structure as register researcher
-        expect(selectEl[0] as HTMLElement).toBeInTheDocument();
-      
-        userEvent.click(selectEl[0] as HTMLElement);
-      
-        // Locate the corresponding popup (`listbox`) of options.
-        const optionsPopupEl = await screen.findByRole("listbox", {
-          name: 'Faculty'
-        });
-      
-        // Click an option in the popup.
-        userEvent.click(within(optionsPopupEl).getByText(/Architecture & Civil Engineering/i));
-      
-        await waitFor(() => expect(selectEl[0]).toHaveTextContent('Architecture & Civil Engineering'));
-
-        // Confirm the outcome by checking if the department state has been updated
-        expect(selectEl[0]).toHaveTextContent('Architecture & Civil Engineering');
-
-    });
     it('updates the field name when a key is pressed in the field name field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -263,7 +238,7 @@ describe('Study Dialogue Component', () => {
       });
       it('updates the compensation  when a key is pressed in the compensation field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -276,7 +251,7 @@ describe('Study Dialogue Component', () => {
       });
       it('updates the compensation descripion when a key is pressed in the compensation description field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>
+            <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>
         );
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -288,7 +263,7 @@ describe('Study Dialogue Component', () => {
         expect(compensationDescInput.value).toBe('Cash');
       });
       it('updates grouped chekbox to clicked on first click', () => {
-        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -297,7 +272,7 @@ describe('Study Dialogue Component', () => {
             expect(genderCheckbox).toHaveProperty('checked', true)
       });
       it('should check grouped checkbox unsets on remove ', () => {
-        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -307,7 +282,7 @@ describe('Study Dialogue Component', () => {
             expect(genderCheckbox).toHaveProperty('checked', false)
       });
       it('adds extra field when handleAddExtraField is called', () => {
-        const { getByLabelText, getByText,getByRole } = render(<StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByLabelText, getByText,getByRole } = render(<StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         
         // Simulate entering a field name
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -324,7 +299,7 @@ describe('Study Dialogue Component', () => {
       });
     
       it('removes the last extra field when handleRemoveExtraField is called', () => {
-        const { getByText, queryByText,getByRole } = render(<StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByText, queryByText,getByRole } = render(<StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         
         // Simulate adding a field
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -339,14 +314,14 @@ describe('Study Dialogue Component', () => {
         expect(queryByText('New Field')).not.toBeInTheDocument();
       });
       it('updates chekbox to clicked on first click', () => {
-        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         const genderCheckbox = getByLabelText('Gender') as HTMLElement;
             fireEvent.click(genderCheckbox);
             expect(genderCheckbox).toHaveProperty('checked', true)
       });
       it('should checks checkbox unsets on remove ', () => {
-        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         const genderCheckbox = getByLabelText('Gender') as HTMLElement;
             fireEvent.click(genderCheckbox);
@@ -354,42 +329,42 @@ describe('Study Dialogue Component', () => {
             expect(genderCheckbox).toHaveProperty('checked', false)
       });
       it('updates race checkbox to clicked on first click', () => {
-        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         const genderCheckbox = getByLabelText('Race') as HTMLElement;
             fireEvent.click(genderCheckbox);
             expect(genderCheckbox).toHaveProperty('checked', true)
       });
       it('updates religion checkbox to clicked on first click', () => {
-        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         const genderCheckbox = getByLabelText('Religion') as HTMLElement;
             fireEvent.click(genderCheckbox);
             expect(genderCheckbox).toHaveProperty('checked', true)
       });
       it('updates age checkbox to clicked on first click', () => {
-        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         const genderCheckbox = getByLabelText('Age') as HTMLElement;
             fireEvent.click(genderCheckbox);
             expect(genderCheckbox).toHaveProperty('checked', true)
       });
       it('updates sexuality checkbox to clicked on first click', () => {
-        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         const genderCheckbox = getByLabelText('Sexuality') as HTMLElement;
             fireEvent.click(genderCheckbox);
             expect(genderCheckbox).toHaveProperty('checked', true)
       });
       it('updates Income checkbox to clicked on first click', () => {
-        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         const genderCheckbox = getByLabelText('Income') as HTMLElement;
             fireEvent.click(genderCheckbox);
             expect(genderCheckbox).toHaveProperty('checked', true)
       });
       it('updates all grouped checkbox to selected', () => {
-        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false}/>);
+        const { getByLabelText,getByRole } = render( <StudyDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}/>);
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         fireEvent.click(getByRole('button', { name: 'NEXT' }));

@@ -11,6 +11,8 @@ import { Faculty } from '../DataState/UserExtraInfo';
 import { addDocument, addSpecialDocument, createNestedDocument } from '../firebase/firestore';
 import { useRouter } from 'next/router';
 import { useAuth } from '../Context/AuthContext';
+import OtherDialog from '../Components/OtherDialog';
+import { WebinarData } from './webinarCreator';
 interface Props {
   jestBypass: boolean;
 }
@@ -29,7 +31,7 @@ enum UserType{
     closingDate: String;
     preliminaryDate: String;
     description: String;
-    department:  String;
+    department:  Faculty;
     externalLink: String;
     maxNoParticipants:Number;
     minimumAge:Number;
@@ -37,12 +39,12 @@ enum UserType{
     studyObj:StudyState;
   }
 
-  const StudyCreator: React.FC<Props> = ({ jestBypass }) => {
+  const OtherCreator: React.FC<Props> = ({ jestBypass }) => {
     const {isLoggedIn,setAuth,username,overallRating,id,department} = useAuth();
   const router = useRouter();
-  const handleStudySubmit= (data:StudyData,uid:String,department:String) =>{
+  const handleStudySubmit= (data:WebinarData,uid:String,department:String) =>{
       console.log(data);
-      addSpecialDocument(`departments/${department}/Researchers/${uid}/studies`,data)
+      addSpecialDocument(`departments/${department}/Researchers/${uid}/events`,data)
      //addDocument("studies",data,"swQ90URzscZLubKOh6t8hSAXr1V2")
      return;
   }
@@ -56,13 +58,13 @@ enum UserType{
     return (
         <>
        
-     <Navbar name={username ?username : 'Guest'} rating={overallRating? overallRating:-1} />
+     <Navbar  name={username ?username : 'Guest'} rating={overallRating? overallRating:-1}  />
             <TriangleBackground />
       <div style={{ height: '810px' }}>
-        <StudyDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} department={department} ></StudyDialog>
+        <OtherDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} uid={id} department={department} ></OtherDialog>
         </div>    
 </>
         );
 };
 
-export default StudyCreator;
+export default OtherCreator;
