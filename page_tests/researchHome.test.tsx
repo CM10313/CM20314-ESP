@@ -10,6 +10,7 @@ jest.mock('next/router', () => ({
   }),
 }));
 
+
 jest.mock('@mui/material', () => {
     const actual = jest.requireActual('@mui/material');
     return {

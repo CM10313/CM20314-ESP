@@ -62,7 +62,7 @@ enum UserType{
     return (
         <>
        
-     <Navbar  name={username ?username : 'Guest'} rating={overallRating? overallRating:-1}  />
+     <Navbar/>
             <TriangleBackground />
       <div style={{ height: '810px' }}>
         <WebinarDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} uid={id} department={department}></WebinarDialog>

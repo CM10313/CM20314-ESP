@@ -3,9 +3,10 @@ import SearchableList from "../Components/SearchableList";
 import DeepHistoryRow from "../Components/deepHistoryRow";
 import Navbar from "../Components/navbar";
 import ProgressBar from "../Components/deepHistoryJoined";
+import { useAuth } from "../Context/AuthContext";
 
 export default function DeepHistoryScreen() {
-
+  const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
     const allUserId = [
       "123456",
       "223456",
@@ -21,7 +22,7 @@ export default function DeepHistoryScreen() {
 
     return (
       <Grid container>
-        <Navbar />
+        <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
         <Grid item sm={12} md={8}>
           <Box sx={{width:"100%", height:"10%", justifyContent:"start", display:"flex", alignItems:"center"}}> 
             <ProgressBar joinedCount={20} requiredCount={20} title="Joined" />

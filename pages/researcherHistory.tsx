@@ -35,7 +35,7 @@ export default function ResearherHistoryScreen() {
 
     return (
         <Grid container>
-            <Navbar />
+            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}/>
             <Grid item sm={12} md={8}>
                 <SearchableList 
                     rowSpacing={0} 
