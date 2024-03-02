@@ -42,7 +42,7 @@ enum UserType{
   const router = useRouter();
   const handleStudySubmit= (data:StudyData,uid:String,department:String) =>{
       console.log(data);
-      addSpecialDocument(`departments/${department}/Researchers/${uid}/studies`,data)
+      addSpecialDocument(`departments/${department}/Researchers/${uid}/events`,data)
      //addDocument("studies",data,"swQ90URzscZLubKOh6t8hSAXr1V2")
      return;
   }

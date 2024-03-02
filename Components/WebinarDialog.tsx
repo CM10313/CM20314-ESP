@@ -4,19 +4,20 @@ import { Faculty} from "../DataState/UserExtraInfo";
 import FormDialogue from "./FormDialogue";
 import Checkbox from '@mui/material/Checkbox';
 import { useStudyState, StudyState, RequirementsObject } from "../DataState/StudyState";
-import { StudyData } from "../pages/studyCreator";
+import { WebinarData } from "../pages/webinarCreator";
 import validateDate, { getTodayDate } from "../Utils/ValidateDate";
 import validateNumberInRange from "../Utils/ValidateNumberInput";
 import validateURL from "../Utils/ValidateURL";
 
 interface WebinarDialogProps {
-    onSubmit:(data: StudyData, uid: String, department: StudyData["department"]) => void
+    onSubmit:(data: WebinarData, uid: String, department: WebinarData["department"]) => void
     handleHomeRedirect:() => void;
     jestBypass:boolean;
+    uid:String;
 }
 
 // add tests, needs
-export default function WebinarDialog({ onSubmit,handleHomeRedirect,jestBypass }: WebinarDialogProps) {
+export default function WebinarDialog({ onSubmit,handleHomeRedirect,jestBypass,uid }: WebinarDialogProps) {
     const [title,setTitle] = useState("");
     const [closingDate, setClosingDate]= useState("");
     const [preliminaryDate, setPreliminaryDate] = useState("");
@@ -35,15 +36,21 @@ export default function WebinarDialog({ onSubmit,handleHomeRedirect,jestBypass }
     const [submitError, setSubmitError]= useState("");
     const [facultyError, setFacultyError]= useState("");
     const dateOfPublish = getTodayDate();
-    const publisherId = "swQ90URzscZLubKOh6t8hSAXr1V2"//needs to be based on current user
+    const EthicsApprovalObject = {
+        status:"Waiting",
+        rejectedById:"",
+        rejectedByName:"",
+        rejectionReason:""
+    }
+    const publisherId = uid;
+    const joinedParticipants:string[]= [];
     const publisherRating = 4.1
         const handleStudySubmit = () => {
-            const studyData = {
-               title,closingDate,preliminaryDate,description,department,externalLink,
-           
-                relatedFields,studyObj,dateOfPublish,publisherId,publisherRating,location
+            const webinarData = {
+               title,dateOfPublish,publisherId,publisherRating,closingDate,preliminaryDate,description,
+               department,externalLink,location,relatedFields,EthicsApprovalObject,joinedParticipants
             };
-            onSubmit(studyData,"swQ90URzscZLubKOh6t8hSAXr1V2",studyData.department);//needs to change to reference the current user
+            onSubmit(webinarData,uid,webinarData.department);//needs to change to reference the current user
             //redirect
             handleHomeRedirect(); //needs to be changed to redirect based on user type but only for shared advert types
             return;

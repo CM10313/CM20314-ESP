@@ -22,7 +22,7 @@ enum UserType{
     none = "null"
   }
 
-  export interface StudyData {
+  export interface WebinarData {
     title: String;
     dateOfPublish:String;
     publisherId:String;
@@ -32,18 +32,23 @@ enum UserType{
     description: String;
     department:  Faculty;
     externalLink: String;
-    maxNoParticipants:Number;
-    minimumAge:Number;
+    location:String;
     relatedFields: String[];
-    studyObj:StudyState;
+    EthicsApprovalObject:{
+        status:String;
+        rejectedById:String;
+        rejectedByName:String;
+        rejectionReason:String;
+      },
+    joinedParticipants: string[],
   }
 
   const WebinarCreator: React.FC<Props> = ({ jestBypass }) => {
     const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
   const router = useRouter();
-  const handleStudySubmit= (data:StudyData,uid:String,department:String) =>{
+  const handleStudySubmit= (data:WebinarData,uid:String,department:String) =>{
       console.log(data);
-      addSpecialDocument(`departments/${department}/Researchers/${uid}/studies`,data)
+      addSpecialDocument(`departments/${department}/Researchers/${uid}/webinars`,data)
      //addDocument("studies",data,"swQ90URzscZLubKOh6t8hSAXr1V2")
      return;
   }
@@ -60,7 +65,7 @@ enum UserType{
      <Navbar  name={username ?username : 'Guest'} rating={overallRating? overallRating:-1}  />
             <TriangleBackground />
       <div style={{ height: '810px' }}>
-        <WebinarDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} ></WebinarDialog>
+        <WebinarDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} uid={id} ></WebinarDialog>
         </div>    
 </>
         );
