@@ -21,12 +21,13 @@ interface SearchableListProps {
   joinedCount?:number;
   requiredCount?:number;
   barTitle?:string;
+  maxHeight?:string|number;
 }
 
 export default function SearchableList({
   cardInputList,
   width,
-  rowSpacing,numberOfItemsPerRow,title,titleSize,marginTop,searchBarEnabled,progressBarEnabled,joinedCount,requiredCount,barTitle
+  rowSpacing,numberOfItemsPerRow,title,titleSize,marginTop,searchBarEnabled,progressBarEnabled,joinedCount,requiredCount,barTitle,maxHeight,
 }: SearchableListProps) {
     const [fullCardList,setFullCardList] = useState<React.ReactNode[]>([]);
     const [currentList,setCurrentList] = useState<React.ReactNode[]>([]);
@@ -75,7 +76,7 @@ export default function SearchableList({
                 {searchBarEnabled?<SearchBar onReturn={handleSearch}></SearchBar>:null}
                 <Box sx={{ width: '100%', height: '2px', backgroundColor: '#1870A0',mt:2}} ></Box>
                 {progressBarEnabled?<Box sx={{mt:2,width:'100%'}}> <ProgressBar joinedCount={joinedCount?joinedCount:0} requiredCount={requiredCount?requiredCount:0} title={barTitle?barTitle:''}></ProgressBar></Box> :null}
-                <Box sx={{width:'100%',mt:5, display: 'flex', justifyContent: 'center', height: '370px', overflowY: 'scroll', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#1F5095', borderRadius: '5px' } }}>
+                <Box sx={{width:'100%',mt:5, display: 'flex', justifyContent: 'center', height: maxHeight?maxHeight:'370px', overflowY: 'scroll', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#1F5095', borderRadius: '5px' } }}>
                     <CardGrouper rowSpacing={rowSpacing} cardInputList={currentList} numberOfItemsPerRow={isSmallerThanMaxSize?2:numberOfItemsPerRow}></CardGrouper>
                 </Box>
                 </Box>
