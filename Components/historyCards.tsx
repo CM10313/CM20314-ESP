@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import {Grid} from "@mui/material";
+import {Grid, useMediaQuery} from "@mui/material";
 import HistoryCardsStudy from "./historyCardsStudy";
 import HistorySmallButtons from "./historySmallButtons";
 
@@ -20,13 +20,13 @@ const HistoryCards: React.FC<{ studyId: string, author:string, date:string }> = 
   const handleDiversityClick = () => {
     router.push(`/diversity/${studyId}`);
   };
-
+  const isMobile = useMediaQuery('(max-width:1000px)')
   return (
       <Grid container display="flex" flexDirection="row" justifyContent="space-evenly">
-        <HistoryCardsStudy studyId={studyId} author={author} date={date} />
-        <HistorySmallButtons buttonWidth = "15em" background="#1F5095" title="See Participants" fx={handleSeeParticipantsClick} />
-        <HistorySmallButtons buttonWidth = "15em" background={isCompleted ? "#D7BE69" : "#1870A0"} title={isCompleted ? "Done" : "Mark Completed"}  fx={handleMarkCompleteClick} />
-        <HistorySmallButtons buttonWidth = "15em" background = "#5293B7" title="Diveristy" fx={handleDiversityClick} />
+        <Grid item xs={isMobile?6:4.5}><HistoryCardsStudy studyId={studyId} author={author} date={date} /></Grid>
+        <Grid item xs={isMobile?6:2.5}> <HistorySmallButtons background="#1F5095" title="See Participants" fx={handleSeeParticipantsClick} /></Grid>
+        <Grid item xs={isMobile?6:2.5}> <HistorySmallButtons background={isCompleted ? "#D7BE69" : "#1870A0"} title={isCompleted ? "Done" : "Mark Completed"}  fx={handleMarkCompleteClick} /></Grid>
+        <Grid item xs={isMobile?6:2.5}><HistorySmallButtons background = "#5293B7" title="Diveristy" fx={handleDiversityClick} /></Grid>
       </Grid>
   )
 }

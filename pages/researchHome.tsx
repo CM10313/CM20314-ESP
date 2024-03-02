@@ -131,7 +131,7 @@ console.error(error)
         <Grid container spacing={2} sx={{height:'100%'}}>
           {/* First Column */}
           <Grid item xs={isMobile?12:4.5} sx={{display:'flex',justifyContent:'center'}}>
-          <SearchableList  cardInputList={cardInputList} numberOfItemsPerRow={2} rowSpacing={2} width={'1000px'} title={'Published'} titleSize={45} marginTop={10}></SearchableList>
+          <SearchableList  cardInputList={cardInputList} numberOfItemsPerRow={2} rowSpacing={2} width={'1000px'} title={'Published'} titleSize={45} marginTop={10} searchBarEnabled={true} progressBarEnabled={false}></SearchableList>
           </Grid>
           {/* Second Column */}
           <Grid item xs={isMobile?12:3} sx={{display:'flex',justifyContent:'center'}}>

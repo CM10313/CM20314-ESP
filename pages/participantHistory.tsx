@@ -6,8 +6,10 @@ import DisputeContactCard from "../Components/disputeContact";
 import Navbar from "../Components/navbar";
 import ParticipantHistoryRow from "../Components/participantHistoryRow";
 import DisputeRow from "../Components/pDisputeRow";
+import { useAuth } from "../Context/AuthContext";
 
 export default function ParticipantHistoryScreen() {
+    const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
     
     // Once data is fetched all we need is ID of those to be inseerted into these accordingly
     // front end will need to be modified below to retrieve the author and date from the IDs in <HistoryCards /> and <HiddenStudiesCards />
@@ -37,28 +39,28 @@ export default function ParticipantHistoryScreen() {
 
     return (
         <Grid container>
-            <Navbar />
+            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
             <Grid item sm={12} md={8}>
                 <SearchableList 
-                    rowSpacing={0} 
-                    cardInputList={historyCardList} 
-                    numberOfItemsPerRow={1} 
-                    width={"100%"} 
-                    title={"History"} 
-                    titleSize={45} 
-                    marginTop={5}>  
+                    rowSpacing={0}
+                    cardInputList={historyCardList}
+                    numberOfItemsPerRow={1}
+                    width={"100%"}
+                    title={"History"}
+                    titleSize={45}
+                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}>  
                 </SearchableList>
             </Grid>
 
             <Grid item sm={12} md={4}>
                 <SearchableList
-                    rowSpacing = {0}
-                    cardInputList={hiddenStudiesList} 
-                    numberOfItemsPerRow={1} 
-                    width={"100%"} 
-                    title={"Disputed"} 
-                    titleSize={45} 
-                    marginTop={5}>
+                    rowSpacing={0}
+                    cardInputList={hiddenStudiesList}
+                    numberOfItemsPerRow={1}
+                    width={"100%"}
+                    title={"Disputed"}
+                    titleSize={45}
+                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}>
                 </SearchableList>
             </Grid>
 

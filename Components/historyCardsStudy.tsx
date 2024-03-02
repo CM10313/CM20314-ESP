@@ -8,19 +8,21 @@ const HistoryCardsStudy: React.FC<{ studyId: string, author:string, date:string 
         <Grid item display="flex" flexDirection="row" alignItems="center" justifyContent="space-between"
         sx={{
           backgroundColor: "#1F5095",
-          height: "5em",
+          height: "80px",
           borderRadius: "0.6em",
-          padding: "0.5em",
-          marginTop: "0.5%",
-          marginBottom: "0.5%"
-
+          marginTop: "1%",
+          marginBottom: "5%",
+          maxWidth:'350px'
         }}>
         <Box
           sx={{
             backgroundColor: "white",
-            padding: "0.2em",
-            borderRadius: "0.4em",
-            height: "90%"
+            mt:1,
+            ml:0.5,
+            mb:1,
+            borderRadius: "5px 0 0 5px",
+            height: "90%",
+            width:'60%',
           }}>
           <Box display="flex" flexDirection="row" justifyContent="space-between">
             <Typography> {author} </Typography>

@@ -1,4 +1,4 @@
-import {Grid} from "@mui/material";
+import {Grid, useMediaQuery} from "@mui/material";
 import { useRouter } from "next/router";
 import HistoryCardsStudy from "./historyCardsStudy";
 import HistorySmallButtons from "./historySmallButtons";
@@ -8,11 +8,11 @@ const HiddenStudiesCards: React.FC<{ studyId: string, author:string, date:string
     const handleReview = () => {
         router.push(`/review/${studyId}`);
     }
-
+    const isMobile = useMediaQuery('(max-width:1000px)')
     return (
         <Grid container display="flex" flexDirection="row" justifyContent="space-evenly">
-            <HistoryCardsStudy studyId={studyId} author={author} date={date} />
-            <HistorySmallButtons buttonWidth="10em" background="#1F5095" title="Review" fx={handleReview} />
+            <Grid item xs={isMobile?6:8}><HistoryCardsStudy studyId={studyId} author={author} date={date} /></Grid>
+            <Grid item xs={isMobile?6:4}><HistorySmallButtons background="#1F5095" title="Review" fx={handleReview} /></Grid>
         </Grid>
     
     )
