@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { Bar } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js/auto';
+import { Chart, ScaleOptions, registerables } from 'chart.js/auto';
 //Chart.register(...registerables);
 
 interface BarGraphProps {

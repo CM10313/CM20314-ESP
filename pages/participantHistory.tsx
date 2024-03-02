@@ -48,7 +48,7 @@ export default function ParticipantHistoryScreen() {
                     width={"100%"}
                     title={"History"}
                     titleSize={45}
-                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}>  
+                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false} selectionEnabled={false}  >  
                 </SearchableList>
             </Grid>
 
@@ -60,7 +60,7 @@ export default function ParticipantHistoryScreen() {
                     width={"100%"}
                     title={"Disputed"}
                     titleSize={45}
-                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}>
+                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false} selectionEnabled={false}  >
                 </SearchableList>
             </Grid>
 

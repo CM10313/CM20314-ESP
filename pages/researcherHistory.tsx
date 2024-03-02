@@ -46,7 +46,7 @@ export default function ResearherHistoryScreen() {
                     width={"100%"}
                     title={"History"}
                     titleSize={45}
-                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}>  
+                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false} >  
                 </SearchableList>
             </Grid>
 
@@ -58,7 +58,7 @@ export default function ResearherHistoryScreen() {
                     width={"100%"}
                     title={"Hidden"}
                     titleSize={45}
-                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}>
+                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}  >
                 </SearchableList>
             </Grid>
 
