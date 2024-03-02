@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import ResearchHome from '../pages/researchHome';
-import { AuthContext } from '../Context/AuthContext';
+import { AuthContext, AuthProvider } from '../Context/AuthContext';
 
 // Mock useRouter
 jest.mock('next/router', () => ({
@@ -22,6 +22,11 @@ describe('ResearchHome component', () => {
   it('renders without crashing', () => {
     render(<ResearchHome />);
   });
+  it('renders with context',()=>{
+    render( <AuthProvider>
+      <ResearchHome />
+    </AuthProvider>)
+  })
 
   it('calls a card on click properly', () => {
     const pushMock = jest.fn();
@@ -77,4 +82,5 @@ describe('ResearchHome component', () => {
             <ResearchHome />
         </AuthContext.Provider>)
     });
+
   });

@@ -26,6 +26,7 @@ export default function OtherDialog({ onSubmit,handleHomeRedirect,jestBypass,uid
     const [description, setDescription]=useState("");
     const [location, setLocation]=useState("");
     const [locationError, setLocationError]=useState("");
+    const [externalLinkError, setExternalLinkError]=useState("");
     const [relatedFields, setRelatedFields] = useState<string[]>([]);
     const [extraFieldName,setExtraFieldName]= useState("");
     const [closingDateError,setClosingDateError]= useState("");
@@ -102,10 +103,18 @@ export default function OtherDialog({ onSubmit,handleHomeRedirect,jestBypass,uid
             }, [description]);
         useEffect(() => {
         
-            if (location!="") {
-            setDescriptionError('');
+            if (validateURL(externalLink)) {
+            setExternalLinkError('');
             } else {
-            setDescriptionError('A Location Is Required');
+            setExternalLinkError('URLs must be of general http/https or ftp form.');
+            }
+        }, [externalLink]);
+        useEffect(() => {
+        
+            if (location!="") {
+            setLocationError('');
+            } else {
+            setLocationError('A Location Is Required');
             }
         }, [location]);
      
@@ -252,6 +261,18 @@ export default function OtherDialog({ onSubmit,handleHomeRedirect,jestBypass,uid
                                     <Typography fontSize={30}><Box>Extra</Box></Typography>
                                 </Grid>
                                 <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
+                                <TextField
+                                        label="External Link"
+                                        variant="outlined"
+                                        value={externalLink}
+                                        error={Boolean(externalLinkError)}
+                                        helperText={externalLinkError}
+                                        onChange={handleInputChange(setExternalLink)}
+                                        sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9',borderRadius:1,"&  .MuiFormHelperText-root.Mui-error": {
+                                            backgroundColor: "#F6F6F6",
+                                            margin:0,
+                                          },}}
+                                    />
                                 </Grid>
                                 <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
                                     <TextField
@@ -260,14 +281,13 @@ export default function OtherDialog({ onSubmit,handleHomeRedirect,jestBypass,uid
                                         value={location}
                                         error={Boolean(locationError)}
                                         helperText={locationError}
-                                        onChange={handleInputChange(setExternalLink)}
+                                        onChange={handleInputChange(setLocation)}
                                         sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9',borderRadius:1,"&  .MuiFormHelperText-root.Mui-error": {
                                             backgroundColor: "#F6F6F6",
                                             margin:0,
                                           },}}
                                     />
                                 </Grid>
-                                
                                 <Grid item xs={isMobile?12:6} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
                                 <Box sx={{backgroundColor:'#DAE1E9',width:'80%'}}> 
                                 <TextField
@@ -279,10 +299,7 @@ export default function OtherDialog({ onSubmit,handleHomeRedirect,jestBypass,uid
                                     />
                                 </Box>
                                 </Grid>
-                                
-                                
-                                <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center'}}><Box sx={{backgroundColor: '#DAE1E9',width:'80%',borderRadius:'5px',border:'1px solid gray'}}><Typography sx={{overflowY:'auto',height:'110px',width:'100%',ml:2,mt:1,mr:2}}>{relatedFields.join(', ')}</Typography></Box></Grid>
-                                
+                                <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center'}}><Box sx={{backgroundColor: '#DAE1E9',width:'80%',borderRadius:'5px',border:'1px solid gray'}}><Typography sx={{overflowY:'auto',height:'110px',width:'100%',ml:2,mt:1,mr:2}}>{relatedFields.join(', ')}</Typography></Box></Grid>      
                                 <Grid item xs={isMobile ? 12 : 6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',flexDirection: 'column', width: '80%' }}>
                                 <Button variant='contained' onClick={handleAddExtraField} sx={{ width: '80%', height: '50px', backgroundColor: '#0B254A' }}>Add Field</Button>
                                 <Button variant='contained' onClick={handleRemoveExtraField} sx={{ width: '80%', height: '50px', backgroundColor: '#0B254A', mt: 1, mb: 2 }}>Remove Field</Button>
