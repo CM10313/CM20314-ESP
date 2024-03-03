@@ -64,7 +64,7 @@ export default function OtherDialog({ onSubmit,handleHomeRedirect,jestBypass,uid
             } else {
                 setSubmitError("You cannot submit as required fields are not fullfilled or data is in an invalid format.");
             }
-        },[closingDate,preliminaryDate,titleError,descriptionError])
+        },[closingDate, preliminaryDate, titleError, descriptionError, closingDateError, preliminaryDateError, locationError])
       
         type SetterFunction<T> = React.Dispatch<React.SetStateAction<T>>;
 

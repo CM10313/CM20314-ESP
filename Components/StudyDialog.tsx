@@ -62,7 +62,7 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass,dep
             } else {
                 setSubmitError("You cannot submit as required fields are not fullfilled or data is in an invalid format.");
             }
-        },[closingDate,preliminaryDate,maxNoError,minimumAgeError,externalLinkError,titleError,descriptionError,locationError])
+        },[closingDate, preliminaryDate, maxNoError, minimumAgeError, externalLinkError, titleError, descriptionError, locationError, closingDateError, preliminaryDateError])
       
         type SetterFunction<T> = React.Dispatch<React.SetStateAction<T>>;
 

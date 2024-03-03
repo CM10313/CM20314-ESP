@@ -14,16 +14,16 @@ import { useAuth } from '../Context/AuthContext';
 import { useEffect, useState } from 'react';
 import { fetchDocumentById, fetchDocuments, fetchUserByDepartment, fetchUsersByDepartment } from '../firebase/firestore';
 import DisputeRow, { DisputeRowProps } from '../Components/pDisputeRow';
-import { departments, fetchData, getAllStudies } from '../Utils/RetrieveStudyDats';
+import { departments, fetchData, getAllStudies } from '../Utils/RetrieveStudyData';
 import { StudentData } from './register';
 import CalendarCard, { CalendarCardProps, ItemProps } from '../Components/CalendarCard';
 
 
-const ParticipantHome: React.FC = () => {
+const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypass2?: DisputeRowProps[],testBypass3?: ItemProps[] }> = ({ testBypass1 = [], testBypass2 = [],testBypass3 = [] }) => {
+  const [liveStudies, setLiveStudies] = useState<StudyMediumCardProps[]>(testBypass1);
+  const [rejectedStudies, setRejectedStudies] = useState<DisputeRowProps[]>(testBypass2);
   const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
-  const [liveStudies, setLiveStudies] = useState<StudyMediumCardProps[]>([]);
-  const [rejectedStudies, setRejectedStudies] = useState<DisputeRowProps[]>([]);
-  const [upcomingStudies, setUpcomingStudies] = useState<ItemProps[]>([]);
+  const [upcomingStudies, setUpcomingStudies] = useState<ItemProps[]>(testBypass3);
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
   const handleCardClick = (title: string) => {

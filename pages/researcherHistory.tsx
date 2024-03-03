@@ -27,12 +27,12 @@ export default function ResearherHistoryScreen() {
         "432423423"
     ]
 
-    const historyCardList = studyIdList.map((studyId) => (
-        <HistoryCards studyId={studyId} author={"study author"} date={"study date"} />
+    const historyCardList = studyIdList.map((studyId,index) => (
+        <HistoryCards key={index} studyId={studyId} author={"study author"} date={"study date"} />
     ))
 
-    const hiddenStudiesList = hiddenIdList.map((hiddenStudyId) => (
-        <HiddenStudiesCards studyId={hiddenStudyId} author={"study author"} date={"study date"} />
+    const hiddenStudiesList = hiddenIdList.map((hiddenStudyId,index) => (
+        <HiddenStudiesCards  key={index} studyId={hiddenStudyId} author={"study author"} date={"study date"} />
     ))
 
     return (

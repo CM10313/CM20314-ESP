@@ -5,9 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 describe('Study Medium Card Component', () => {
     it('renders without crashing', () => {
-      render(<StudyMediumCard name={''} rating={0} pfp={''} title={''} link={''} borderColour={''} onCardClick={function (title: string): void {
-          throw new Error('Function not implemented.');
-      } }  />);
+      render(<StudyMediumCard name={''} rating={0} title={''} borderColour={''} onCardClick={()=>{} } department={''}  />);
     });
     it('clickng card calls router function', () => {
         const onCardClickMock = jest.fn();
@@ -16,11 +14,10 @@ describe('Study Medium Card Component', () => {
           <StudyMediumCard
             name=""
             rating={0}
-            pfp=""
             title="Card Title"
-            link=""
             borderColour=""
             onCardClick={onCardClickMock}
+            department={''}
           />
         );
     

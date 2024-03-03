@@ -16,7 +16,7 @@ jest.mock('@mui/material/useMediaQuery', () => {
 describe('Webinar Dialogue Component', () => {
     it('should render correctly on non-mobile view', () => {
         // Render the component
-        render(<WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} />);
+        render(<WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0} />);
       
         // Assert that certain elements are rendered based on non-mobile view
         expect(screen.getByLabelText('Title')).toBeInTheDocument();
@@ -29,14 +29,14 @@ describe('Webinar Dialogue Component', () => {
         jest.mock('@mui/material/useMediaQuery', () => jest.fn().mockImplementation(query => query === '(max-width:1000px)' ? true : false));
     
         // Render the component
-        render(<WebinarDialog onSubmit={() => {}} handleHomeRedirect={() => {}} jestBypass={false} department={"none"}  uid={"none"} />);
+        render(<WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0} />);
       
         // Assert that certain elements are rendered based on mobile view
         // Add assertions specific to mobile view rendering
       });
       it('updates the closing date state when a key is pressed in the closing datefield', () => {
         const { getByLabelText, getByRole , getByTestId,getByText } = render(
-            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>
+            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>
         );
         // Click the next button
         const closingDateInput = screen.getByTestId('closingDateInput').querySelector('input') as HTMLInputElement; // Cast to HTMLInputElement
@@ -47,7 +47,7 @@ describe('Webinar Dialogue Component', () => {
       });
       it('displays closing date error when an incorrect closing date is entered', () => {
         const { getByLabelText, getByRole , getByTestId,getAllByText } = render(
-            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>
+            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>
         );
         // Click the next button
         const closingDateInput = screen.getByTestId('closingDateInput').querySelector('input') as HTMLInputElement; // Cast to HTMLInputElement
@@ -58,7 +58,7 @@ describe('Webinar Dialogue Component', () => {
       });
       it('updates the prelimnary date state when a key is pressed in the closing datefield', () => {
         const { getByLabelText, getByRole , getByTestId,getByText } = render(
-            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>
+            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>
         );
         // Click the next button
         const preliminaryDateInput =  screen.getByTestId('preliminaryDateInput').querySelector('input') as HTMLInputElement; // Cast to HTMLInputElement
@@ -69,7 +69,7 @@ describe('Webinar Dialogue Component', () => {
       });
       it('displays preliminary date error when an incorrect closing date is entered', () => {
         const { getByLabelText, getByRole , getByTestId,getAllByText } = render(
-            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>
+            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>
         );
         // Click the next button
         const preliminaryDateInput = screen.getByTestId('preliminaryDateInput').querySelector('input') as HTMLInputElement; // Cast to HTMLInputElement
@@ -81,7 +81,7 @@ describe('Webinar Dialogue Component', () => {
       
       it('updates the  externalLink state when a key is pressed in the externalLink field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>
+            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>
         );
         expect(queryByLabelText(document.body, 'External Link')).toBeNull();
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -94,7 +94,7 @@ describe('Webinar Dialogue Component', () => {
       });
       it('displays externalLink error when an incorrect externalLink is entered', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>
+            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>
         );
         expect(queryByLabelText(document.body, 'External Link')).toBeNull();
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -106,7 +106,7 @@ describe('Webinar Dialogue Component', () => {
       });
       it('updates the title state when a key is pressed in the title field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>
+            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>
         );
         const titleInput = getByLabelText('Title') as HTMLInputElement; // Cast to HTMLInputElement
         // Simulate typing in the password field
@@ -117,7 +117,7 @@ describe('Webinar Dialogue Component', () => {
       });
       it('displays title error when an incorrect title is entered', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>
+            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>
         );
         const titleInput = getByLabelText('Title') as HTMLInputElement; // Cast to HTMLInputElement
     
@@ -127,7 +127,7 @@ describe('Webinar Dialogue Component', () => {
       });
       it('updates the description state when a key is pressed in the description field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>
+            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>
         );
         const descriptionInput = getByLabelText('Description') as HTMLInputElement; // Cast to HTMLInputElement
         // Simulate typing in the password field
@@ -138,7 +138,7 @@ describe('Webinar Dialogue Component', () => {
       });
       it('displays description error when an incorrect description is entered', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>
+            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>
         );
         const descriptionInput = getByLabelText('Description') as HTMLInputElement; // Cast to HTMLInputElement
     
@@ -148,7 +148,7 @@ describe('Webinar Dialogue Component', () => {
       });
     it('updates the field name when a key is pressed in the field name field', () => {
         const { getByLabelText, getByRole , getByText } = render(
-            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>
+            <WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>
         );
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
         const fieldNameInput = getByLabelText('Field Name') as HTMLInputElement; // Cast to HTMLInputElement
@@ -159,7 +159,7 @@ describe('Webinar Dialogue Component', () => {
         expect(fieldNameInput.value).toBe('Field value');
       });
       it('adds extra field when handleAddExtraField is called', () => {
-        const { getByLabelText, getByText,getByRole } = render(<WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}   uid={"none"}/>);
+        const { getByLabelText, getByText,getByRole } = render(<WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>);
         
         // Simulate entering a field name
         fireEvent.click(getByRole('button', { name: 'NEXT' }));
@@ -175,7 +175,7 @@ describe('Webinar Dialogue Component', () => {
       });
     
       it('removes the last extra field when handleRemoveExtraField is called', () => {
-        const { getByText, queryByText,getByRole } = render(<WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"}  uid={"none"}/>);
+        const { getByText, queryByText,getByRole } = render(<WebinarDialog onSubmit={() => { } } handleHomeRedirect={() => { } } jestBypass={false} department={"none"} uid={"none"} username={''} overallRating={0}/>);
         
         // Simulate adding a field
         fireEvent.click(getByRole('button', { name: 'NEXT' }));

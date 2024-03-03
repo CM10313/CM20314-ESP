@@ -16,8 +16,8 @@ export default function DeepHistoryScreen() {
       "789300",
     ]
 
-    const rowList = allUserId.map((userId) => (
-      <DeepHistoryRow studyId={userId} />
+    const rowList = allUserId.map((userId,index) => (
+      <DeepHistoryRow key={index} studyId={userId} />
     ))
 
     return (
@@ -37,7 +37,7 @@ export default function DeepHistoryScreen() {
               progressBarEnabled={true}
               joinedCount={15}
               requiredCount={20}
-              barTitle="Joined" selectionEnabled={false}            >  
+              barTitle="Joined"         >  
             </SearchableList>
             </Box>
           </Grid>
