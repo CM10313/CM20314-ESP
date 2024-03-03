@@ -26,79 +26,55 @@ const ResearchHome: React.FC = () => {
       key="1"
       name="John Doe"
       rating={4.5}
-      pfp=""
       title="Lorem ipsum dolor sit amet"
-      link=""
       borderColour="#1F5095"
-      onCardClick={handleCardClick}
-    />,
+      onCardClick={handleCardClick} department={''}    />,
     <StudyMediumCard
       key="2"
       name="Jane Smith"
       rating={3.8}
-      pfp=""
       title="Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,v"
-      link=""
       borderColour="#1F5095"
-      onCardClick={handleCardClick}
-    />,<StudyMediumCard
-    key="1"
-    name="John Doe"
-    rating={4.5}
-    pfp=""
-    title="Lorem ipsum dolor sit amet"
-    link=""
-    borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,
+      onCardClick={handleCardClick} department={''}    />,<StudyMediumCard
+      key="1"
+      name="John Doe"
+      rating={4.5}
+      title="Lorem ipsum dolor sit amet"
+      borderColour="#1F5095"
+      onCardClick={handleCardClick} department={''}  />,
   <StudyMediumCard
     key="2"
     name="Jane Smith"
     rating={3.8}
-    pfp=""
     title="Consectetur adipiscing elit"
-    link=""
     borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,<StudyMediumCard
-  key="1"
-  name="John Doe"
-  rating={4.5}
-  pfp=""
-  title="Lorem ipsum dolor sit amet"
-  link=""
-  borderColour="#1F5095"
-  onCardClick={handleCardClick}
-/>,
+    onCardClick={handleCardClick} department={''}  />,<StudyMediumCard
+    key="1"
+    name="John Doe"
+    rating={4.5}
+    title="Lorem ipsum dolor sit amet"
+    borderColour="#1F5095"
+    onCardClick={handleCardClick} department={''}/>,
 <StudyMediumCard
   key="2"
   name="Jane Smith"
   rating={3.8}
-  pfp=""
   title="Consectetur adipiscing elit"
-  link=""
   borderColour="#1F5095"
-  onCardClick={handleCardClick}
-/>,<StudyMediumCard
-    key="1"
-    name="John Doe"
-    rating={4.5}
-    pfp=""
-    title=" Lorem ipsum dolor sit amet"
-    link=""
-    borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,
+  onCardClick={handleCardClick} department={''}/>,<StudyMediumCard
+  key="1"
+  name="John Doe"
+  rating={4.5}
+  title=" Lorem ipsum dolor sit amet"
+  borderColour="#1F5095"
+  onCardClick={handleCardClick} department={''}  />,
   <StudyMediumCard
     key="2"
     name="Jane Smith"
     rating={3.8}
-    pfp=""
     title="Consectetur adipiscing elit"
-    link=""
     borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,
+    onCardClick={handleCardClick} department={''}  />,
     // Add more StudyMediumCard components here as needed
   ];
 
@@ -131,7 +107,7 @@ console.error(error)
         <Grid container spacing={2} sx={{height:'100%'}}>
           {/* First Column */}
           <Grid item xs={isMobile?12:4.5} sx={{display:'flex',justifyContent:'center'}}>
-          <SearchableList  cardInputList={cardInputList} numberOfItemsPerRow={2} rowSpacing={2} width={'1000px'} title={'Published'} titleSize={45} marginTop={10} searchBarEnabled={true} progressBarEnabled={false}></SearchableList>
+          <SearchableList  cardInputList={cardInputList} numberOfItemsPerRow={2} rowSpacing={2} width={'1000px'} title={'Published'} titleSize={45} marginTop={10} searchBarEnabled={true} progressBarEnabled={false} ></SearchableList>
           </Grid>
           {/* Second Column */}
           <Grid item xs={isMobile?12:3} sx={{display:'flex',justifyContent:'center'}}>
@@ -159,7 +135,7 @@ console.error(error)
           <Grid item xs={isMobile?12:4.5} >
           <Box  sx={{height:'100%'}}>
           <Box  sx={{display:'flex',justifyContent:'center',mt:10,height:'100%'}}>
-            <Calendar />
+            <Calendar cardInputList={[]} />
             </Box>
           </Box>
           </Grid>

@@ -16,8 +16,8 @@ export default function DeepHistoryScreen() {
       "789300",
     ]
 
-    const rowList = allUserId.map((userId) => (
-      <DeepHistoryRow studyId={userId} />
+    const rowList = allUserId.map((userId,index) => (
+      <DeepHistoryRow key={index} studyId={userId} />
     ))
 
     return (
@@ -26,19 +26,18 @@ export default function DeepHistoryScreen() {
         <Grid item sm={12} md={8}>
           <Box sx={{width:"100%", height:"100px", justifyContent:"start", display:"flex", alignItems:"center"}}> 
             <SearchableList 
-            rowSpacing={0}
-            cardInputList={rowList}
-            numberOfItemsPerRow={1}
-            width={"100%"}
-            title={"Study Title"}
-            titleSize={45}
-            marginTop={5} 
-            searchBarEnabled={false} 
-            progressBarEnabled={true}
-            joinedCount={15}
-            requiredCount={20}
-            barTitle="Joined"
-            >  
+              rowSpacing={0}
+              cardInputList={rowList}
+              numberOfItemsPerRow={1}
+              width={"100%"}
+              title={"Study Title"}
+              titleSize={45}
+              marginTop={5}
+              searchBarEnabled={false}
+              progressBarEnabled={true}
+              joinedCount={15}
+              requiredCount={20}
+              barTitle="Joined"         >  
             </SearchableList>
             </Box>
           </Grid>

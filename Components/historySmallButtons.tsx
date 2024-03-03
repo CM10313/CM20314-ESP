@@ -1,7 +1,7 @@
 import React from "react";
-import {Grid, Button } from "@mui/material";
+import {Grid, Button, Typography } from "@mui/material";
 
-interface smallButtonProps{
+export interface smallButtonProps{
     background: string,
     title: string,
     fx: () => void,
@@ -25,7 +25,8 @@ const HistorySmallButtons: React.FC<smallButtonProps> = ({ background, title, fx
             maxWidth:'250px',
             borderRadius: "0.6em",
           }}>
-          {title} <br /> ...
+          <Typography>{title}</Typography>
+          <Typography>...</Typography>
         </Button>
       </Grid>
     )

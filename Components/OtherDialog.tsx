@@ -15,10 +15,12 @@ interface WebinarDialogProps {
     jestBypass:boolean;
     uid:String;
     department:String;
+    username:string;
+    overallRating:number;
 }
 
 // add tests, needs
-export default function OtherDialog({ onSubmit,handleHomeRedirect,jestBypass,uid,department }: WebinarDialogProps) {
+export default function OtherDialog({ onSubmit,handleHomeRedirect,jestBypass,uid,department,username,overallRating }: WebinarDialogProps) {
     const [title,setTitle] = useState("");
     const [closingDate, setClosingDate]= useState("");
     const [preliminaryDate, setPreliminaryDate] = useState("");
@@ -43,11 +45,12 @@ export default function OtherDialog({ onSubmit,handleHomeRedirect,jestBypass,uid
     }
     const publisherId = uid;
     const joinedParticipants:string[]= [];
-    const publisherRating = 4.1
+    const publisherRating = overallRating;
+    const publisherName = username;
         const handleStudySubmit = () => {
             const webinarData = {
                title,dateOfPublish,publisherId,publisherRating,closingDate,preliminaryDate,description,
-               department,externalLink,location,relatedFields,EthicsApprovalObject,joinedParticipants
+               department,externalLink,location,relatedFields,EthicsApprovalObject,joinedParticipants,publisherName
             };
             onSubmit(webinarData,uid,webinarData.department);//needs to change to reference the current user
             //redirect
@@ -61,7 +64,7 @@ export default function OtherDialog({ onSubmit,handleHomeRedirect,jestBypass,uid
             } else {
                 setSubmitError("You cannot submit as required fields are not fullfilled or data is in an invalid format.");
             }
-        },[closingDate,preliminaryDate,titleError,descriptionError])
+        },[closingDate, preliminaryDate, titleError, descriptionError, closingDateError, preliminaryDateError, locationError])
       
         type SetterFunction<T> = React.Dispatch<React.SetStateAction<T>>;
 

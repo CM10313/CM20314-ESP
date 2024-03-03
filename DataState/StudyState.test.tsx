@@ -18,7 +18,12 @@ describe('useStudyState', () => {
             hasAge: true,
             hasSexuality: true
           },
-          EthicsApproval: true,
+          EthicsApprovalObject:{
+            status:"Waiting",
+            rejectedByID:"",
+            rejectedByName:"",
+            rejectionReason:"",
+          },
           CompensationObject: {
             amount: "100",
             currency: "USD",
@@ -67,7 +72,12 @@ describe('useStudyState', () => {
         hasAge: true,
         hasSexuality: true
       },
-      EthicsApproval: true,
+      EthicsApprovalObject:{
+        status:"Waiting",
+        rejectedByID:"",
+        rejectedByName:"",
+        rejectionReason:"",
+      },
       CompensationObject: {
         amount: "100",
         currency: "USD",

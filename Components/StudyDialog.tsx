@@ -39,15 +39,16 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass,dep
     const [descriptionError,setDescriptionError]= useState("");
     const [locationError,setLocationError]= useState("");
     const [submitError, setSubmitError]= useState("");
-    const {id} = useAuth();
+    const {username,id,overallRating} = useAuth();
     const dateOfPublish = getTodayDate();
     const publisherId = id//needs to be based on current user
-    const publisherRating = 4.1
+    const publisherRating = overallRating;
+    const publisherName = username;
         const handleStudySubmit = () => {
             const studyData = {
                title,closingDate,preliminaryDate,description,department,externalLink,
                 maxNoParticipants,minimumAge,
-                relatedFields,studyObj,dateOfPublish,publisherId,publisherRating,location
+                relatedFields,studyObj,dateOfPublish,publisherId,publisherRating,location,publisherName,
             };
             onSubmit(studyData,publisherId,department);//needs to change to reference the current user
             //redirect
@@ -61,7 +62,7 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass,dep
             } else {
                 setSubmitError("You cannot submit as required fields are not fullfilled or data is in an invalid format.");
             }
-        },[closingDate,preliminaryDate,maxNoError,minimumAgeError,externalLinkError,titleError,descriptionError,locationError])
+        },[closingDate, preliminaryDate, maxNoError, minimumAgeError, externalLinkError, titleError, descriptionError, locationError, closingDateError, preliminaryDateError])
       
         type SetterFunction<T> = React.Dispatch<React.SetStateAction<T>>;
 

@@ -29,12 +29,12 @@ export default function ParticipantHistoryScreen() {
         "432423423"
     ]
 
-    const historyCardList = studyIdList.map((studyId) => (
-        <ParticipantHistoryRow studyId={studyId} author={"study author"} date={"study date"} />
+    const historyCardList = studyIdList.map((studyId,index) => (
+        <ParticipantHistoryRow key={index} studyId={studyId} author={"study author"} date={"study date"} />
     ))
 
-    const hiddenStudiesList = hiddenIdList.map((hiddenStudyId) => (
-        <DisputeRow studyId={hiddenStudyId} author={"study author"} date={"study date"} />
+    const hiddenStudiesList = hiddenIdList.map((hiddenStudyId,index) => (
+        <DisputeRow key={index} studyId={hiddenStudyId} publisher={"study author"} date={"study date"} studyTitle={"Title"} />
     ))
 
     return (
@@ -48,7 +48,7 @@ export default function ParticipantHistoryScreen() {
                     width={"100%"}
                     title={"History"}
                     titleSize={45}
-                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}>  
+                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false} >  
                 </SearchableList>
             </Grid>
 
@@ -60,7 +60,7 @@ export default function ParticipantHistoryScreen() {
                     width={"100%"}
                     title={"Disputed"}
                     titleSize={45}
-                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}>
+                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}  >
                 </SearchableList>
             </Grid>
 

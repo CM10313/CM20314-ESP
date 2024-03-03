@@ -20,7 +20,7 @@ export default function DiversityView(){
     const isMobile = useMediaQuery('(max-width:1000px)')
     return (
         <Box sx={{height:'810px',width:'100%'}}> 
-            <Navbar/>
+            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}/>
             <TriangleBackground />
             <Grid container sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
                 <Grid item xs={isMobile?12:4}  sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
