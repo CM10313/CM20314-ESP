@@ -35,6 +35,7 @@ enum UserType{
     minimumAge:Number;
     relatedFields: String[];
     studyObj:StudyState;
+    publisherName:string;
   }
 
   const StudyCreator: React.FC<Props> = ({ jestBypass }) => {

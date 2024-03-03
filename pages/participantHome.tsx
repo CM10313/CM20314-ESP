@@ -12,92 +12,104 @@ import Calendar from '../Components/Calendar';
 import SearchableList from '../Components/SearchableList';
 import { useAuth } from '../Context/AuthContext';
 import { useEffect, useState } from 'react';
-import { fetchDocuments, fetchUserByDepartment, fetchUsersByDepartment } from '../firebase/firestore';
-import DisputeRow from '../Components/pDisputeRow';
+import { fetchDocumentById, fetchDocuments, fetchUserByDepartment, fetchUsersByDepartment } from '../firebase/firestore';
+import DisputeRow, { DisputeRowProps } from '../Components/pDisputeRow';
+import { departments, fetchData, getAllStudies } from '../Utils/RetrieveStudyDats';
+import { StudentData } from './register';
+import CalendarCard, { CalendarCardProps, ItemProps } from '../Components/CalendarCard';
 
 
 const ParticipantHome: React.FC = () => {
   const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+  const [liveStudies, setLiveStudies] = useState<StudyMediumCardProps[]>([]);
+  const [rejectedStudies, setRejectedStudies] = useState<DisputeRowProps[]>([]);
+  const [upcomingStudies, setUpcomingStudies] = useState<ItemProps[]>([]);
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
   const handleCardClick = (title: string) => {
     // Push the user to the desired page using the title (replace '/advert/' with your desired route)
     router.push(`/advert-preview/${title}`); // change to a generated key
   };
-  const hiddenIdList = [
-    "123456",
-    "7890123",
-    "23433423",
-    "34324423", 
-    "432423423"
-]
+ 
+  useEffect(() => {
+    const getRejectedStudies = async () => {
+      try {
+        // Fetch user information
+        const userInfo: any = await fetchDocumentById('users',id);
+        if (userInfo) { // Check if userInfo is not undefined
+          let tempRejected: Promise<any>[] = [];
+          const extractedRejections: DisputeRowProps[] = [];
+          const rejectedStudyKey = userInfo.rejectedStudies || [];
+          let tempUpcoming: Promise<any>[] = [];
+          const extractedUpcoming: ItemProps[] = [];
+          const upcomingStudyKey = userInfo.joinedStudies || [];
+          // Fetch data for each rejected study
+          rejectedStudyKey.forEach((studyKey: any) => {
+            const studyId = studyKey.id || "No Id";
+            const studyPublisherId = studyKey.publisherId || "No Publisher ID"
+            const studyDepartment = studyKey.department || "No Department"
+            tempRejected.push(fetchDocumentById(`departments/${studyDepartment}/Researchers/${studyPublisherId}/studies/`,studyId));
+          });
+          upcomingStudyKey.forEach((studyKey: any) => {
+            const studyId = studyKey.id || "No Id";
+            const studyPublisherId = studyKey.publisherId || "No Publisher ID"
+            const studyDepartment = studyKey.department || "No Department"
+            tempUpcoming.push(fetchDocumentById(`departments/${studyDepartment}/Researchers/${studyPublisherId}/studies/`,studyId));
+          });
+  
+          // Wait for all promises to resolve
+          const rejectedStudiesData = await Promise.all(tempRejected);
+          console.log(rejectedStudiesData)
+          // Process fetched data and create DisputeRowProps objects
+          rejectedStudiesData.forEach((study: any) => {
+            const rejectedProps: DisputeRowProps = {
+              studyTitle: study.title || "No Title",
+              studyId: study.Id || "No Id",
+              publisher: study.publisherName || "No Publisher",
+              date: study.preliminaryDate || "No date",
+            }
+            extractedRejections.push(rejectedProps);
+          });
+  
+          // Update the state with extracted rejected studies
+          setRejectedStudies(extractedRejections);
 
-  const hiddenStudiesList = hiddenIdList.map((hiddenStudyId) => (
-    <DisputeRow studyId={hiddenStudyId} author={"study author"} date={"study date"} />
-))
-const fetchData = async (uid: string, department: string) => {
-  try {
-    const studies = await fetchDocuments(`departments/${department}/Researchers/${uid}/studies`);
-    return studies;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const getDepartmentStudies = async (department: string) => {
-  let departmentStudies = [];
-  try {
-    const users = await fetchUsersByDepartment(department);
-    for (const user of users) {
-      departmentStudies.push(await fetchData(user.id, department));
+          const upcomingStudiesData = await Promise.all(tempUpcoming);
+          // Process fetched data and create DisputeRowProps objects
+          upcomingStudiesData.forEach((study: any) => {
+            const upcomingProps: ItemProps = {
+              title: study.title || "No Title",
+              id: study.Id || "No Id",
+              publisher: study.publisherName || "No Publisher",
+              date: study.preliminaryDate || "No date",
+              location: study.location || "No Location",
+              borderColor:(study.publisherRating >=4 )?"#D7BE69":"#C6CFD8",
+            }
+            extractedUpcoming.push(upcomingProps);
+          });
+  
+          // Update the state with extracted rejected studies
+          setUpcomingStudies(extractedUpcoming);
+        } else {
+          console.error("User info is undefined");
+        }
+      } catch (error) {
+        console.error('Error fetching study list:', error);
+      }
     }
-    return departmentStudies;
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
-
-let departments:{[key: string]: any} = {
-  "Architecture & Civil Engineering": null,
-  "Chemical Engineering": null,
-  "Electronic & Electrical Engineering": null,
-  "Mechanical Engineering": null,
-  "Economics": null,
-  "Education": null,
-  "Health": null,
-  "Politics, Languages & International Studies": null,
-  "Psychology": null,
-  "Social & Policy Sciences": null,
-  "Chemistry": null,
-  "Computer Science": null,
-  "Life Sciences": null,
-  "Mathematical Sciences": null,
-  "Natural Sciences": null,
-  "Physics": null,
-  "Accounting, Finance & Law": null,
-  "Marketing, Business & Society": null,
-  "Information, Decisions & Operations": null,
-  "Strategy & Organisation": null
-};
-
-const getAllStudies = async () => {
-  for (const department of Object.keys(departments)) {
-    departments[department] = await getDepartmentStudies(department);
-  }
-  return departments;
-};
+    getRejectedStudies();
+  }, []);
 
 useEffect(() => {
   const fetchStudyList = async () => {
     try {
-      const studyDict = await getAllStudies();
+      const studyDict = await getAllStudies(true,true,true);
       const extractedStudies: StudyMediumCardProps[] = [];
       for (const departmentStudies of Object.values(studyDict)) {
         // Iterate over studies in the current department
         departmentStudies.forEach((studyList: any) => { // Using 'any' temporarily, replace with appropriate type
           // Iterate over studies in the current study list
           studyList.forEach((study: any) => {
-            console.log(study)
             // Extract the data you need from the study object and create StudyMediumCardProps
             const studyProps: StudyMediumCardProps = {
               name: study.publisherName || "No name for publisher", // Ensure you have a default value if properties are missing professor name
@@ -125,7 +137,7 @@ useEffect(() => {
 }, []); // Run effect only once on component mount
 
 
-const [liveStudies, setLiveStudies] = useState<StudyMediumCardProps[]>([]);
+
 
 
 
@@ -153,7 +165,16 @@ const [liveStudies, setLiveStudies] = useState<StudyMediumCardProps[]>([]);
               <Grid item xs={12} >
                   <Box  sx={{height:'100%'}}>
                     <Box  sx={{display:'flex',justifyContent:'center',mt:7,height:'100%'}}>
-                      <Calendar />
+                    <Calendar
+  cardInputList={upcomingStudies.map((study, index) => ({
+    publisher: study.publisher,
+    location: study.location,
+    title: study.title,
+    date: study.date,
+    id: study.id,
+    borderColor:study.borderColor,
+  }))}
+/>
                     </Box>
                   </Box>
               </Grid>
@@ -161,7 +182,7 @@ const [liveStudies, setLiveStudies] = useState<StudyMediumCardProps[]>([]);
                 <Box sx={{ml:isMobile?0:-7}}>
                 <SearchableList
                       rowSpacing={0}
-                      cardInputList={hiddenStudiesList}
+                      cardInputList={rejectedStudies.map((study,index)=>(<DisputeRow key={index} studyTitle={study.studyTitle} publisher={study.publisher} date={study.date} studyId={study.studyId}></DisputeRow>))}
                       numberOfItemsPerRow={1}
                       width={"100%"}
                       title={"Rejections"}
