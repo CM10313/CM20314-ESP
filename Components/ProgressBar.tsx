@@ -6,12 +6,14 @@ interface progressBarProps{
   joinedCount: number, 
   requiredCount: number, 
   title:string
+  leftMargin? : number,
+  coverage? : number
 }
 
-const ProgressBar: React.FC<progressBarProps> = ({ joinedCount, requiredCount, title }) => {
+const ProgressBar: React.FC<progressBarProps> = ({ joinedCount, requiredCount, title, leftMargin=90, coverage=88 }) => {
   const maxCount = requiredCount; // Set a maximum count for demonstration purposes
-  const progress = (joinedCount / maxCount) * 88 ; // Calculate progress percentage
-  const progressWidth = progress > 88 ? 88 : progress
+  const progress = (joinedCount / maxCount) * coverage ; // Calculate progress percentage
+  const progressWidth = progress > coverage ? coverage : progress
 
 
   return (
@@ -49,7 +51,7 @@ const ProgressBar: React.FC<progressBarProps> = ({ joinedCount, requiredCount, t
               transition: 'width 0.5s ease', // Smooth transition for width change
               position: 'absolute',
               top: 0,
-              left: 90, // Align to the right
+              left: leftMargin, // Align to the right
               display: 'flex',
               justifyContent: 'flex-end', // Align progress number to the right side
               alignItems: 'center',

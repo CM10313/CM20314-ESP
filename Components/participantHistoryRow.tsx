@@ -10,6 +10,10 @@ const ParticipantHistoryRow: React.FC<{ studyId: string, author:string, date:str
   const [isCompleted, setIsCompleted] = useState(false);  
   const [rateClicked, stateRateClicked] = useState(false);
 
+  const handleDetailsClick = () => {
+    router.push(`/details/${studyId}`);
+  };
+
   const handleDisputeClick = () => {
     router.push(`/dispute/${studyId}`);
   };
@@ -25,7 +29,7 @@ const ParticipantHistoryRow: React.FC<{ studyId: string, author:string, date:str
 const isMobile = useMediaQuery('(max-width:1000px)')
   return (
       <Grid container display="flex" flexDirection="row" justifyContent="space-evenly">
-        <Grid item xs={isMobile?6:4.5}><HistoryCardsStudy studyId={studyId} author={author} date={date} /></Grid>
+        <Grid item xs={isMobile?6:4.5}><HistoryCardsStudy studyId={studyId} author={author} date={date} isPaid={true} /></Grid>
         <Grid item xs={isMobile?6:2.5}> <HistorySmallButtons background="#1F5095" title="Dispute" fx={handleDisputeClick} /></Grid>
         <Grid item xs={isMobile?6:2.5}> <HistorySmallButtons  background={rateClicked ? "#D7BE69" : "#1870A0"} title={rateClicked ? "Rated" : "Rate"}  fx={handleRateChange} /></Grid>
         <Grid item xs={isMobile?6:2.5}><HistorySmallButtons background = "#CD386B" title="Withdraw" fx={handleWithdrawClick} /></Grid>
