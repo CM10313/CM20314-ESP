@@ -98,7 +98,10 @@ console.error(error)
     }
   };
   listAllDepartmentStudies('Computer Science');
-  
+const handlePush = () => {
+    router.push('/viewParticipantDetails?uid=PNeqhkPm0Le0LcfOK1caYeVoCYB3&studyId=2XHxM1QPyu2Xmd7YsiaW');
+};//used to mock params  needed for participant view
+
   return (
     <>
      <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
@@ -140,6 +143,7 @@ console.error(error)
           </Box>
           </Grid>
         </Grid>
+        <Button variant="contained" onClick={handlePush}>View Page</Button>
       </div>
     </>
   );
