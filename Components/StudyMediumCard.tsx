@@ -1,24 +1,22 @@
 import { Card, CardActionArea, CardMedia, CardContent, Typography, Box, Grid } from '@mui/material';
 import * as React from 'react';
 import StarIcon from '@mui/icons-material/Star';
-interface StudyMediumCardProps {
+export interface StudyMediumCardProps {
   name:string;
   rating:number;
-  pfp:string;
   title:string;
-  link:string;
   borderColour:string;
   onCardClick: (title: string) => void;
+  department:string;
 }
 
 export default function StudyMediumCard({
   name,
   rating,
-  pfp,
   title,
-  link,
   borderColour,
   onCardClick,
+  department,
 }: StudyMediumCardProps) {
  
   return (
@@ -45,7 +43,7 @@ export default function StudyMediumCard({
                             </Typography>
                         </Grid>
                         <Grid item xs={6}>
-                        <Box sx={{height:'30px',width:'100%',backgroundColor:'red',display:'flex',justifyContent:'end'}}>Pfp</Box>   
+                        <Box sx={{height:'30px',width:'100%',display:'flex',justifyContent:'end'}}>{department}</Box>   
                         </Grid>
                 </Grid>
                 <Grid container item xs={12} alignItems="center">

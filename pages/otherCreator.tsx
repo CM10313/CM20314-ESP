@@ -37,6 +37,7 @@ enum UserType{
     minimumAge:Number;
     relatedFields: String[];
     studyObj:StudyState;
+    publisherName:string;
   }
 
   const OtherCreator: React.FC<Props> = ({ jestBypass }) => {
@@ -58,10 +59,10 @@ enum UserType{
     return (
         <>
        
-     <Navbar/>
+     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}/>
             <TriangleBackground />
       <div style={{ height: '810px' }}>
-        <OtherDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} uid={id} department={department} ></OtherDialog>
+        <OtherDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} uid={id} department={department} overallRating={overallRating} username={username}></OtherDialog>
         </div>    
 </>
         );

@@ -54,11 +54,17 @@ export default function DeepHistoryScreen() {
     // Create a row for all of the userIds in the list above
     const rowList = participantStudyIDs.map((userId) => (
       <DeepHistoryRow studyId={userId} />
+
+
+    const rowList = allUserId.map((userId,index) => (
+      <DeepHistoryRow key={index} studyId={userId} />
+
     ))
 
     return (
       <Box>
         <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
+
         <Grid container>
           <Grid item sm={12} md={8} display={"flex"} flexDirection={"row"} marginBlockEnd={3}>
               <SearchableList 
@@ -131,6 +137,24 @@ export default function DeepHistoryScreen() {
                   <HistorySmallButtons background="red" title="Details" fx={() => handleDetailsClick(userId)} />
                 </Box>
               ))}
+              
+        <Grid item sm={12} md={8}>
+          <Box sx={{width:"100%", height:"100px", justifyContent:"start", display:"flex", alignItems:"center"}}> 
+            <SearchableList 
+              rowSpacing={0}
+              cardInputList={rowList}
+              numberOfItemsPerRow={1}
+              width={"100%"}
+              title={"Study Title"}
+              titleSize={45}
+              marginTop={5}
+              searchBarEnabled={false}
+              progressBarEnabled={true}
+              joinedCount={15}
+              requiredCount={20}
+              barTitle="Joined"         >  
+            </SearchableList>
+
             </Box>
           </Grid>
         </Grid>

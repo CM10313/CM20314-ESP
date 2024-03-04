@@ -41,10 +41,11 @@ enum UserType{
         rejectionReason:String;
       },
     joinedParticipants: string[],
+    publisherName:string;
   }
 
   const WebinarCreator: React.FC<Props> = ({ jestBypass }) => {
-    const {isLoggedIn,setAuth,username,overallRating,id,department} = useAuth();
+    const {username,overallRating,id,department} = useAuth();
   const router = useRouter();
   const handleStudySubmit= (data:WebinarData,uid:String,department:String) =>{
       console.log(data);
@@ -62,10 +63,10 @@ enum UserType{
     return (
         <>
        
-     <Navbar/>
+     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}/>
             <TriangleBackground />
       <div style={{ height: '810px' }}>
-        <WebinarDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} uid={id} department={department}></WebinarDialog>
+        <WebinarDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} uid={id} department={department} overallRating={overallRating} username={username}></WebinarDialog>
         </div>    
 </>
         );

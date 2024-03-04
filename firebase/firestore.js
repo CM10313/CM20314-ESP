@@ -119,7 +119,6 @@ const fetchUsersByDepartment = async (department) => {
         id: doc.id,
       });
     });
-    console.log(users);
     return users;
   } catch (e) {
     console.error("Error fetching users: ", e);

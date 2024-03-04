@@ -27,12 +27,12 @@ export default function ResearherHistoryScreen() {
         "432423423"
     ]
 
-    const historyCardList = studyIdList.map((studyId) => (
-        <HistoryCards studyId={studyId} author={"study author"} date={"study date"} />
+    const historyCardList = studyIdList.map((studyId,index) => (
+        <HistoryCards key={index} studyId={studyId} author={"study author"} date={"study date"} />
     ))
 
-    const hiddenStudiesList = hiddenIdList.map((hiddenStudyId) => (
-        <HiddenStudiesCards studyId={hiddenStudyId} author={"study author"} date={"study date"} />
+    const hiddenStudiesList = hiddenIdList.map((hiddenStudyId,index) => (
+        <HiddenStudiesCards  key={index} studyId={hiddenStudyId} author={"study author"} date={"study date"} />
     ))
 
     return (
@@ -46,7 +46,7 @@ export default function ResearherHistoryScreen() {
                     width={"100%"}
                     title={"History"}
                     titleSize={45}
-                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}>  
+                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false} >  
                 </SearchableList>
             </Grid>
 
@@ -58,7 +58,7 @@ export default function ResearherHistoryScreen() {
                     width={"100%"}
                     title={"Hidden"}
                     titleSize={45}
-                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}>
+                    marginTop={5} searchBarEnabled={true} progressBarEnabled={false}  >
                 </SearchableList>
             </Grid>
 
