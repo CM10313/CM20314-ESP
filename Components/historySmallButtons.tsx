@@ -33,5 +33,4 @@ const HistorySmallButtons: React.FC<smallButtonProps> = ({ background, title, fx
 
 }
 
-
 export default HistorySmallButtons;

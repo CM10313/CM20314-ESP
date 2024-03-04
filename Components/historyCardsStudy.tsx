@@ -2,7 +2,16 @@ import React from "react";
 import Image from "next/image";
 import { Box, Grid, Typography } from "@mui/material";
 
-const HistoryCardsStudy: React.FC<{ studyId: string, author:string, date:string }> = ({ studyId, author, date }) => {
+
+interface HistoryRowProps { 
+  studyId: string;
+  author: string;
+  date: string;
+  isPaid?: boolean;
+
+}
+
+const HistoryCardsStudy: React.FC<HistoryRowProps> = ({ studyId, author, date, isPaid=false }) => {
 
     return (
         <Grid item display="flex" flexDirection="row" alignItems="center" justifyContent="space-between"
@@ -26,10 +35,15 @@ const HistoryCardsStudy: React.FC<{ studyId: string, author:string, date:string 
           }}>
           <Box display="flex" flexDirection="row" justifyContent="space-between">
             <Typography> {author} </Typography>
+            {isPaid && (
+              <Typography sx={{ backgroundColor: "yellow", color: "white", fontSize: "1em", padding: "0.1em", marginTop: "0.3em" }}>
+                  Paid
+            </Typography>)}
             <Image src="/images/smiley.png" alt="smiley image" width={30} height={30} />
           </Box>
           <Typography> <b> #{studyId} </b> </Typography>
         </Box>
+        
         <Typography fontSize="1em" color="white" padding="0.5em" width="30%">
           {date} </Typography>
       </Grid>

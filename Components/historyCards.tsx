@@ -9,8 +9,22 @@ const HistoryCards: React.FC<{ studyId: string, author:string, date:string }> = 
   const router = useRouter();
   const [isCompleted, setIsCompleted] = useState(false);
 
+  // This is the data that is passed to the deep History page when participants is clicked
+  // At the moment only all the list of the participants and the ID of the study is sent
+  // Data for paid, disputed and approval needs to be considered
+  const queryData = {
+    studyId: studyId,
+    participantStudyIDs: ["123456", "789012", "234566"],
+    paidUserIDs: ["1234234", "234324", "32432", "23423"],
+    disputedUserIDs: ["1234234", "234324", "32432", "23423"],
+    approvalUserIDs: ["1234234", "234324", "32432", "23423"],
+  }
+
   const handleSeeParticipantsClick = () => {
-    router.push(`/participants/${studyId}`);
+    router.push({
+      pathname: `/deepHistory/`,
+      query: queryData
+    });
   };
 
   const handleMarkCompleteClick = () => {

@@ -1,4 +1,4 @@
-import { Grid} from "@mui/material";
+import { Grid, Box, Typography} from "@mui/material";
 import HistoryCards from "../Components/historyCards";
 import SearchableList from "../Components/SearchableList";
 import HiddenStudiesCards from "../Components/hiddenStudies";
@@ -11,7 +11,7 @@ import { useAuth } from "../Context/AuthContext";
 export default function ParticipantHistoryScreen() {
     const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
     
-    // Once data is fetched all we need is ID of those to be inseerted into these accordingly
+    // Once data is fetched all we need is ID of those to be inserted into these accordingly
     // front end will need to be modified below to retrieve the author and date from the IDs in <HistoryCards /> and <HiddenStudiesCards />
     const studyIdList = [
         "123456",
@@ -69,8 +69,28 @@ export default function ParticipantHistoryScreen() {
                 display = {"flex"}
                 justifyContent={"center"}
                 alignItems={"center"} > 
-                <DisputeContactCard /> 
+
+                <Grid container height={"10em"}
+                    sx = {{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#1F5095",
+                        borderRadius: "0.5em",
+                        color: "White",
+                        padding: "0.5em",
+                        margin: "0.5em"
+                    }}>
+                    
+                    <Typography fontWeight={"bold"} > If you dispute an activity, it will appear in your disputed column 
+                    along with the person who manages it until you resolve the dispute 
+                    Handle disputes by contacting the organiser to request payment.</Typography>
+                </Grid>
+
+                <DisputeContactCard />   
             </Grid>
+
         </Grid>
     );
 
