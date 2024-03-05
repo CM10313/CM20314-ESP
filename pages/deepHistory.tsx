@@ -17,7 +17,9 @@ interface QueryParams {
 }
 
 export default function DeepHistoryScreen() {
+  
   const router = useRouter();
+  
   const {
     studyId,
     participantStudyIDs, 
@@ -42,23 +44,10 @@ export default function DeepHistoryScreen() {
   };
   
   const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
-    const allUserId = [
-      "123456",
-      "223456",
-      "789300",
-      "123456",
-      "223456",
-      "789300",
-    ]
     
     // Create a row for all of the userIds in the list above
-    const rowList = participantStudyIDs.map((userId) => (
-      <DeepHistoryRow studyId={userId} />
-
-
-    const rowList = allUserId.map((userId,index) => (
-      <DeepHistoryRow key={index} studyId={userId} />
-
+    const rowList = participantStudyIDs.map((userId,index) => (
+      <DeepHistoryRow key={index} studyId={userId} /> 
     ))
 
     return (
@@ -128,8 +117,10 @@ export default function DeepHistoryScreen() {
 
           </Grid>
           
+          {/* Approval components */}
           <Grid item sm={12} md={4} display={"flex"} flexDirection={"column"} justifyContent="flex-start" marginLeft={"3%"}>
             <ProgressBar title="Awaiting Approval" requiredCount={approvalRequiredCount} joinedCount={approvalJoinedCount} leftMargin={180} coverage={60} />
+            
             <Box sx={{display:"flex", flexDirection:"column", overflow:"scroll", maxHeight:"7em", overflowX:"hidden"}} >
               {approvalUserIDs.map((userId) => (
                 <Box sx={{display:"flex", flexDirection:"row", marginLeft:"3em"}}>
@@ -137,25 +128,8 @@ export default function DeepHistoryScreen() {
                   <HistorySmallButtons background="red" title="Details" fx={() => handleDetailsClick(userId)} />
                 </Box>
               ))}
-              
-        <Grid item sm={12} md={8}>
-          <Box sx={{width:"100%", height:"100px", justifyContent:"start", display:"flex", alignItems:"center"}}> 
-            <SearchableList 
-              rowSpacing={0}
-              cardInputList={rowList}
-              numberOfItemsPerRow={1}
-              width={"100%"}
-              title={"Study Title"}
-              titleSize={45}
-              marginTop={5}
-              searchBarEnabled={false}
-              progressBarEnabled={true}
-              joinedCount={15}
-              requiredCount={20}
-              barTitle="Joined"         >  
-            </SearchableList>
-
             </Box>
+        
           </Grid>
         </Grid>
       </Box>
