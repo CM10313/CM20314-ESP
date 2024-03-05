@@ -11,20 +11,20 @@ import * as React from 'react';
  import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
  
  export interface  OtherRequirementDisplayProps {
-  hasAccessToDevice:boolean;
-  hasNativeLanguage:boolean;
-  hasOtherLanguages:boolean;
-  hasNearestCity:boolean;
-  hasMaxTravelTime:boolean;
-  hasAnonymityLevel:boolean;
-  hasAccessRequirements:boolean;
-  accessToDevice:string;
-  nativeLanguage:string;
-  otherLanguages:string;
-  nearestCity:string;
-  maxTravelTime:string;
-  anonymityLevel:string;
-  accesRequirements:string;
+  hasAccessToDevice?:boolean;
+  hasNativeLanguage?:boolean;
+  hasOtherLanguages?:boolean;
+  hasNearestCity?:boolean;
+  hasMaxTravelTime?:boolean;
+  hasAnonymityLevel?:boolean;
+  hasAccessRequirements?:boolean;
+  accessToDevice?:string;
+  nativeLanguage?:string;
+  otherLanguages?:string;
+  nearestCity?:string;
+  maxTravelTime?:string;
+  anonymityLevel?:string;
+  accesRequirements?:string;
  }
  
  export default function OtherRequirementDisplay({
@@ -43,7 +43,7 @@ import * as React from 'react';
   >
     <Grid container rowSpacing={6} sx={{display:'flex',justifyContent:'center'}}>
       {hasAccessRequirements?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Accessibility Requirements</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'scroll',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{accesRequirements}</Typography></Box></Box></Grid>:null}
-    {hasAccessToDevice?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Access to Device</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{accessToDevice.toString().charAt(0).toUpperCase() + accessToDevice.toString().slice(1)}</Typography></Box></Box></Grid>:null}
+    {hasAccessToDevice?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Access to Device</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{accessToDevice?accessToDevice.toString().charAt(0).toUpperCase() + accessToDevice.toString().slice(1):"None"}</Typography></Box></Box></Grid>:null}
     {hasAnonymityLevel?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Anonymity Level</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{anonymityLevel}</Typography></Box></Box></Grid>:null}
     {hasMaxTravelTime?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Max Travel Time</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{maxTravelTime}</Typography></Box></Box></Grid>:null}
     {hasNearestCity?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Nearest City</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{nearestCity}</Typography></Box></Box></Grid>:null}

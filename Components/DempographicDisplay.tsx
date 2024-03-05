@@ -11,26 +11,26 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 export interface  DemoGraphicDisplayProps {
- hasFaculty:boolean;
- hasGender:boolean;
- hasRace:boolean;
- hasSexuality:boolean;
- hasYOFS:boolean;
- hasReligion:boolean;
- hasIncome:boolean;
- hasAge:boolean;
- hasOccupation:boolean;
- hasHLOFE:boolean;
- faculty:string;
- gender:string;
- race:string;
- sexuality:string;
- yofs:string;
- religion:string;
- income:string;
- age:string;
- occupation:string; 
- hlofe:string;
+ hasFaculty?:boolean;
+ hasGender?:boolean;
+ hasRace?:boolean;
+ hasSexuality?:boolean;
+ hasYOFS?:boolean;
+ hasReligion?:boolean;
+ hasIncome?:boolean;
+ hasAge?:boolean;
+ hasOccupation?:boolean;
+ hasHLOFE?:boolean;
+ faculty?:string;
+ gender?:string;
+ race?:string;
+ sexuality?:string;
+ yofs?:string;
+ religion?:string;
+ income?:string;
+ age?:string;
+ occupation?:string; 
+ hlofe?:string;
 }
 
 export default function DemoGraphicDisplay({
@@ -50,7 +50,7 @@ hasAge,hasFaculty,hasGender,hasIncome,hasOccupation,hasRace,hasReligion,hasSexua
       <Grid container rowSpacing={6} sx={{display:'flex',justifyContent:'center'}}>
         {hasAge?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Age</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{age}</Typography></Box></Box></Grid>:null}
       {hasFaculty?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Faculty</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{faculty}</Typography></Box></Box></Grid>:null}
-      {hasGender?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Gender</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{gender.toString().charAt(0).toUpperCase() + gender.toString().slice(1)}</Typography></Box></Box></Grid>:null}
+      {hasGender?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Gender</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{gender?gender.toString().charAt(0).toUpperCase() + gender.toString().slice(1):"None"}</Typography></Box></Box></Grid>:null}
       {hasIncome?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Income</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{income}</Typography></Box></Box></Grid>:null}
       {hasOccupation?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Occupation</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{occupation}</Typography></Box></Box></Grid>:null}
       {hasRace?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Race</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{race}</Typography></Box></Box></Grid>:null}

@@ -8,7 +8,7 @@ import Calendar from '../Components/Calendar';
 import SearchableList from '../Components/SearchableList';
 import { useAuth } from '../Context/AuthContext';
 import { useEffect, useState } from 'react';
-import { fetchDocumentById} from '../firebase/firestore';
+import { fetchDocumentById, updateDocument} from '../firebase/firestore';
 import DisputeRow, { DisputeRowProps } from '../Components/pDisputeRow';
 import {  getAllStudies } from '../Utils/RetrieveStudyData';
 import  {  ItemProps } from '../Components/CalendarCard';
@@ -21,7 +21,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useParams } from 'next/navigation';
 
 
-const ViewParticipantDetails: React.FC<{  }> = ({ }) => {
+const ViewParticipantDetails: React.FC<{ testBypass1?: HealthDisplayProps | (() => HealthDisplayProps), testBypass2?: DemoGraphicDisplayProps,testBypass3?:OtherRequirementDisplayProps }> = ({ testBypass1={} as HealthDisplayProps, testBypass2 ={} as DemoGraphicDisplayProps,testBypass3 ={} as OtherRequirementDisplayProps })  => {
   const {isLoggedIn,setAuth,username,overallRating,id,department} = useAuth();
   const isMobile = useMediaQuery('(max-width:1000px)')
   const isExtraSmall = useMediaQuery('(max-width:800px)')
@@ -29,13 +29,13 @@ const ViewParticipantDetails: React.FC<{  }> = ({ }) => {
   const [buttonColours, setButtonColours]= useState(["#1F5095","#DAE1E9","#DAE1E9"]);
   const [rejectionReason, setRejectionReason]= useState("");
   const [rejectionError, setRejectionError]= useState("");
-  const [healthProps, setHealthProps]=useState<HealthDisplayProps>();
-  const [demographicProps,setDemographicProps]=useState<DemoGraphicDisplayProps>();
-  const [ otherProps, setOtherProps]=useState<OtherRequirementDisplayProps>();
+  const [healthProps, setHealthProps]=useState<HealthDisplayProps>(testBypass1);
+  const [demographicProps,setDemographicProps]=useState<DemoGraphicDisplayProps>(testBypass2);
+  const [ otherProps, setOtherProps]=useState<OtherRequirementDisplayProps>(testBypass3);
   let participantId = '';
+  const router = useRouter();
 let studyId = '';
 
-// Check if window is defined (i.e., if the code is running in a browser environment)
 if (typeof window !== 'undefined') {
     const urlParams = new URLSearchParams(window.location.search);
     participantId = urlParams.get('uid') || '';
@@ -49,6 +49,7 @@ if (typeof window !== 'undefined') {
     );
     setButtonColours(buttonColors);
   }
+  
   useEffect (()=>{
     const fetchUserData = async ()=> {
         console.log(participantId )
@@ -116,7 +117,71 @@ if (typeof window !== 'undefined') {
       fetchUserData();
   },[department, id, participantId, studyId])
   
-
+  const handleRejection=()=>{
+    if(rejectionReason !== ''){
+        setRejectionError('');
+        addStudyToUsersRejected();
+        editUserStatusInStudy(true);
+        router.push('/researcherHistory');
+        return;
+    }
+    setRejectionError('A Reason for Rejection Is Required')
+  }
+  const handleAccept=()=>{
+        addStudyToUsersJoined();
+        editUserStatusInStudy(false);
+        router.push('/researcherHistory');
+  }
+  const addStudyToUsersJoined= async ()=>{
+    try{
+    const userData:any= await fetchDocumentById("users",participantId );
+    const currentStudies = userData.joinedStudies
+    console.log(userData);
+    console.log(currentStudies);
+    const updatedStudies = [...currentStudies,{department:department,id:studyId,publisherId:id}]
+    const updatedUserDoc = { ...userData };
+    updatedUserDoc.joinedStudies = updatedStudies;
+    updateDocument('users',participantId,updatedUserDoc);
+    } catch (error) {
+    console.error("Error adding study to users joinedStudies list:", error);
+    }
+  }
+  const addStudyToUsersRejected= async ()=>{
+    try{
+    const userData:any= await fetchDocumentById("users",participantId );
+    const currentStudies = userData.rejectedStudies
+    console.log(userData);
+    console.log(currentStudies);
+    const updatedStudies = [...currentStudies,{department:department,id:studyId,publisherId:id,rejectionReason:rejectionReason}]
+    const updatedUserDoc = { ...userData };
+    updatedUserDoc.rejectedStudies = updatedStudies;
+    updateDocument('users',participantId,updatedUserDoc);
+    } catch (error) {
+    console.error("Error adding study to users rejectedStudies list:", error);
+    }
+  }
+  const editUserStatusInStudy = async (wantToRemove:boolean)=>{
+    try{
+        const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${id}/studies`,studyId);
+        const currentAwaitingApprovalList = studyData.studyObj.awaitingApprovalParticipants;
+        const currentJoinedList = studyData.studyObj.joinedParticipants;
+        const updatedAwaitingApprovalList = currentAwaitingApprovalList.filter((participantId: string) => participantId !== participantId);
+        const updatedJoinedList = [...currentJoinedList, participantId];
+        const updatedStudyDoc = {...studyData};
+        if(wantToRemove){
+           updatedStudyDoc.studyObj.awaitingApprovalParticipants = updatedAwaitingApprovalList;
+           updateDocument(`departments/${department}/Researchers/${id}/studies`,studyId,updatedStudyDoc);
+        }else{
+            updatedStudyDoc.studyObj.awaitingApprovalParticipants = updatedAwaitingApprovalList;
+            updatedStudyDoc.studyObj.joinedParticipants = updatedJoinedList;
+            console.log(updatedStudyDoc);
+            updateDocument(`departments/${department}/Researchers/${id}/studies`,studyId,updatedStudyDoc);
+        }
+        } catch (error) {
+        // Handle any errors that occur during the process
+        console.error("Error editing user status in study", error);
+        }
+  }
   
  
   //for study get requirements then use requirements to set
@@ -132,13 +197,13 @@ if (typeof window !== 'undefined') {
                         <Grid item xs={12} sx={{display:'flex',justifyContent:'start'}}>
                             <Typography fontSize={35} sx={{ml:3}}>Fields</Typography>
                         </Grid>
-                        <Grid item xs={isMobile?isExtraSmall?12:4:12} sx={{display:'flex',justifyContent:'center',mt:isMobile?0:-14}}>
+                        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',mt:isMobile?0:-14}}>
                         <Button variant="contained" onClick={()=>handleSelectionChange("Demographic",0)} sx={{width:'200px',height:'65px',backgroundColor:buttonColours[0],overflowX:'scroll'}}><Typography>Demographic</Typography><OpenInFullIcon></OpenInFullIcon></Button>
                         </Grid>
-                        <Grid item xs={isMobile?isExtraSmall?12:4:12} sx={{display:'flex',justifyContent:'center',}}>
+                        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',}}>
                         <Button variant="contained" onClick={()=>handleSelectionChange("Health",1)} sx={{width:'200px',height:'65px',backgroundColor:buttonColours[1],mt:isMobile?0:-18}}><Typography>Health</Typography><OpenInFullIcon></OpenInFullIcon></Button>
                         </Grid>
-                        <Grid item xs={isMobile?isExtraSmall?12:4:12} sx={{display:'flex',justifyContent:'center'}}>
+                        <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>
                         <Button variant="contained" onClick={()=>handleSelectionChange("Other",2)}sx={{width:'200px',height:'65px',backgroundColor:buttonColours[2],mt:isMobile?0:-24}}><Typography>Other</Typography><OpenInFullIcon></OpenInFullIcon></Button>
                         </Grid>
                 </Grid>
@@ -149,9 +214,9 @@ if (typeof window !== 'undefined') {
                           <Typography fontSize={35} sx={{ml:3}}>Details</Typography>
                     </Grid>
                     <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'400px'}}>
-                    {visibleContent=="Health" ?<HealthDisplay hasPreExisting={healthProps?healthProps?.hasPreExisting:false} hasAllergies={healthProps?healthProps?.hasAllergies:false} hasDisabilities={healthProps?healthProps?.hasDisabilities:false} hasMedication={healthProps?healthProps?.hasMedication:false} preExisitng={healthProps?healthProps?.preExisitng:"None"} allergies={healthProps?healthProps?.allergies:"None"} disabilities={healthProps?healthProps?.disabilities:"None"} medication={healthProps?healthProps?.medication:"None"}></HealthDisplay>:null}
-                     {visibleContent=="Other" ?<OtherRequirementDisplay hasAccessToDevice={otherProps?otherProps?.hasAccessToDevice:false} hasNativeLanguage={otherProps?otherProps?.hasNativeLanguage:false} hasOtherLanguages={otherProps?otherProps?.hasOtherLanguages:false} hasNearestCity={otherProps?otherProps?.hasNearestCity:false} hasMaxTravelTime={otherProps?otherProps?.hasMaxTravelTime:false} hasAnonymityLevel={otherProps?otherProps?.hasAnonymityLevel:false} hasAccessRequirements={otherProps?otherProps?.hasAccessRequirements:false} accessToDevice={otherProps?otherProps.accessToDevice:"None"} nativeLanguage={otherProps?otherProps.nativeLanguage:"None"} otherLanguages={otherProps?otherProps.otherLanguages:"None"} nearestCity={otherProps?otherProps.nearestCity:"None"} maxTravelTime={otherProps?otherProps.maxTravelTime:"None"} anonymityLevel={otherProps?otherProps.anonymityLevel:"None"} accesRequirements={otherProps?otherProps.accesRequirements:"None"}></OtherRequirementDisplay>:null}
-                    {visibleContent=="Demographic" ?<DemoGraphicDisplay hasFaculty={demographicProps?demographicProps.hasFaculty:false} hasGender={demographicProps?demographicProps.hasGender:false} hasRace={demographicProps?demographicProps.hasRace:false} hasSexuality={demographicProps?demographicProps.hasSexuality:false} hasYOFS={demographicProps?demographicProps.hasYOFS:false} hasReligion={demographicProps?demographicProps.hasReligion:false} hasIncome={demographicProps?demographicProps.hasIncome:false} hasAge={demographicProps?demographicProps.hasAge:false} hasOccupation={demographicProps?demographicProps.hasOccupation:false} hasHLOFE={demographicProps?demographicProps.hasHLOFE:false} faculty={demographicProps?demographicProps?.faculty:"None"} gender={demographicProps?demographicProps?.gender:"None"} race={demographicProps?demographicProps?.race:"None"} sexuality={demographicProps?demographicProps?.sexuality:"None"} yofs={demographicProps?demographicProps?.yofs:"None"} religion={demographicProps?demographicProps?.religion:"None"} income={demographicProps?demographicProps?.income:"None"} age={demographicProps?demographicProps?.age:"None"} occupation={demographicProps?demographicProps?.occupation:"None"} hlofe={demographicProps?demographicProps?.hlofe:"None"}></DemoGraphicDisplay>:null}
+                    {visibleContent=="Health" ?<HealthDisplay hasPreExisting={healthProps.hasPreExisting} hasAllergies={healthProps.hasAllergies} hasDisabilities={healthProps.hasDisabilities} hasMedication={healthProps.hasMedication} preExisitng={healthProps.preExisitng} allergies={healthProps.allergies} disabilities={healthProps.disabilities} medication={healthProps.medication}></HealthDisplay>:null}
+                     {visibleContent=="Other" ?<OtherRequirementDisplay hasAccessToDevice={otherProps.hasAccessToDevice} hasNativeLanguage={otherProps.hasNativeLanguage} hasOtherLanguages={otherProps.hasOtherLanguages} hasNearestCity={otherProps.hasNearestCity} hasMaxTravelTime={otherProps.hasMaxTravelTime} hasAnonymityLevel={otherProps.hasAnonymityLevel} hasAccessRequirements={otherProps.hasAccessRequirements} accessToDevice={otherProps.accessToDevice} nativeLanguage={otherProps.nativeLanguage} otherLanguages={otherProps.otherLanguages} nearestCity={otherProps.nearestCity} maxTravelTime={otherProps.maxTravelTime} anonymityLevel={otherProps.anonymityLevel} accesRequirements={otherProps.accesRequirements}></OtherRequirementDisplay>:null}
+                     {visibleContent=="Demographic" ?<DemoGraphicDisplay hasFaculty={demographicProps.hasFaculty} hasGender={demographicProps.hasGender} hasRace={demographicProps.hasRace} hasSexuality={demographicProps.hasSexuality} hasYOFS={demographicProps.hasYOFS} hasReligion={demographicProps.hasReligion} hasIncome={demographicProps.hasIncome} hasAge={demographicProps.hasAge} hasOccupation={demographicProps.hasOccupation} hasHLOFE={demographicProps.hasHLOFE} faculty={demographicProps.faculty} gender={demographicProps.gender} race={demographicProps.race} sexuality={demographicProps.sexuality} yofs={demographicProps.yofs} religion={demographicProps.religion} income={demographicProps.income} age={demographicProps.age} occupation={demographicProps.occupation} hlofe={demographicProps.hlofe}></DemoGraphicDisplay>:null}
                     </Grid>
                 </Grid>
             </Grid>    
@@ -176,7 +241,7 @@ if (typeof window !== 'undefined') {
                                 <Typography fontSize={20} sx={{ml:1}}>Email:</Typography>
                             </Grid>
                             <Grid item xs={12} sx={{display:'flex',justifyContent:'start'}}>
-                               <Button  variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#84C287",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><DoneIcon></DoneIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Accept</Box></Grid></Grid></Button>
+                               <Button  onClick={handleAccept}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#84C287",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><DoneIcon></DoneIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Accept</Box></Grid></Grid></Button>
                             </Grid>
                         </Grid> 
                         </Box>
@@ -205,7 +270,7 @@ if (typeof window !== 'undefined') {
                     />
                             </Grid>
                             <Grid item xs={12} sx={{display:'flex',justifyContent:'start'}}>
-                            <Button  variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#CD386B",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><CloseIcon></CloseIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Reject</Box></Grid></Grid></Button>
+                            <Button  onClick={handleRejection} variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#CD386B",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><CloseIcon></CloseIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Reject</Box></Grid></Grid></Button>
                             </Grid>
                         </Grid> 
                         </Box>

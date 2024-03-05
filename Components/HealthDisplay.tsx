@@ -10,15 +10,15 @@ import { ReactNode, useState } from 'react';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
-interface HealthDisplayProps {
- hasPreExisting:boolean;
- hasAllergies:boolean;
- hasDisabilities:boolean;
- hasMedication:boolean;
- preExisitng:string;
- allergies:string;
- disabilities:string;
- medication:string;
+export interface HealthDisplayProps {
+ hasPreExisting?:boolean;
+ hasAllergies?:boolean;
+ hasDisabilities?:boolean;
+ hasMedication?:boolean;
+ preExisitng?:string;
+ allergies?:string;
+ disabilities?:string;
+ medication?:string;
 
 }
 

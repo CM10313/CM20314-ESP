@@ -81,7 +81,6 @@ const ResearchHome: React.FC = () => {
   const fetchData = async (uid:string)=>{
     try{
       const departments = await fetchDocuments(`departments/Computer Science/Researchers/${uid}/studies`)///swQ90URzscZLubKOh6t8hSAXr1V2/studies
-      console.log("Departments",departments)
     }catch (error){
 console.error(error)
     }
@@ -91,7 +90,6 @@ console.error(error)
       const users = await fetchUsersByDepartment(department);
       for (const user of users) {
         fetchData(user.id);
-        console.log(user.id)
       }
     } catch (error) {
       console.error('Error:', error);
