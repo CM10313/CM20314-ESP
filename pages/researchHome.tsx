@@ -81,7 +81,6 @@ const ResearchHome: React.FC = () => {
   const fetchData = async (uid:string)=>{
     try{
       const departments = await fetchDocuments(`departments/Computer Science/Researchers/${uid}/studies`)///swQ90URzscZLubKOh6t8hSAXr1V2/studies
-      console.log("Departments",departments)
     }catch (error){
 console.error(error)
     }
@@ -91,14 +90,16 @@ console.error(error)
       const users = await fetchUsersByDepartment(department);
       for (const user of users) {
         fetchData(user.id);
-        console.log(user.id)
       }
     } catch (error) {
       console.error('Error:', error);
     }
   };
   listAllDepartmentStudies('Computer Science');
-  
+const handlePush = () => {
+    router.push('/viewParticipantDetails?uid=PNeqhkPm0Le0LcfOK1caYeVoCYB3&studyId=2XHxM1QPyu2Xmd7YsiaW');
+};//used to mock params  needed for participant view
+
   return (
     <>
      <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
@@ -140,6 +141,7 @@ console.error(error)
           </Box>
           </Grid>
         </Grid>
+        <Button variant="contained" onClick={handlePush}>View Page</Button>
       </div>
     </>
   );
