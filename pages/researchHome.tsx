@@ -99,6 +99,9 @@ console.error(error)
 const handlePush = () => {
     router.push('/viewParticipantDetails?uid=PNeqhkPm0Le0LcfOK1caYeVoCYB3&studyId=2XHxM1QPyu2Xmd7YsiaW');
 };//used to mock params  needed for participant view
+const handleDivPush = () => {
+  router.push('/diversityView?studyId=2XHxM1QPyu2Xmd7YsiaW');
+};//used to mock push for diversity view
 
   return (
     <>
@@ -142,6 +145,7 @@ const handlePush = () => {
           </Grid>
         </Grid>
         <Button variant="contained" onClick={handlePush}>View Page</Button>
+        <Button variant="contained" onClick={handleDivPush}>View Diversity</Button>
       </div>
     </>
   );
