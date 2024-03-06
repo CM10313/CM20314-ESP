@@ -15,6 +15,7 @@ describe('DonughtChart Component', () => {
       xAxisLabels: ['A', 'B', 'C', 'D', 'E'],
       yAxisLabels: [20, 30, 10, 25, 15],
       title: 'Sample Doughnut Chart',
+      studyId: "#654321",
       hasData: true,
     };
     render(<DonughtChart graphData={graphData} />);

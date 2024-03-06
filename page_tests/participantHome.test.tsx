@@ -40,10 +40,7 @@ jest.mock('@mui/material', () => {
   jest.mock('../firebase/firestore', () => ({
     fetchDocumentById: jest.fn(),
   }));
-  
-  jest.mock('../Utils/RetrieveStudyData', () => ({
-    getAllStudies: jest.fn(),
-  }));
+ 
 describe('ResearchHome component', () => {
     beforeEach(() => {
         jest.clearAllMocks(); // Clear all mock calls before each test

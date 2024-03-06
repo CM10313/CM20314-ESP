@@ -3,16 +3,22 @@ import { Bar } from 'react-chartjs-2';
 import { Chart, ScaleOptions, registerables } from 'chart.js/auto';
 //Chart.register(...registerables);
 
-interface BarGraphProps {
+export interface BarGraphProps {
     graphData: {
         xAxisLabels: string[],
         yAxisLabels: number[],
-        title: string
+        title: string,
+        studyId: string,
         hasData: boolean,
     }
 }
 
 const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
+console.log(graphData)
+if (graphData === undefined || !graphData) {
+    // Fallback rendering when data is not available
+    return <Box>No data available</Box>;
+}
 
     if(graphData.hasData == false){
         return <Box sx={{
@@ -55,10 +61,6 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
         },
 
         scales: {
-            y: {ticks: {
-                    callback: function (value:number){ return value + '%' }
-                }}as ScaleOptions<'linear'>,
-            
             x : {
                 grid: { display: false }
             }
@@ -85,9 +87,10 @@ const BarGraph: React.FC<BarGraphProps> = ({graphData}) => {
                         borderRadius: "0.2em",
                         width: "6em",
                         textAlign: "center",
-                        fontWeight: "bold"
+                        fontWeight: "bold",
+                        overflow:"scroll",
                     }}> 
-                        #123456 
+                        {graphData.studyId}
                     </Typography>
                 </Grid>
 
