@@ -77,25 +77,6 @@ const ResearchHome: React.FC = () => {
     onCardClick={handleCardClick} department={''}  />,
     // Add more StudyMediumCard components here as needed
   ];
-
-  const fetchData = async (uid:string)=>{
-    try{
-      const departments = await fetchDocuments(`departments/Computer Science/Researchers/${uid}/studies`)///swQ90URzscZLubKOh6t8hSAXr1V2/studies
-    }catch (error){
-console.error(error)
-    }
-  }
-  const listAllDepartmentStudies = async (department:string) => {
-    try {
-      const users = await fetchUsersByDepartment(department);
-      for (const user of users) {
-        fetchData(user.id);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-  listAllDepartmentStudies('Computer Science');
 const handlePush = () => {
     router.push('/viewParticipantDetails?uid=PNeqhkPm0Le0LcfOK1caYeVoCYB3&studyId=2XHxM1QPyu2Xmd7YsiaW');
 };//used to mock params  needed for participant view

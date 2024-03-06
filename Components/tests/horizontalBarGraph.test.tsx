@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import BarGraph from '../barGraphs';
+import HorizontalBarGraph from '../horizontalBarGraph';
 
 // Mock data
 export const mockGraphData = {
@@ -37,7 +38,7 @@ jest.mock('react-chartjs-2', () => ({
 describe('DonughtChart Component', () => {
     it('renders without crashing', () => {
     const { getByText } = render(
-        <BarGraph graphData={mockGraphData} />
+        <HorizontalBarGraph graphData={mockGraphData} />
     );
 
     // Check if the title is rendered correctly
@@ -58,7 +59,7 @@ describe('DonughtChart Component', () => {
 
 it('renders invalid message component if no data', () => {
     const { getByText } = render(
-        <BarGraph graphData={mockGraphDataWithoutData} />
+        <HorizontalBarGraph graphData={mockGraphDataWithoutData} />
     );
     // Check if the message is rendered correctly
     const messageElement = getByText(

@@ -4,17 +4,11 @@ import HorizontalBarGraph, { HorizontalBarGraphProps } from "../Components/horiz
 import DonughtChart, { DonughtGraphProps } from "../Components/donughtChart";
 import BarGraph, { BarGraphProps } from "../Components/barGraphs";
 import Navbar from "../Components/navbar";
-
-// All the data that is passed to the graph
-import { 
-    diversityScore, incomeGraphLabelData, ageGraphLabelData,  
-    raceGraphLabelData, sexualityGraphLabelData, 
-    genderGraphLabelData, religionGraphLabelData
-} from "../DataState/graphData";
 import OverallDiversityScore from "../Components/diversityScore";
 import { useAuth } from "../Context/AuthContext";
 import { fetchDocumentById} from "../firebase/firestore";
 import { useEffect, useState } from "react";
+import fillAgeDict, { fillDict, fillIncomeDict } from "../Utils/diversityExtraction";
 
 
  const DiversityView: React.FC<{ testBypass1?: BarGraphProps, testBypass2?: HorizontalBarGraphProps,testBypass3?:DonughtGraphProps }> = ({ testBypass1={} as BarGraphProps, testBypass2 ={} as HorizontalBarGraphProps,testBypass3 ={} as DonughtGraphProps })  => {
@@ -65,13 +59,6 @@ import { useEffect, useState } from "react";
             
             // Wait for all promises to resolve
             await Promise.all(promises);
-            
-            console.log(ageArray)
-            console.log(raceArray);
-            console.log(religionArray);
-            console.log(sexualityArray);
-            console.log(genderArray);
-            console.log(incomeArray);
             extractAge(ageArray,diversitySelection);
             extractGender(genderArray,diversitySelection);
             extractIncome(incomeArray,diversitySelection);
@@ -83,62 +70,12 @@ import { useEffect, useState } from "react";
     console.error(error)
         }
       }
-
-
      fetchStudyData();
     },[])
     
-
-   
     const extractAge = (ageArray: string[], diversitySelection:diversitySelectionType) => {
-        const ageDict: { [key: string]: number } = {
-            "18-20": 0,
-            "21-25": 0,
-            "26-30": 0,
-            "31-40": 0,
-            "41-45": 0,
-            "46-50": 0,
-            "50+": 0
-        };
-        console.log("Type of ageArray:", typeof ageArray);
-        console.log("ageArray:", ageArray);
-        const ageArrayValues = Object.values(ageArray);
-const valueAtIndexZero = ageArrayValues[0];
-console.log(valueAtIndexZero);
-    ageArray.forEach(age=>{console.log(age)})
-        ageArray.forEach(age => {
-            console.log("Age:", age);
-            const ageNum = parseInt(age);
-            console.log(ageNum)
-            if (!isNaN(ageNum)) {
-                switch (true) {
-                    case ageNum >= 18 && ageNum <= 20:
-                        ageDict["18-20"]++;
-                        break;
-                    case ageNum >= 21 && ageNum <= 25:
-                        ageDict["21-25"]++;
-                        break;
-                    case ageNum >= 26 && ageNum <= 30:
-                        ageDict["26-30"]++;
-                        break;
-                    case ageNum >= 31 && ageNum <= 40:
-                        ageDict["31-40"]++;
-                        break;
-                    case ageNum >= 41 && ageNum <= 45:
-                        ageDict["41-45"]++;
-                        break;
-                    case ageNum >= 46 && ageNum <= 50:
-                        ageDict["46-50"]++;
-                        break;
-                    case ageNum >= 50 && ageNum <= 99:
-                        ageDict["46-50"]++;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-    
+        
+        const ageDict = fillAgeDict(ageArray);
         const ageObj = {
             graphData:{
                 yAxisLabels: Object.values(ageDict),
@@ -156,46 +93,11 @@ console.log(valueAtIndexZero);
                 hasData: diversitySelection.hasAge,
             }
         };
-    console.log(ageObj);
         setAgeProps(ageObj); // Assuming setAgeProps is a function that sets age properties
     };
     
     const extractIncome =(incomeArray:string[], diversitySelection:diversitySelectionType)=>{
-        const incomeDict: { [key: string]: number } = {
-            "0 - 10k":0,
-            "11 - 15k":0,
-            "16 - 20k":0,
-            "21 - 25k":0,
-            "25 - 30k":0,
-            "30k +":0,
-        };
-    
-        incomeArray.forEach(age => {
-            const incomeNum = parseInt(age);
-            if (!isNaN(incomeNum)) {
-                switch (true) {
-                    case incomeNum >= 0 && incomeNum <= 10998:
-                        incomeDict["0 - 10k"]++;
-                        break;
-                    case incomeNum >= 10999 && incomeNum <= 15998:
-                        incomeDict["11 - 15k"]++;
-                        break;
-                    case incomeNum >= 15999 && incomeNum <= 20998:
-                        incomeDict["16 - 20k"]++;
-                        break;
-                    case incomeNum  >= 20999 && incomeNum <= 25998:
-                        incomeDict["21 - 25k"]++;
-                        break;
-                    case incomeNum >= 25999 && incomeNum <= 1000000:
-                        incomeDict["30k +"]++;
-                        break;
-                    
-                    default:
-                        break;
-                }
-            }
-        });
-    
+        const incomeDict = fillIncomeDict(incomeArray);
         const incomeObj = {
             graphData:{
                 yAxisLabels: Object.values(incomeDict),
@@ -216,15 +118,7 @@ console.log(valueAtIndexZero);
         setIncomeProps(incomeObj);
     }
     const extractRace =(raceArray:string[], diversitySelection:diversitySelectionType)=>{
-        const raceDict: { [key: string]: number } = {};
-
-    raceArray.forEach(race => {
-        if (raceDict.hasOwnProperty(race.charAt(0).toUpperCase() + race.slice(1))) {
-            raceDict[race.charAt(0).toUpperCase() + race.slice(1)]++;
-        } else {
-            raceDict[race.charAt(0).toUpperCase() + race.slice(1)] = 1;
-        }
-    });
+       const raceDict = fillDict(raceArray);
     const xAxisLabels = Object.keys(raceDict);
     const yAxisLabels = Object.values(raceDict);
 
@@ -241,14 +135,7 @@ console.log(valueAtIndexZero);
      setRaceProps(raceObj);
     }
     const extractGender =(genderArray:string[], diversitySelection:diversitySelectionType)=>{
-        const genderDict:{[key:string]:number}={};
-        genderArray.forEach(gender =>{
-            if(genderDict.hasOwnProperty(gender.charAt(0).toUpperCase() + gender.slice(1))){
-                genderDict[gender.charAt(0).toUpperCase() + gender.slice(1)]++;
-            }else{
-                genderDict[gender.charAt(0).toUpperCase() + gender.slice(1)] =1;
-            }
-        })
+        const genderDict = fillDict(genderArray);
         const xAxisLabels = Object.keys(genderDict);
        const yAxisLabels = Object.values(genderDict);
        const genderObj = {
@@ -263,14 +150,7 @@ console.log(valueAtIndexZero);
     setGenderProps(genderObj);
     }
     const extractSexuality =(sexualityArray:string[], diversitySelection:diversitySelectionType)=>{
-        const sexualityDict:{[key:string]:number}={};
-        sexualityArray.forEach(sexuality =>{
-            if(sexualityDict.hasOwnProperty(sexuality)){
-                sexualityDict[sexuality]++;
-            }else{
-                sexualityDict[sexuality] =1;
-            }
-        })
+        const sexualityDict = fillDict(sexualityArray);
         const xAxisLabels = Object.keys(sexualityDict);
        const yAxisLabels = Object.values(sexualityDict);
        const sexualityObj = {
@@ -285,14 +165,7 @@ console.log(valueAtIndexZero);
     setSexualityProps(sexualityObj);
     }
     const extractReligion =(religionArray:string[], diversitySelection:diversitySelectionType)=>{
-       const religionDict: {[key:string]:number}={};
-       religionArray.forEach(religion =>{
-        if (religionDict.hasOwnProperty(religion.charAt(0).toUpperCase() + religion.slice(1))){
-            religionDict[religion.charAt(0).toUpperCase() + religion.slice(1)]++;
-        }else{
-            religionDict[religion.charAt(0).toUpperCase() + religion.slice(1)] = 1;
-        }
-       }) 
+       const religionDict = fillDict(religionArray);
        const xAxisLabels = Object.keys(religionDict);
        const yAxisLabels = Object.values(religionDict);
        const religionObj = {
