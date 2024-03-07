@@ -146,7 +146,7 @@ const EthicsBoardHome: React.FC = () => {
     return (
         <div>
             <TriangleBackground />
-            <Navbar />
+            <Navbar name={''} rating={0} />
             <EthicsBoardHomeLayout />
         </div>
     );
