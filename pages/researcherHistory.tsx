@@ -5,7 +5,7 @@ import HiddenStudiesCards from "../Components/hiddenStudies";
 import DisputeContactCard from "../Components/disputeContact";
 import Navbar from "../Components/navbar";
 import { useAuth } from "../Context/AuthContext";
-import { getResearcherStudies } from "../firebase/firestore";
+import  getResearcherStudies  from "../firebase/firestore";
 import { useEffect, useState } from "react";
 import StudyCreator from "./studyCreator";
 

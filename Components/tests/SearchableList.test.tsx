@@ -18,21 +18,19 @@ describe('SearchableList Component', () => {
             rating={3.8}
             title="title 1"
             borderColour="#1F5095"
-            onCardClick={(title:string)=>{}} department={'Computer Science'}  
-          />, <StudyMediumCard
-          key="1"
-          name="second"
-          rating={3.8}
-          title="title 2"
-          borderColour="#1F5095"
-          onCardClick={(title:string)=>{}} department={'Computer Science'}  
-        />, <StudyMediumCard
+            onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}          />, <StudyMediumCard
+            key="1"
+            name="second"
+            rating={3.8}
+            title="title 2"
+            borderColour="#1F5095"
+            onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}        />, <StudyMediumCard
             key="2"
             name="third"
             rating={2.9}
             title="title 3"
             borderColour="#1F5095"
-            onCardClick={(title: string) => { } } department={'Computer Science'}      />
+            onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}      />
         ];
     
         // Render the SearchableList component
@@ -69,22 +67,19 @@ describe('SearchableList Component', () => {
             rating={3.8}
             title="title 1"
             borderColour="#1F5095"
-            onCardClick={(title:string)=>{}}department={'Computer Science'}  
-          />, <StudyMediumCard
-          key="1"
-          name="second"
-          rating={3.8}
-          title="title 2"
-          borderColour="#1F5095"
-          onCardClick={(title:string)=>{}}department={'Computer Science'}  
-        />, <StudyMediumCard
-        key="2"
-        name="third"
-        rating={2.9}
-        title="title 3"
-        borderColour="#1F5095"
-        onCardClick={(title:string)=>{}}department={'Computer Science'}  
-      />
+            onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}          />, <StudyMediumCard
+            key="1"
+            name="second"
+            rating={3.8}
+            title="title 2"
+            borderColour="#1F5095"
+            onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}        />, <StudyMediumCard
+            key="2"
+            name="third"
+            rating={2.9}
+            title="title 3"
+            borderColour="#1F5095"
+            onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}      />
         ];
     
         // Render the SearchableList component
@@ -198,22 +193,19 @@ describe('SearchableList Component', () => {
         rating={3.8}
         title="title 1"
         borderColour="#1F5095"
-        onCardClick={(title:string)=>{}} department={'Computer Science'}  
-      />, <StudyMediumCard
-      key="1"
-      name="second"
-      rating={3.8}
-      title="title 2"
-      borderColour="#1F5095"
-      onCardClick={(title:string)=>{}} department={'Computer Science'}  
-    />, <StudyMediumCard
-    key="2"
-    name="third"
-    rating={2.9}
-    title="title 3"
-    borderColour="#1F5095"
-    onCardClick={(title:string)=>{}} department={'Computer Science'}  
-  />
+        onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}      />, <StudyMediumCard
+        key="1"
+        name="second"
+        rating={3.8}
+        title="title 2"
+        borderColour="#1F5095"
+        onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}    />, <StudyMediumCard
+        key="2"
+        name="third"
+        rating={2.9}
+        title="title 3"
+        borderColour="#1F5095"
+        onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}  />
     ];
 
     // Render the SearchableList component
@@ -246,22 +238,19 @@ describe('SearchableList Component', () => {
         rating={3.8}
         title="Consectetur adipiscing elit"
         borderColour="#1F5095"
-        onCardClick={(title:string)=>{}} department={'Computer Science'}  
-      />, <StudyMediumCard
-      key="1"
-      name="second"
-      rating={3.8}
-      title="Consectetur adipiscing elit"
-      borderColour="#1F5095"
-      onCardClick={(title:string)=>{}} department={'Computer Science'}  
-    />, <StudyMediumCard
-    key="2"
-    name="third"
-    rating={2.9}
-    title="Consectetur adipiscing elit"
-    borderColour="#1F5095"
-    onCardClick={(title:string)=>{}} department={'Computer Science'}  
-  />
+        onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}      />, <StudyMediumCard
+        key="1"
+        name="second"
+        rating={3.8}
+        title="Consectetur adipiscing elit"
+        borderColour="#1F5095"
+        onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}    />, <StudyMediumCard
+        key="2"
+        name="third"
+        rating={2.9}
+        title="Consectetur adipiscing elit"
+        borderColour="#1F5095"
+        onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}  />
     ];
 
     // Render the SearchableList component
@@ -295,22 +284,19 @@ describe('SearchableList Component', () => {
         rating={3.8}
         title="title 1"
         borderColour="#1F5095"
-        onCardClick={(title:string)=>{}} department={'Computer Science'}  
-      />, <StudyMediumCard
-      key="1"
-      name="second"
-      rating={3.8}
-      title="title 2"
-      borderColour="#1F5095"
-      onCardClick={(title:string)=>{}} department={'Accounting'}  
-    />, <StudyMediumCard
-    key="2"
-    name="third"
-    rating={2.9}
-    title="title 3"
-    borderColour="#1F5095"
-    onCardClick={(title:string)=>{}} department={'Finance'}  
-  />
+        onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}      />, <StudyMediumCard
+        key="1"
+        name="second"
+        rating={3.8}
+        title="title 2"
+        borderColour="#1F5095"
+        onCardClick={(title: string) => { } } department={'Accounting'} id={''} publisherId={''}    />, <StudyMediumCard
+        key="2"
+        name="third"
+        rating={2.9}
+        title="title 3"
+        borderColour="#1F5095"
+        onCardClick={(title: string) => { } } department={'Finance'} id={''} publisherId={''}  />
     ];
 
     // Render the SearchableList component

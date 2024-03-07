@@ -3,7 +3,12 @@ import AdvertReviewOptions from "../Components/Ethics/AdvertReviewOptions";
 import AdvertViewer from "../Components/Ethics/AdvertViewer";
 import TriangleBackground from "../Components/TriangleBackground";
 import Navbar from "../Components/navbar";
-import { addDocument, createFieldIfNotExists, fetchDocumentById, fetchDocuments, updateDocument, updateDocumentWithArray } from "../firebase/firestore";
+import addDocument from "../firebase/firestore";
+import  createFieldIfNotExists from "../firebase/firestore";
+import fetchDocumentById from "../firebase/firestore";
+import  fetchDocuments from "../firebase/firestore";
+import  updateDocument from "../firebase/firestore";
+import updateDocumentWithArray from "../firebase/firestore";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import FeedbackForms from "../Components/Ethics/FeedbackForms";
@@ -86,7 +91,7 @@ const EthicsAdvertViewing: React.FC = () => {
     return (
         <div>
             <TriangleBackground />
-            <Navbar />
+            <Navbar name={""} rating={0} />
             {testAdvertCardProps && storedStudyData && storedUserData && (
                 <div style={{ marginTop: '5px' }}>
                     <AdvertViewer

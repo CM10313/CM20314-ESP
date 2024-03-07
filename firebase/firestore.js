@@ -1,26 +1,6 @@
 import { db } from './config'; // Assuming you export your Firestore instance as 'db' in config.js
 import { collection, setDoc, getDoc, getDocs, updateDoc, doc, deleteDoc,addDoc,query,where, onSnapshot } from 'firebase/firestore';
 
-import { collection, setDoc, getDoc, getDocs, updateDoc, doc, deleteDoc,addDoc , query , where , onSnapshot} from 'firebase/firestore';
-
-
-// Add a document to a collection
-
-const addMultipleDocuments = async (collectionName, dataArray, idPropertyName) => {
-  try {
-    const collectionRef = collection(db, collectionName);
-
-    // Loop through the dataArray and add each document to the collection
-    for (const data of dataArray) {
-      const docRef = doc(collectionRef, data[idPropertyName]); // Use the specified ID property
-      await setDoc(docRef, data);
-      console.log('Document written with ID: ', docRef.id);
-    }
-
-  } catch (e) {
-    console.error('Error adding documents: ', e);
-  }
-};
 
 
 const addDocument = async (collectionName, data, uid) => {
@@ -92,29 +72,6 @@ const fetchDocumentById = async (collectionName, documentId) => {
   }
 };
 
-
-const updateDocumentWithArray = async (collectionName, docId, fieldName, newArrayData) => {
-  try {
-    const docRef = doc(db, collectionName, docId);
-    const docSnapshot = await getDoc(docRef);
-
-    if (docSnapshot.exists()) {
-      const existingData = docSnapshot.data();
-      const existingArray = existingData[fieldName] || [];
-
-      const updatedArray = [...existingArray, ...newArrayData];
-
-      // Update the document with the modified array
-      await setDoc(docRef, { [fieldName]: updatedArray }, { merge: true });
-
-      console.log("Document updated with array: ", docRef.id);
-    } else {
-      console.error("Document does not exist!");
-    }
-  } catch (e) {
-    console.error("Error updating document: ", e);
-  }
-}
 
 
 const fetchUsersByDepartment = async(department) => {
@@ -228,37 +185,6 @@ const deleteDocument = async (collectionName, docId) => {
   }
 };
 
-const fetchAllStudiesByDepartment = async (department) => {
-  try {
-   
-    const users = await fetchUsersByDepartment(department);
-    
-    let studies = [];
-
-    for (let i = 0; i < users.length; i++) {
-      const userId = users[i].id;
-      const userStudiesRef = collection(db, 'departments', department, 'Researchers', userId, 'studies');
-      const userStudiesSnapshot = await getDocs(userStudiesRef);
-    
-      userStudiesSnapshot.forEach((studyDoc) => {
-        const studyData = studyDoc.data(); // Access the data within the document
-        studies.push({
-          userId: userId,
-          studyId: studyDoc.id,
-          // Include the study data
-          studyData: studyData,
-        });
-      });
-    }
-
-   
-    return studies;
-  } catch (e) {
-    console.error("Error fetching studies:", e);
-  }
-};
-
-
 const fetchUserByDepartment = async (department) => {
   try {
     const querySnapshot = await getDocs(
@@ -280,7 +206,7 @@ const fetchUserByDepartment = async (department) => {
   }
 };
 
-const fetchUsersByDepartment = async (department) => {
+
 const setupDatabaseListener = (collectionName, callback) => {
   const docRef = collection(db, collectionName);
 
@@ -368,7 +294,7 @@ const createFieldIfNotExists = async (collectionName, docId, fieldName, fieldTyp
   }
 };
 
-export { createFieldIfNotExists };
+
 
 // Grabs all the studies from a particular researcher
 // const getResearcherStudies = async (researcherDepartment, researcherId) => {
@@ -451,102 +377,4 @@ async function getResearcherStudies(departmentName, researcherId) {
       throw error;
   }
 }
-
-
-const setupDatabaseListener = (collectionName, callback) => {
-  const docRef = collection(db, collectionName);
-
-  // Subscribe to real-time updates
-  const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
-    const data = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-
-    // Call the provided callback with the updated data
-    callback(data);
-  });
-
-  // Return an unsubscribe function to stop listening when needed
-  return unsubscribe;
-};
-
-const createFieldIfNotExists = async (collectionName, docId, fieldName, fieldType) => {
-  try {
-    const docRef = doc(db, collectionName, docId);
-
-    // Get the existing document data
-    const docSnapshot = await getDoc(docRef);
-
-    if (docSnapshot.exists()) {
-      // Document exists, check if the field exists
-      const existingData = docSnapshot.data();
-
-      if (!existingData || !existingData[fieldName]) {
-        // Field doesn't exist, create it based on fieldType
-        const initialValue = fieldType === 'map' ? {} : fieldType === 'array' ? [] : fieldValue.delete();
-
-        await setDoc(docRef, {
-          [fieldName]: initialValue,
-        }, { merge: true });
-
-        console.log('Field created:', fieldName);
-      } else {
-        console.log('Field already exists:', fieldName);
-      }
-    } else {
-      // Document doesn't exist, create it with the field based on fieldType
-      const initialValue = fieldType === 'map' ? {} : fieldType === 'array' ? [] : fieldValue.delete();
-
-      await setDoc(docRef, {
-        [fieldName]: initialValue,
-      });
-
-      console.log('Document created with field:', fieldName);
-    }
-  } catch (error) {
-    console.error('Error creating field:', error);
-  }
-};
-
-const clearCollection = async (collectionName) => {
-  if (collectionName == 'Studies'){
-        try {
-          const collectionRef = collection(db, collectionName);
-
-          // Retrieve all documents in the collection
-          const querySnapshot = await getDocs(collectionRef);
-
-          // Delete each document
-          querySnapshot.forEach(async (doc) => {
-            await deleteDoc(doc.ref);
-            console.log('Document deleted: ', doc.id);
-          });
-
-          console.log('Collection cleared.');
-        } catch (e) {
-          console.error('Error clearing collection: ', e);
-        }
-      };
-    }
-
-
-
-export { 
-  addDocument, 
-  fetchDocumentById, 
-  fetchDocuments, 
-  updateDocument, 
-  deleteDocument, 
-  fetchUserByDepartment,
-  fetchUsersByDepartment, 
-  getResearcherStudies, 
-  setupDatabaseListener,
-  createFieldIfNotExists,
-  clearCollection,
-  fetchAllStudiesByDepartment,
-  updateDocumentWithArray,
-  addMultipleDocuments,
-};
-
-export { addDocument, fetchDocumentById, fetchDocuments, updateDocument, deleteDocument,addMultipleDocuments, fetchUserByDepartment,fetchUsersByDepartment, fetchAllStudiesByDepartment , clearCollection ,updateDocumentWithArray};
+    export { addDocument, fetchDocumentById, fetchDocuments, updateDocument, deleteDocument, addMultipleDocuments, fetchUserByDepartment, fetchUsersByDepartment, fetchAllStudiesByDepartment, clearCollection, updateDocumentWithArray};

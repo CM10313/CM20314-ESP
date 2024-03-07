@@ -9,7 +9,7 @@ import validateUsername from '../Utils/ValidateUsername';
 import {getUID, signIn} from '../firebase/auth';
 
 import { useRouter } from 'next/router';
-import { fetchDocumentById } from '../firebase/firestore';
+import  fetchDocumentById from '../firebase/firestore';
 import { useAuth } from '../Context/AuthContext';
 
 
