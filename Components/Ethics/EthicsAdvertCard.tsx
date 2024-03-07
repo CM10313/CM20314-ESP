@@ -1,9 +1,9 @@
 import React, { use, useEffect, useState } from 'react';
-import { deleteDocument, fetchDocumentById, updateDocument } from '../../firebase/firestore';
-import setupDatabaseListener from '../../firebase/firebaseListener';
+import { addMultipleDocuments, clearCollection, deleteDocument, fetchAllStudiesByDepartment, fetchDocumentById, updateDocument } from '../../firebase/firestore';
+import setupDatabaseListener from '../../firebase/firestore';;
 import AdvertViewer from './AdvertViewer';
 import { useRouter } from 'next/router';
-
+import { Refresh } from '@mui/icons-material';
 
 interface EthicsAdvertCardProps {
     name: string;
@@ -30,6 +30,7 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
     const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
     const [studyStatus, setStudyStatus] = useState<string | null>(null);
     const router = useRouter();
+
     useEffect(() => {
         // Fetch study status when the component mounts
         const fetchStudyStatus = async () => {
@@ -46,7 +47,6 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
         };
 
         fetchStudyStatus();
-
         
         const unsubscribeStudyListener = setupDatabaseListener('Studies', (data: any) => {
             const updatedStudy = data.find((study: { id: string; }) => study.id === studyId);
@@ -97,7 +97,7 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
         setConfirmVisible(false);
 
         await router.push({
-            pathname: '/home',
+            pathname: '/EthicsAdvertViewing',
             query: {
                 name: ethicsArguments.name,
                 studyId: ethicsArguments.studyId,
@@ -124,7 +124,6 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
     const handleExit = async (router: any) => {
         console.log('Button clicked');
         setOriginalColor('#0c6a7d');
-   
 
         await router.push({
             pathname: '/EthicsBoardHome'
