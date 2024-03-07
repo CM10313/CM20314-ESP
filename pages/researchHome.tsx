@@ -28,43 +28,57 @@ const ResearchHome: React.FC = () => {
       rating={4.5}
       title="Lorem ipsum dolor sit amet"
       borderColour="#1F5095"
+      id="id"
+      publisherId='pid'
       onCardClick={handleCardClick} department={''}    />,
     <StudyMediumCard
       key="2"
       name="Jane Smith"
       rating={3.8}
+      id="id"
       title="Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,v"
       borderColour="#1F5095"
+      publisherId='pid'
       onCardClick={handleCardClick} department={''}    />,<StudyMediumCard
       key="1"
       name="John Doe"
       rating={4.5}
+      id="id"
       title="Lorem ipsum dolor sit amet"
       borderColour="#1F5095"
+      publisherId='pid'
       onCardClick={handleCardClick} department={''}  />,
   <StudyMediumCard
     key="2"
     name="Jane Smith"
     rating={3.8}
+    id="id"
     title="Consectetur adipiscing elit"
     borderColour="#1F5095"
+    publisherId='pid'
     onCardClick={handleCardClick} department={''}  />,<StudyMediumCard
     key="1"
     name="John Doe"
     rating={4.5}
+    id="id"
     title="Lorem ipsum dolor sit amet"
     borderColour="#1F5095"
+    publisherId='pid'
     onCardClick={handleCardClick} department={''}/>,
 <StudyMediumCard
   key="2"
   name="Jane Smith"
+  id="id"
   rating={3.8}
   title="Consectetur adipiscing elit"
   borderColour="#1F5095"
+  publisherId='pid'
   onCardClick={handleCardClick} department={''}/>,<StudyMediumCard
   key="1"
+  id="id"
   name="John Doe"
   rating={4.5}
+  publisherId='pid'
   title=" Lorem ipsum dolor sit amet"
   borderColour="#1F5095"
   onCardClick={handleCardClick} department={''}  />,
@@ -72,6 +86,8 @@ const ResearchHome: React.FC = () => {
     key="2"
     name="Jane Smith"
     rating={3.8}
+    id="id"
+    publisherId='pid'
     title="Consectetur adipiscing elit"
     borderColour="#1F5095"
     onCardClick={handleCardClick} department={''}  />,

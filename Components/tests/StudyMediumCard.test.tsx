@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 describe('Study Medium Card Component', () => {
     it('renders without crashing', () => {
-      render(<StudyMediumCard name={''} rating={0} title={''} borderColour={''} onCardClick={()=>{} } department={''}  />);
+      render(<StudyMediumCard name={''} rating={0} title={''} borderColour={''} onCardClick={() => { } } department={''} id={''} publisherId={''}  />);
     });
     it('clickng card calls router function', () => {
         const onCardClickMock = jest.fn();
@@ -17,8 +17,7 @@ describe('Study Medium Card Component', () => {
             title="Card Title"
             borderColour=""
             onCardClick={onCardClickMock}
-            department={''}
-          />
+            department={'test department'} id={'test id'} publisherId={'test pub id'}          />
         );
     
         // Click the card action area
@@ -26,6 +25,6 @@ describe('Study Medium Card Component', () => {
     
         // Check if the onCardClick function is called
         expect(onCardClickMock).toHaveBeenCalledTimes(1);
-        expect(onCardClickMock).toHaveBeenCalledWith('Card Title');
+        expect(onCardClickMock).toHaveBeenCalledWith("test id", "test pub id","test department" );
       });
 });
