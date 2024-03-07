@@ -7,10 +7,11 @@ import StarIcon from '@mui/icons-material/Star';
 // }
 
 // Need to quiery and set this as default
-const name = "John Doe";
-const rating = 4.5;
-
-const Navbar = () => {
+interface NavBarProps {
+  name: string;
+  rating: number;
+}
+export default function Navbar ({name,rating }: NavBarProps) {
 
   const isMobile = useMediaQuery('(max-width:1000px)');
   return (
@@ -61,4 +62,3 @@ const Navbar = () => {
       </Grid>
   );
 }
-export default Navbar;

@@ -60,6 +60,7 @@ const handleLoginRedirect = async () => {
     console.log(isLoggedIn)
     switch (account_type) {
       case "participant":
+        router.push('/participantHome');
         break;
       case "researcher":
         router.push('/researchHome');

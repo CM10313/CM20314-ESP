@@ -50,7 +50,6 @@ export default function AdvertCreate({
         router.push('/otherCreator');
         break;
     }
-    
   }
     return (
     

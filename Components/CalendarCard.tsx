@@ -1,32 +1,23 @@
 import { Typography, Card, CardContent } from "@mui/material";
 import { useRouter } from "next/router";
 
-interface CalendarEvent {
-    id: number;
-    date: string;
-    location: string;
-    priority: string;
+
+  export interface ItemProps{
+    borderColor: string;
+    publisher:string;
+    location:string;
+    date:string;
+    title:string;
+    id:string;
   }
-  
-  interface CalendarCardProps {
-    event: CalendarEvent;
-    borderColor?: string;
+  export interface CalendarCardProps {
+   item:ItemProps;
   }
 
-  const CalendarCard: React.FC<CalendarCardProps> = ({ event }) => {
+  const CalendarCard: React.FC<CalendarCardProps> = ({item}) => {
    
-    const goldBorder = "#D7BE69";
-    const greyBorder = "#C6CFD8";
-    let borderColor = "grey";
+
     
-    switch (event.priority){
-        case "high":
-            borderColor = goldBorder;
-            break;
-        case "low": 
-            borderColor = greyBorder 
-            break;    
-    }
     
     const router = useRouter();
     
@@ -35,9 +26,8 @@ interface CalendarEvent {
         router.push(`/advert-preview/${id}`)
      }
 
-
     return (
-        <Card onClick={() => handleClick(event.id)}
+        <Card onClick={() => handleClick(0)}
             sx={{ 
                 display:"flex", 
                 flexDirection:"row", 
@@ -49,7 +39,7 @@ interface CalendarEvent {
                 height: "60px",
                 border: "solid 0.3em",
                 borderRadius: "0.5em",
-                borderColor: borderColor,
+                borderColor: item.borderColor,
                 transition: "background-color 0.3s",
                 "&:hover" : {backgroundColor: "lightgrey"}
 
@@ -58,12 +48,14 @@ interface CalendarEvent {
                 >
             
             <CardContent>
-                <Typography fontSize={12}> Study {event.id} </Typography>
-                <Typography fontSize={11}> {event.location} </Typography>
+                <Typography fontSize={12}> {item.title} </Typography>
+                <Typography fontSize={11}> {item.location} </Typography>
+                <Typography fontSize={11}> {item.publisher} </Typography>
+                <Typography fontSize={11}> {item.id} </Typography>
             </CardContent>
             
             <CardContent>
-                <Typography fontSize={15}> {event.date} </Typography>
+                <Typography fontSize={15}> {item.date} </Typography>
             </CardContent>
             
 

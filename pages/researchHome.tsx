@@ -12,6 +12,7 @@ import Calendar from '../Components/Calendar';
 import SearchableList from '../Components/SearchableList';
 import { useAuth } from '../Context/AuthContext';
 import { useEffect } from 'react';
+import { fetchDocuments, fetchUserByDepartment, fetchUsersByDepartment } from '../firebase/firestore';
 const ResearchHome: React.FC = () => {
   const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
   const isMobile = useMediaQuery('(max-width:1000px)')
@@ -25,81 +26,80 @@ const ResearchHome: React.FC = () => {
       key="1"
       name="John Doe"
       rating={4.5}
-      pfp=""
       title="Lorem ipsum dolor sit amet"
-      link=""
       borderColour="#1F5095"
-      onCardClick={handleCardClick}
-    />,
+      id="id"
+      publisherId='pid'
+      onCardClick={handleCardClick} department={''}    />,
     <StudyMediumCard
       key="2"
       name="Jane Smith"
       rating={3.8}
-      pfp=""
+      id="id"
       title="Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,v"
-      link=""
       borderColour="#1F5095"
-      onCardClick={handleCardClick}
-    />,<StudyMediumCard
-    key="1"
-    name="John Doe"
-    rating={4.5}
-    pfp=""
-    title="Lorem ipsum dolor sit amet"
-    link=""
-    borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,
+      publisherId='pid'
+      onCardClick={handleCardClick} department={''}    />,<StudyMediumCard
+      key="1"
+      name="John Doe"
+      rating={4.5}
+      id="id"
+      title="Lorem ipsum dolor sit amet"
+      borderColour="#1F5095"
+      publisherId='pid'
+      onCardClick={handleCardClick} department={''}  />,
   <StudyMediumCard
     key="2"
     name="Jane Smith"
     rating={3.8}
-    pfp=""
+    id="id"
     title="Consectetur adipiscing elit"
-    link=""
     borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,<StudyMediumCard
-  key="1"
-  name="John Doe"
-  rating={4.5}
-  pfp=""
-  title="Lorem ipsum dolor sit amet"
-  link=""
-  borderColour="#1F5095"
-  onCardClick={handleCardClick}
-/>,
+    publisherId='pid'
+    onCardClick={handleCardClick} department={''}  />,<StudyMediumCard
+    key="1"
+    name="John Doe"
+    rating={4.5}
+    id="id"
+    title="Lorem ipsum dolor sit amet"
+    borderColour="#1F5095"
+    publisherId='pid'
+    onCardClick={handleCardClick} department={''}/>,
 <StudyMediumCard
   key="2"
   name="Jane Smith"
+  id="id"
   rating={3.8}
-  pfp=""
   title="Consectetur adipiscing elit"
-  link=""
   borderColour="#1F5095"
-  onCardClick={handleCardClick}
-/>,<StudyMediumCard
-    key="1"
-    name="John Doe"
-    rating={4.5}
-    pfp=""
-    title=" Lorem ipsum dolor sit amet"
-    link=""
-    borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,
+  publisherId='pid'
+  onCardClick={handleCardClick} department={''}/>,<StudyMediumCard
+  key="1"
+  id="id"
+  name="John Doe"
+  rating={4.5}
+  publisherId='pid'
+  title=" Lorem ipsum dolor sit amet"
+  borderColour="#1F5095"
+  onCardClick={handleCardClick} department={''}  />,
   <StudyMediumCard
     key="2"
     name="Jane Smith"
     rating={3.8}
-    pfp=""
+    id="id"
+    publisherId='pid'
     title="Consectetur adipiscing elit"
-    link=""
     borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,
+    onCardClick={handleCardClick} department={''}  />,
     // Add more StudyMediumCard components here as needed
   ];
+const handlePush = () => {
+    router.push('/viewParticipantDetails?uid=PNeqhkPm0Le0LcfOK1caYeVoCYB3&studyId=2XHxM1QPyu2Xmd7YsiaW');
+};//used to mock params  needed for participant view
+const handleDivPush = () => {
+  router.push('/diversityView?studyId=2XHxM1QPyu2Xmd7YsiaW');
+};//used to mock push for diversity view
+
   return (
     <>
      <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
@@ -108,7 +108,7 @@ const ResearchHome: React.FC = () => {
         <Grid container spacing={2} sx={{height:'100%'}}>
           {/* First Column */}
           <Grid item xs={isMobile?12:4.5} sx={{display:'flex',justifyContent:'center'}}>
-          <SearchableList  cardInputList={cardInputList} numberOfItemsPerRow={2} rowSpacing={2} width={'1000px'} title={'Published'} titleSize={45} marginTop={10}></SearchableList>
+          <SearchableList  cardInputList={cardInputList} numberOfItemsPerRow={2} rowSpacing={2} width={'1000px'} title={'Published'} titleSize={45} marginTop={10} searchBarEnabled={true} progressBarEnabled={false} ></SearchableList>
           </Grid>
           {/* Second Column */}
           <Grid item xs={isMobile?12:3} sx={{display:'flex',justifyContent:'center'}}>
@@ -136,11 +136,13 @@ const ResearchHome: React.FC = () => {
           <Grid item xs={isMobile?12:4.5} >
           <Box  sx={{height:'100%'}}>
           <Box  sx={{display:'flex',justifyContent:'center',mt:10,height:'100%'}}>
-            <Calendar />
+            <Calendar cardInputList={[]} />
             </Box>
           </Box>
           </Grid>
         </Grid>
+        <Button variant="contained" onClick={handlePush}>View Page</Button>
+        <Button variant="contained" onClick={handleDivPush}>View Diversity</Button>
       </div>
     </>
   );

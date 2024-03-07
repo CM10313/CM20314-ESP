@@ -8,22 +8,23 @@ import { StudyData } from "../pages/studyCreator";
 import validateDate, { getTodayDate } from "../Utils/ValidateDate";
 import validateNumberInRange from "../Utils/ValidateNumberInput";
 import validateURL from "../Utils/ValidateURL";
+import { useAuth } from "../Context/AuthContext";
 
 interface StudyDialogProps {
     onSubmit:(data: StudyData, uid: String, department: StudyData["department"]) => void
     handleHomeRedirect:() => void;
     jestBypass:boolean;
+    department:String;
 }
 
 // add tests, needs
-export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: StudyDialogProps) {
+export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass,department }: StudyDialogProps) {
     const [title,setTitle] = useState("");
     const [closingDate, setClosingDate]= useState("");
     const [preliminaryDate, setPreliminaryDate] = useState("");
     const [externalLink, setExternalLink] = useState("");
     const [description, setDescription]=useState("");
     const [location, setLocation]=useState("");
-    const [ department,setDepartment]=useState(Faculty.NotSpecified);
     const [relatedFields, setRelatedFields] = useState<string[]>([]);
     const [minimumAge,setMinimumAge]= useState(18);
     const [maxNoParticipants,setMaxNoParticipants]= useState(0);
@@ -38,17 +39,18 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
     const [descriptionError,setDescriptionError]= useState("");
     const [locationError,setLocationError]= useState("");
     const [submitError, setSubmitError]= useState("");
-
+    const {username,id,overallRating} = useAuth();
     const dateOfPublish = getTodayDate();
-    const publisherId = "swQ90URzscZLubKOh6t8hSAXr1V2"//needs to be based on current user
-    const publisherRating = 4.1
+    const publisherId = id//needs to be based on current user
+    const publisherRating = overallRating;
+    const publisherName = username;
         const handleStudySubmit = () => {
             const studyData = {
                title,closingDate,preliminaryDate,description,department,externalLink,
                 maxNoParticipants,minimumAge,
-                relatedFields,studyObj,dateOfPublish,publisherId,publisherRating,location
+                relatedFields,studyObj,dateOfPublish,publisherId,publisherRating,location,publisherName,
             };
-            onSubmit(studyData,"swQ90URzscZLubKOh6t8hSAXr1V2",studyData.department);//needs to change to reference the current user
+            onSubmit(studyData,publisherId,department);//needs to change to reference the current user
             //redirect
             handleHomeRedirect(); //needs to be changed to redirect based on user type but only for shared advert types
             return;
@@ -60,7 +62,7 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
             } else {
                 setSubmitError("You cannot submit as required fields are not fullfilled or data is in an invalid format.");
             }
-        },[closingDate,preliminaryDate,maxNoError,minimumAgeError,externalLinkError,titleError,descriptionError,locationError])
+        },[closingDate, preliminaryDate, maxNoError, minimumAgeError, externalLinkError, titleError, descriptionError, locationError, closingDateError, preliminaryDateError])
       
         type SetterFunction<T> = React.Dispatch<React.SetStateAction<T>>;
 
@@ -149,13 +151,6 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
       const handleExtraFieldChange = (e: { target: { value: SetStateAction<string>; }; }) => {
         setExtraFieldName(e.target.value);
       };
-      const handleFacultyChange = <T extends Faculty >(
-        event: SelectChangeEvent<T>,
-      ) => {
-        const selectedData = event.target.value as T;
-        setDepartment(selectedData);
-      };
-
       
       
       const handleCheckboxChange = (category: keyof StudyState, field: string, value: boolean) => {
@@ -360,39 +355,7 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass }: 
                                     <Typography fontSize={30}><Box>Diversity Rules</Box></Typography>
                                 </Grid>
                                 <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
-                                <FormControl sx={{width:'80%'}}>
-                        <InputLabel id="demo-simple-select-label">Faculty</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={department}
-                                label="Department"
-                                sx={{width:"100%"}}
-                                onChange={(event: SelectChangeEvent<Faculty>) => handleFacultyChange(event)}
-                                >
-                                <MenuItem value={Faculty.ArchitectureCivilEngineering}>Architecture & Civil Engineering</MenuItem>
-                                <MenuItem value={Faculty.ChemicalEngineering}>Chemical Engineering</MenuItem>
-                                <MenuItem value={Faculty.ElectronicElectricalEngineering}>Electronic & Electrical Engineering</MenuItem>
-                                <MenuItem value={Faculty.MechanicalEngineering}>Mechanical Engineering</MenuItem>
-                                <MenuItem value={Faculty.Economics}>Economics</MenuItem>
-                                <MenuItem value={Faculty.Education}>Education</MenuItem>
-                                <MenuItem value={Faculty.Health}>Health</MenuItem>
-                                <MenuItem value={Faculty.PoliticsLanguagesInternationalStudies}>Politics, Languages & International Studies</MenuItem>
-                                <MenuItem value={Faculty.Psychology}>Psychology</MenuItem>
-                                <MenuItem value={Faculty.SocialPolicySciences}>Social & Policy Sciences</MenuItem>
-                                <MenuItem value={Faculty.Chemistry}>Chemistry</MenuItem>
-                                <MenuItem value={Faculty.ComputerScience}>Computer Science</MenuItem>
-                                <MenuItem value={Faculty.LifeSciences}>Life Sciences</MenuItem>
-                                <MenuItem value={Faculty.MathematicalSciences}>Mathematical Sciences</MenuItem>
-                                <MenuItem value={Faculty.NaturalSciences}>Natural Sciences</MenuItem>
-                                <MenuItem value={Faculty.Physics}>Physics</MenuItem>
-                                <MenuItem value={Faculty.AccountingFinanceLaw}>Accounting, Finance & Law</MenuItem>
-                                <MenuItem value={Faculty.MarketingBusinessSociety}>Marketing, Business & Society</MenuItem>
-                                <MenuItem value={Faculty.InformationDecisionsOperations}>Information, Decisions & Operations</MenuItem>
-                                <MenuItem value={Faculty.StrategyOrganisation}>Strategy & Organisation</MenuItem>
-                                <MenuItem value={Faculty.NotSpecified}>Prefer Not To Say</MenuItem>
-                            </Select>
-                        </FormControl>
+                                
                                 </Grid>
                                 <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
                                     <TextField

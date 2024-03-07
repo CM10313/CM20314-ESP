@@ -10,6 +10,7 @@ import { StudyState } from '../DataState/StudyState';
 import { Faculty } from '../DataState/UserExtraInfo';
 import { addDocument, addSpecialDocument, createNestedDocument } from '../firebase/firestore';
 import { useRouter } from 'next/router';
+import { useAuth } from '../Context/AuthContext';
 interface Props {
   jestBypass: boolean;
 }
@@ -28,15 +29,17 @@ enum UserType{
     closingDate: String;
     preliminaryDate: String;
     description: String;
-    department:  Faculty;
+    department:  String;
     externalLink: String;
     maxNoParticipants:Number;
     minimumAge:Number;
     relatedFields: String[];
     studyObj:StudyState;
+    publisherName:string;
   }
 
   const StudyCreator: React.FC<Props> = ({ jestBypass }) => {
+    const {isLoggedIn,setAuth,username,overallRating,id,department} = useAuth();
   const router = useRouter();
   const handleStudySubmit= (data:StudyData,uid:String,department:String) =>{
       console.log(data);
@@ -54,10 +57,10 @@ enum UserType{
     return (
         <>
        
-     <Navbar name={'John Doe'} rating={4.1} />
+     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}/>
             <TriangleBackground />
       <div style={{ height: '810px' }}>
-        <StudyDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} ></StudyDialog>
+        <StudyDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} department={department} ></StudyDialog>
         </div>    
 </>
         );

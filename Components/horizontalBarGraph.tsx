@@ -3,7 +3,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import { Bar } from 'react-chartjs-2';
 import { Chart } from 'chart.js';
 
-interface BarGraphProps {
+export interface HorizontalBarGraphProps {
     graphData: {
         xAxisLabels: string[],
         yAxisLabels: number[],
@@ -13,7 +13,11 @@ interface BarGraphProps {
     }
 }
 
-const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
+const HorizontalBarGraph: React.FC<HorizontalBarGraphProps> = ({ graphData }) => {
+    if (graphData === undefined || !graphData) {
+        // Fallback rendering when data is not available
+        return <Box>No data available</Box>;
+    }
     if (!graphData.hasData) {
         return (
             <Box sx={{
@@ -69,9 +73,7 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
             
             x : {
                 grid: { display: false },
-                ticks: {
-                    callback: function (value:number){ return value + '%' }
-                },
+               
                 display: false     
             },
         },
@@ -81,7 +83,7 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
         <Box sx={{
             display: 'flex',
             maxWidth: '400px',
-            width: '95%',
+            width: '%',
             height:'162px',
             boxShadow: '0.5em 0.5em 1em 0.1em grey',
             borderRadius:'5px'
@@ -96,7 +98,8 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
                         borderRadius: "0.2em",
                         width: "6em",
                         textAlign: "center",
-                        fontWeight: "bold"
+                        fontWeight: "bold",
+                        overflow:'scroll',
                     }}> 
                         {graphData.studyId}
                     </Typography>
@@ -104,7 +107,7 @@ const HorizontalBarGraph: React.FC<BarGraphProps> = ({ graphData }) => {
 
                 {/* Graph */}
                 <Grid item xs={12} height="99%"  sx={{maxHeight:'110px',overflowY:'auto', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#1F5095', borderRadius: '5px' } }}>
-                    <Box sx={{height:'200px'}}>
+                    <Box sx={{height:'200px',width:'250px'}}>
                     <Bar data={thisGraphData}
                         options = {barChartOptions}
                         plugins={[ChartDataLabels]}                           

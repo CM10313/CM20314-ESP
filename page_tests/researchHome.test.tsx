@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import ResearchHome from '../pages/researchHome';
-import { AuthContext } from '../Context/AuthContext';
+import { AuthContext, AuthProvider } from '../Context/AuthContext';
 
 // Mock useRouter
 jest.mock('next/router', () => ({
@@ -9,6 +9,7 @@ jest.mock('next/router', () => ({
     push: jest.fn(),
   }),
 }));
+
 
 jest.mock('@mui/material', () => {
     const actual = jest.requireActual('@mui/material');
@@ -22,6 +23,11 @@ describe('ResearchHome component', () => {
   it('renders without crashing', () => {
     render(<ResearchHome />);
   });
+  it('renders with context',()=>{
+    render( <AuthProvider>
+      <ResearchHome />
+    </AuthProvider>)
+  })
 
   it('calls a card on click properly', () => {
     const pushMock = jest.fn();
@@ -31,7 +37,7 @@ describe('ResearchHome component', () => {
         <ResearchHome/>
       );
       fireEvent.click(getAllByText('Lorem ipsum dolor sit amet')[0]); // Click on a study card
-      expect(pushMock).toHaveBeenCalledWith("/advert-preview/Lorem ipsum dolor sit amet");
+      expect(pushMock).toHaveBeenCalledWith("/advert-preview/id");
   });
 
   it('renders properly when isMobile is false', () => {
@@ -77,4 +83,5 @@ describe('ResearchHome component', () => {
             <ResearchHome />
         </AuthContext.Provider>)
     });
+
   });
