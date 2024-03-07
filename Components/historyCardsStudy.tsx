@@ -41,7 +41,7 @@ const HistoryCardsStudy: React.FC<HistoryRowProps> = ({ studyId, author, date, i
             </Typography>)}
             <Image src="/images/smiley.png" alt="smiley image" width={30} height={30} />
           </Box>
-          <Typography> <b> #{studyId} </b> </Typography>
+          <Typography fontSize={"0.75em"} sx={{wordWrap:"break-word"}}> <b> #{studyId} </b> </Typography>
         </Box>
         
         <Typography fontSize="1em" color="white" padding="0.5em" width="30%">
@@ -49,7 +49,6 @@ const HistoryCardsStudy: React.FC<HistoryRowProps> = ({ studyId, author, date, i
       </Grid>
 
     )
-
 }
 
 export default HistoryCardsStudy;

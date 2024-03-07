@@ -5,19 +5,13 @@ import HiddenStudiesCards from "../Components/hiddenStudies";
 import DisputeContactCard from "../Components/disputeContact";
 import Navbar from "../Components/navbar";
 import { useAuth } from "../Context/AuthContext";
+import { getResearcherStudies } from "../firebase/firestore";
+import { useEffect, useState } from "react";
+import StudyCreator from "./studyCreator";
+
 
 export default function ResearherHistoryScreen() {
     const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
-    
-    // Once data is fetched all we need is ID of those to be inseerted into these accordingly
-    // front end will need to be modified below to retrieve the author and date from the IDs in <HistoryCards /> and <HiddenStudiesCards />
-    const studyIdList = [
-        "123456",
-        "7890123",
-        "23433423",
-        "34324423", 
-        "432423423"
-    ]
 
     const hiddenIdList = [
         "123456",
@@ -27,12 +21,35 @@ export default function ResearherHistoryScreen() {
         "432423423"
     ]
 
-    const historyCardList = studyIdList.map((studyId,index) => (
-        <HistoryCards key={index} studyId={studyId} author={"study author"} date={"study date"} />
+    const [studies, setStudies] = useState([]); // State to store fetched studies
+    const [hiddenStudies, setHiddenStudies] = useState([]);
+
+    const researcherId = "swQ90URzscZLubKOh6t8hSAXr1V2" // id
+    const researcherDepartment = "Computer Science"
+
+    useEffect(() => {
+        // Fetch studies associated with the researcher
+        getResearcherStudies(researcherDepartment, researcherId).then((fetchedStudies) => {
+                setStudies(fetchedStudies); 
+                setHiddenStudies(fetchedStudies.filter(study => study.Status == "Waiting"));
+            
+            })
+        .catch(error => { console.error("Error fetching studies:", error); });
+    }, []);
+
+    const historyCardList = studies.map((study,index) => (
+        <HistoryCards 
+            key={index} 
+            studyId={study.ResearcherID} 
+            author={study.Name} 
+            date={study.AppliedDate} />
     ))
 
-    const hiddenStudiesList = hiddenIdList.map((hiddenStudyId,index) => (
-        <HiddenStudiesCards  key={index} studyId={hiddenStudyId} author={"study author"} date={"study date"} />
+    const hiddenStudiesList = hiddenStudies.map((hiddenStudy,index) => (
+        <HiddenStudiesCards  
+            key={index} 
+            studyId={hiddenStudy.ResearcherID} 
+            author={hiddenStudy.Name} date={hiddenStudy.AppliedDate} />
     ))
 
     return (
