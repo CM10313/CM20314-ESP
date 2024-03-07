@@ -58,7 +58,7 @@ const FeedbackListViewer: React.FC<FeedBackListViewerProps> = ({ feedbackList })
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100%' }}>
-           {feedbackList.length>0?<FeedbackViewingContainer {...feedbackList[currentIndex]} handleNext={handleNext} handlePrev={handlePrev} />:<Typography>There are no reviews for this publisher</Typography>}
+           {feedbackList?feedbackList.length>0?<FeedbackViewingContainer {...feedbackList[currentIndex]} handleNext={handleNext} handlePrev={handlePrev} />:<Typography>There are no reviews for this publisher</Typography>:<Typography>There are no reviews for this publisher</Typography>}
         </div>
     );
 };
