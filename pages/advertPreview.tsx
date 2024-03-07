@@ -3,11 +3,13 @@ import { useRouter } from 'next/router';
 import Navbar from '../Components/navbar';
 import TriangleBackground from '../Components/TriangleBackground';
 import { useAuth } from '../Context/AuthContext';
-import { useEffect, useState } from 'react';
 import { fetchDocumentById, updateDocument} from '../firebase/firestore';
 import { ReviewDetailsObject } from './register';
 import { Faculty } from '../DataState/UserExtraInfo';
-
+import { useState, useEffect } from 'react';
+import { DemoGraphicDisplayProps } from '../Components/DempographicDisplay';
+import { HealthDisplayProps } from '../Components/HealthDisplay';
+import { OtherRequirementDisplayProps } from '../Components/OtherRequirementDisplay';
 interface StudyProps{
     title:string;
     publisher:string;
@@ -22,13 +24,13 @@ interface StudyProps{
     compensationDescription:string;
     compensationAmount:number;
     ethicsApproval:string;
-    department:Faculty;
+    department:string;
     location:string;
     externalLink:string;
     maxNoParticipants:number;
     minimumAge:number;
 }
-interface RequirementProps{
+ interface RequirementProps{
     hasPreExisting?:boolean;
     hasAllergies?:boolean;
     hasDisabilities?:boolean;
@@ -51,18 +53,14 @@ interface RequirementProps{
     hasOccupation?:boolean;
     hasHLOFE?:boolean;
 }
-
-
-const ViewParticipantDetails: React.FC<{ testBypass1?: StudyProps, testBypass2?:RequirementProps }> = ({ testBypass1={} as StudyProps,testBypass2={} as RequirementProps })  => {
+const AdvertPreview: React.FC<{ testBypass1?: StudyProps, testBypass2?:RequirementProps}> = ({ testBypass1={} as StudyProps, testBypass2 ={} as RequirementProps })  => {
   const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
   const isMobile = useMediaQuery('(max-width:1000px)')
-  const isExtraSmall = useMediaQuery('(max-width:800px)')
-  const [visibleContent, setVisibleContent] = useState("Demographic");
-  const [buttonColours, setButtonColours]= useState(["#1F5095","#DAE1E9","#DAE1E9"]);
-  const [rejectionReason, setRejectionReason]= useState("");
-  const [rejectionError, setRejectionError]= useState("");
   const [studyProps, setStudyProps]=useState<StudyProps>(testBypass1);
   const [requirementProps, setRequirementProps]=useState<RequirementProps>(testBypass2);
+  //const [healthProps, setHealthProps]=useState<HealthDisplayProps>(testBypass1);
+  //const [demographicProps,setDemographicProps]=useState<DemoGraphicDisplayProps>(testBypass2);
+  //const [ otherProps, setOtherProps]=useState<OtherRequirementDisplayProps>(testBypass3);
   const router = useRouter();
 let studyId = '';
 let department ='';
@@ -81,20 +79,22 @@ const addUserToStudyAwaitingApproval = async ()=>{
         const currentAwaitingApprovalList = studyData.studyObj.awaitingApprovalParticipants;
         const updatedAwaitingApprovalList = [...currentAwaitingApprovalList,id];
         const updatedStudyDoc = {...studyData};
-           updatedStudyDoc.studyObj.awaitingApprovalParticipants = updatedAwaitingApprovalList;
-           updateDocument(`departments/${department}/Researchers/${publisherId}/studies`,studyId,updatedStudyDoc);
+        updatedStudyDoc.studyObj.awaitingApprovalParticipants = updatedAwaitingApprovalList;
+        updateDocument(`departments/${department}/Researchers/${publisherId}/studies`,studyId,updatedStudyDoc);
+        router.push("/participantHome");
         } catch (error) {
         // Handle any errors that occur during the process
         console.error("Error editing user status in study", error);
         }
   } 
-useEffect (()=>{
+  
+  useEffect (()=>{
     const fetchUserData = async ()=> {
         console.log(studyId )
         const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
-        const userData:any= await fetchDocumentById("users",studyData.publisherId );
+        const userData:any= await fetchDocumentById("users",publisherId );
         console.log(studyData);
-        if (studyData) {
+        if (studyData && userData) {
             const StudyProps: StudyProps = {
                 title:studyData.title,
                 publisher:studyData.publisherName,
@@ -104,7 +104,7 @@ useEffect (()=>{
                 reviews:userData.reviewObject.reviews,
                 closingDate:studyData.closingDate,
                 publishedDate:studyData.dateOfPublish,
-                preliminaryDate:studyData.preliminaryData,
+                preliminaryDate:studyData.preliminaryDate,
                 relatedFields:studyData.relatedFields,
                 compensationDescription:studyData.studyObj.CompensationObject.description,
                 compensationAmount:studyData.studyObj.CompensationObject.amount,
@@ -130,23 +130,23 @@ useEffect (()=>{
                 hasReligion:studyData.studyObj.RequirementsObject.demoRequirements.includes("Religion"),
                 hasSexuality:studyData.studyObj.RequirementsObject.demoRequirements.includes("Sexuality"),
                 hasYOFS:studyData.studyObj.RequirementsObject.demoRequirements.includes("YearOfStudies"),
-                hasAccessRequirements:studyData.studyObj.RequirementsObject.accesibilityRequirements.includes("AccessibilityRequirements"),
+                hasAccessRequirements:studyData.studyObj.RequirementsObject.accessibilityRequirements.includes("AccessibilityRequirements"),
                 hasAccessToDevice:studyData.studyObj.RequirementsObject.techRequirements.includes("AccessToDevice"),
                 hasAnonymityLevel:studyData.studyObj.RequirementsObject.privacyRequirements.includes("AnonymityLevel"),
-                hasMaxTravelTime:studyData.studyObj.RequirementsObject.geographicRequirements.includes("MaxTravelTime"),
+                hasMaxTravelTime:studyData.studyObj.RequirementsObject.geographicalRequirements.includes("MaxTravelTime"),
                 hasNativeLanguage:studyData.studyObj.RequirementsObject.languageRequirements.includes("NativeLanguage"),
-                hasNearestCity:studyData.studyObj.RequirementsObject.geographicRequirements.includes("NearestCity"),
+                hasNearestCity:studyData.studyObj.RequirementsObject.geographicalRequirements.includes("NearestCity"),
                 hasOtherLanguages:studyData.studyObj.RequirementsObject.languageRequirements.includes("OtherLanguages"),
             }
             setStudyProps(StudyProps);
             setRequirementProps(RequirementProps);
         } else {
-            console.error("userData is null");
+            console.error("userData or studyData is null");
         }
       }
       fetchUserData();
   },[department, id, publisherId, studyId])
- 
+  
   return (
     <>
      <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
@@ -158,12 +158,12 @@ useEffect (()=>{
        <Box>
         
         <Button onClick={addUserToStudyAwaitingApproval}>Apply</Button>
-        <Button>Share</Button>
        </Box>
       </div>
     </>
   );
   };
   
-  export default ViewParticipantDetails;
+  export default AdvertPreview;
   //study data:{JSON.stringify(studyProps)}//requirements:{JSON.stringify(requirementProps)}
+  

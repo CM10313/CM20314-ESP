@@ -2,7 +2,7 @@ import fillAgeDict, { fillIncomeDict, fillDict } from "./diversityExtraction";
 
 describe('fillAgeDict', () => {
   it('fills age dictionary correctly', () => {
-    const ageArray = ['20', '25', '30', '35', '45', '50', '55'];
+    const ageArray = ['20', '25', '30', '35', '45', '50', '55',"-1"];
     const ageDict = fillAgeDict(ageArray);
     expect(ageDict).toEqual({
       '18-20': 1,
@@ -16,7 +16,7 @@ describe('fillAgeDict', () => {
   });
 
   it('handles invalid age values gracefully', () => {
-    const ageArray = ['abc', '25', '30', '35', '45', '50', '55'];
+    const ageArray = ['abc', '25', '30', '35', '45', '50', '55',"-1"];
     const ageDict = fillAgeDict(ageArray);
     expect(ageDict).toEqual({
       '18-20': 0,
@@ -32,7 +32,7 @@ describe('fillAgeDict', () => {
 
 describe('fillIncomeDict', () => {
   it('fills income dictionary correctly', () => {
-    const incomeArray = ['10000', '15000', '20000', '25000', '27000', '40000'];
+    const incomeArray = ['10000', '15000', '20000', '25000', '27000', '40000',"-1"];
     const incomeDict = fillIncomeDict(incomeArray);
     expect(incomeDict).toEqual({
       '0 - 10k': 1,
@@ -45,7 +45,7 @@ describe('fillIncomeDict', () => {
   });
 
   it('handles invalid income values gracefully', () => {
-    const incomeArray = ['abc', '15000', '20000', '25000', '27000', '40000'];
+    const incomeArray = ['abc', '15000', '20000', '25000', '27000', '40000',"-1"];
     const incomeDict = fillIncomeDict(incomeArray);
     expect(incomeDict).toEqual({
       '0 - 10k': 0,

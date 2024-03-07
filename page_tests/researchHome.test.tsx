@@ -37,7 +37,7 @@ describe('ResearchHome component', () => {
         <ResearchHome/>
       );
       fireEvent.click(getAllByText('Lorem ipsum dolor sit amet')[0]); // Click on a study card
-      expect(pushMock).toHaveBeenCalledWith("/advert-preview/Lorem ipsum dolor sit amet");
+      expect(pushMock).toHaveBeenCalledWith("/advert-preview/id");
   });
 
   it('renders properly when isMobile is false', () => {
