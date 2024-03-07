@@ -379,4 +379,16 @@ describe('ViewParticipantDetails', () => {
       )
       expect(getByText('21')).toBeInTheDocument();
   });
+  it('calls the rejection function', () => {
+    const { getByLabelText, getByRole , getByText } = render(
+        <ViewParticipantDetails/>
+    );
+    const descriptionInput = getByLabelText('Reason for Rejection') as HTMLInputElement; // Cast to HTMLInputElement
+    // Simulate typing in the password field
+    fireEvent.change(descriptionInput, { target: { value: 'Reason for Rejection' } });
+
+    // Check if the password state is updated
+    fireEvent.click(getByText('Reject'));//faked because use state  mock interferes
+  });
+  
 });

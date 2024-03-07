@@ -10,6 +10,7 @@ import { HealthDisplayProps } from '../Components/HealthDisplay';
 import { DemoGraphicDisplayProps } from '../Components/DempographicDisplay';
 import { OtherRequirementDisplayProps } from '../Components/OtherRequirementDisplay';
 import AdvertPreview from '../pages/advertPreview';
+import { useRouter } from 'next/router';
 // Mock useRouter
 jest.mock('next/router', () => ({
   useRouter: () => ({
@@ -53,7 +54,7 @@ jest.mock('@mui/material', () => {
   }));
   
 
-describe('ViewParticipantDetails', () => {
+describe('Advert Preview', () => {
   
       it('renders properly when isMobile is true', () => {
         // Mock useMediaQuery to return true (indicating mobile view)
@@ -204,60 +205,21 @@ describe('ViewParticipantDetails', () => {
           <AdvertPreview/>
       </AuthContext.Provider>)
   });
-  it('renders without crashing when state is present', () => {
-    // Mock useAuth to return the expected values
-    const healthProps = {
-        hasPreExisting: true,
-        hasAllergies: true,
-        hasDisabilities: true,
-        hasMedication: true,
-        preExisitng: '',
-        allergies: '',
-        disabilities: '',
-        medication: ''
-    }
-    const demoProps={
-        hasFaculty: true,
-        hasGender: true,
-        hasRace: true,
-        hasSexuality: true,
-        hasYOFS: true,
-        hasReligion: true,
-        hasIncome: true,
-        hasAge: true,
-        hasOccupation: true,
-        hasHLOFE: true,
-        faculty: '',
-        gender: '',
-        race: '',
-        sexuality: '',
-        yofs: '',
-        religion: '',
-        income: '',
-        age: '18',
-        occupation: '',
-        hlofe: ''
-    }
-    const otherProps={
-        hasAccessToDevice: true,
-        hasNativeLanguage: true,
-        hasOtherLanguages: true,
-        hasNearestCity: true,
-        hasMaxTravelTime: true,
-        hasAnonymityLevel: true,
-        hasAccessRequirements: true,
-        accessToDevice: '',
-        nativeLanguage: '',
-        otherLanguages: '',
-        nearestCity: '',
-        maxTravelTime: '',
-        anonymityLevel: '',
-        accesRequirements: ''
-    }
-  const {getByText}=render(
-    
-          <ViewParticipantDetails testBypass1={healthProps} testBypass2={demoProps} testBypass3={otherProps}/>
-      )
-      expect(getByText('18')).toBeInTheDocument();
+ 
+  it('navigates to review page when "Review" button is clicked', () => {
+    // Mock useRouter's push function
+    const pushMock = jest.fn();
+    (useRouter as jest.Mock).mockReturnValue({
+      push: pushMock,
+    });
+
+    // Render the component
+    const { getByText } = render(<AdvertPreview />);
+
+    // Click the "Review" button
+    fireEvent.click(getByText('Exit'));
+
+    // Assert that useRouter's push function was called with the expected route
+    expect(pushMock).toHaveBeenCalledWith('/participantHome');
   });
 });

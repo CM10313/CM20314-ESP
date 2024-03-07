@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Divider, Rating, IconButton, Paper } from '@mui/material';
+import { Typography, Divider, Rating, IconButton, Paper, Box } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
@@ -18,26 +18,23 @@ const FeedbackViewingContainer: React.FC<FeedbackViewingContainerProps & { handl
     const maxHeight = Math.min(maxContainerHeight, descriptionHeight);
 
     return (
-        <Paper elevation={3} style={{ borderRadius: '20px', backgroundColor: '#0d5382', padding: '15px', marginBottom: '20px', maxWidth: maxContainerWidth, width: '100%', height: '100%', position: 'relative' }}>
-            <IconButton onClick={handlePrev} style={{ position: 'absolute', top: '50%', left: '-30px', transform: 'translateY(-50%)', color: 'white' }}>
+        <Paper elevation={3} style={{ borderRadius: '20px', backgroundColor: '#1F5095', padding: '15px', marginBottom: '0px', maxWidth: maxContainerWidth, width: '100%', height: '100%', position: 'relative' }}>
+            <IconButton onClick={handlePrev} data-testid="prev-button" style={{ position: 'absolute', top: '50%', left: '-30px', transform: 'translateY(-50%)', color: '#1F5095' }}>
                 <ArrowBackIcon />
             </IconButton>
-            <Typography variant="h6" gutterBottom style={{ color: 'white' }}>
-                Here's What Others Have to Say About the Researcher
-            </Typography>
-            <Divider style={{ marginBottom: '10px', backgroundColor: 'white' }} />
-            <div style={{ overflowY: 'auto', maxHeight: `${100}px`, padding: '0px', borderRadius: '10px', backgroundColor: 'silver', overflowX: 'hidden' }}>
-                <Typography variant="body1" paragraph  style ={{fontWeight:'bold'}}>
+            <div style={{ overflowY: 'scroll', height: `${90}px`, maxWidth:'100%',padding: '0px',marginLeft:2,marginBottom:5 }}>
+                <Typography variant="body1" paragraph  style ={{color:'white',wordBreak: 'break-all'}}>
                     {description}
                 </Typography>
             </div>
-            <div style={{ marginTop: '10px', backgroundColor: 'silver', padding: '10px', borderRadius: '10px'}}>
-                <Typography variant="subtitle1">
+            <Box sx={{display:'flex',justifyContent:'center',mb:2,mt:1.5}}><Rating name="rating" value={rating} precision={0.5} readOnly /></Box>
+            <Box sx={{width:'100%',height:'2px',backgroundColor:"white",mt:1}}></Box>
+            <div style={{ marginTop: '10px', padding: '10px'}}>
+                <Typography variant="subtitle1" sx={{color:"white"}}>
                     - {name}
                 </Typography>
             </div>
-            <Rating name="rating" value={rating} precision={0.5} readOnly />
-            <IconButton onClick={handleNext} style={{ position: 'absolute', top: '50%', right: '-30px', transform: 'translateY(-50%)', color: 'white' }}>
+            <IconButton onClick={handleNext} data-testid="next-button" style={{ position: 'absolute', top: '50%', right: '-30px', transform: 'translateY(-50%)', color: '#1F5095' }}>
                 <ArrowForwardIcon />
             </IconButton>
         </Paper>
@@ -61,7 +58,7 @@ const FeedbackListViewer: React.FC<FeedBackListViewerProps> = ({ feedbackList })
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', height: '100%' }}>
-            <FeedbackViewingContainer {...feedbackList[currentIndex]} handleNext={handleNext} handlePrev={handlePrev} />
+           {feedbackList.length>0?<FeedbackViewingContainer {...feedbackList[currentIndex]} handleNext={handleNext} handlePrev={handlePrev} />:<Typography>There are no reviews for this publisher</Typography>}
         </div>
     );
 };
