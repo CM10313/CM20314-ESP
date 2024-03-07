@@ -28,43 +28,57 @@ const ResearchHome: React.FC = () => {
       rating={4.5}
       title="Lorem ipsum dolor sit amet"
       borderColour="#1F5095"
+      id="id"
+      publisherId='pid'
       onCardClick={handleCardClick} department={''}    />,
     <StudyMediumCard
       key="2"
       name="Jane Smith"
       rating={3.8}
+      id="id"
       title="Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,v"
       borderColour="#1F5095"
+      publisherId='pid'
       onCardClick={handleCardClick} department={''}    />,<StudyMediumCard
       key="1"
       name="John Doe"
       rating={4.5}
+      id="id"
       title="Lorem ipsum dolor sit amet"
       borderColour="#1F5095"
+      publisherId='pid'
       onCardClick={handleCardClick} department={''}  />,
   <StudyMediumCard
     key="2"
     name="Jane Smith"
     rating={3.8}
+    id="id"
     title="Consectetur adipiscing elit"
     borderColour="#1F5095"
+    publisherId='pid'
     onCardClick={handleCardClick} department={''}  />,<StudyMediumCard
     key="1"
     name="John Doe"
     rating={4.5}
+    id="id"
     title="Lorem ipsum dolor sit amet"
     borderColour="#1F5095"
+    publisherId='pid'
     onCardClick={handleCardClick} department={''}/>,
 <StudyMediumCard
   key="2"
   name="Jane Smith"
+  id="id"
   rating={3.8}
   title="Consectetur adipiscing elit"
   borderColour="#1F5095"
+  publisherId='pid'
   onCardClick={handleCardClick} department={''}/>,<StudyMediumCard
   key="1"
+  id="id"
   name="John Doe"
   rating={4.5}
+  publisherId='pid'
   title=" Lorem ipsum dolor sit amet"
   borderColour="#1F5095"
   onCardClick={handleCardClick} department={''}  />,
@@ -72,33 +86,19 @@ const ResearchHome: React.FC = () => {
     key="2"
     name="Jane Smith"
     rating={3.8}
+    id="id"
+    publisherId='pid'
     title="Consectetur adipiscing elit"
     borderColour="#1F5095"
     onCardClick={handleCardClick} department={''}  />,
     // Add more StudyMediumCard components here as needed
   ];
-
-  const fetchData = async (uid:string)=>{
-    try{
-      const departments = await fetchDocuments(`departments/Computer Science/Researchers/${uid}/studies`)///swQ90URzscZLubKOh6t8hSAXr1V2/studies
-    }catch (error){
-console.error(error)
-    }
-  }
-  const listAllDepartmentStudies = async (department:string) => {
-    try {
-      const users = await fetchUsersByDepartment(department);
-      for (const user of users) {
-        fetchData(user.id);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-  listAllDepartmentStudies('Computer Science');
 const handlePush = () => {
-    router.push('/viewParticipantDetails?uid=PNeqhkPm0Le0LcfOK1caYeVoCYB3&studyId=2XHxM1QPyu2Xmd7YsiaW');
+    router.push('/viewParticipantDetails?uid=PNeqhkPm0Le0LcfOK1caYeVoCYB3&studyId=jd1kQsORcZkDgQnlZTjt');
 };//used to mock params  needed for participant view
+const handleDivPush = () => {
+  router.push('/diversityView?studyId=2XHxM1QPyu2Xmd7YsiaW');
+};//used to mock push for diversity view
 
   return (
     <>
@@ -142,6 +142,7 @@ const handlePush = () => {
           </Grid>
         </Grid>
         <Button variant="contained" onClick={handlePush}>View Page</Button>
+        <Button variant="contained" onClick={handleDivPush}>View Diversity</Button>
       </div>
     </>
   );

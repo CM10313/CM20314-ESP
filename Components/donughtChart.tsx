@@ -3,17 +3,21 @@ import {  Doughnut } from 'react-chartjs-2';
 import { Chart, registerables, ScaleOptions  } from 'chart.js';
 Chart.register(...registerables);
 
-interface BarGraphProps {
+export interface DonughtGraphProps {
     graphData: {
         xAxisLabels: string[],
         yAxisLabels: number[],
-        title: string
+        title: string,
+        studyId: string,
         hasData: boolean,
     }
 }
 
-const DonughtChart: React.FC<BarGraphProps> = ({graphData}) => {
-
+const DonughtChart: React.FC<DonughtGraphProps> = ({graphData}) => {
+    if (graphData === undefined || !graphData) {
+        // Fallback rendering when data is not available
+        return <Box>No data available</Box>;
+    }
     if(graphData.hasData == false){
         return <Box sx={{
             display:'flex',
@@ -94,9 +98,10 @@ const DonughtChart: React.FC<BarGraphProps> = ({graphData}) => {
                         borderRadius: "0.2em",
                         width: "6em",
                         textAlign: "center",
-                        fontWeight: "bold",mr:4
+                        fontWeight: "bold",mr:4,
+                        overflow:"scroll",
                     }}> 
-                        #123456 
+                       {graphData.studyId}
                     </Typography>
                 </Grid>
 

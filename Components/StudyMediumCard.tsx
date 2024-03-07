@@ -6,8 +6,10 @@ export interface StudyMediumCardProps {
   rating:number;
   title:string;
   borderColour:string;
-  onCardClick: (title: string) => void;
+  onCardClick: (id: string,publisherId:string,department:string) => void;
   department:string;
+  id:string;
+  publisherId:string;
 }
 
 export default function StudyMediumCard({
@@ -17,12 +19,14 @@ export default function StudyMediumCard({
   borderColour,
   onCardClick,
   department,
+  id,
+  publisherId,
 }: StudyMediumCardProps) {
  
   return (
     <>
     <Card variant="outlined" sx={{ height: '160px',width:'150px',borderColor:borderColour,borderRadius:'10px',borderWidth:'5px',backgroundColor:'#FFFCFC',boxShadow: '0px 4px 4px 0px #00000040'}}>
-      <CardActionArea onClick={()=>onCardClick(title)}>
+      <CardActionArea onClick={()=>onCardClick(id,publisherId,department)}>
         <CardContent style={{ padding: '5px' }}>
         <Grid
                 container

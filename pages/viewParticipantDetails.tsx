@@ -57,6 +57,7 @@ if (typeof window !== 'undefined') {
         const userData:any= await fetchDocumentById("users",participantId );
         const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${id}/studies`,studyId);
         console.log(studyData);
+        console.log(userData);
         if (userData && studyData) {
             const HealthProps: HealthDisplayProps = {
                 hasAllergies:studyData.studyObj.RequirementsObject.healthRequirements.includes("Allergies"),
@@ -106,6 +107,9 @@ if (typeof window !== 'undefined') {
                 nearestCity:userData.extraInfoObj?.GeographicData.nearestCity|| "None",
                 otherLanguages:userData.extraInfoObj?.extraLanguage|| "None",
             }
+            console.log(HealthProps)
+            console.log(DemoGraphicProps)
+            console.log(OtherProps)
             setHealthProps(HealthProps)
             setDemographicProps(DemoGraphicProps)
             setOtherProps(OtherProps)
@@ -152,7 +156,7 @@ if (typeof window !== 'undefined') {
     const currentStudies = userData.rejectedStudies
     console.log(userData);
     console.log(currentStudies);
-    const updatedStudies = [...currentStudies,{department:department,id:studyId,publisherId:id,rejectionReason:rejectionReason}]
+    const updatedStudies = [...currentStudies,{department:department,rejectedStudyId:studyId,publisherId:id,rejectionReason:rejectionReason}]
     const updatedUserDoc = { ...userData };
     updatedUserDoc.rejectedStudies = updatedStudies;
     updateDocument('users',participantId,updatedUserDoc);

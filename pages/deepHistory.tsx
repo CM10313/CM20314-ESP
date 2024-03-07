@@ -90,8 +90,8 @@ export default function DeepHistoryScreen() {
               }}>
                 
                 <br />
-                {paidUserIDs.map((userId) => (
-                  <HistoryCardsStudy studyId={userId} author={"John Doe"} date="03/11/2003" />
+                {paidUserIDs.map((userId,index) => (
+                  <HistoryCardsStudy key={index} studyId={userId} author={"John Doe"} date="03/11/2003" />
                 ))}
             </Box>
             
@@ -110,8 +110,8 @@ export default function DeepHistoryScreen() {
               }}>
                 
                 <br />
-                {disputedUserIDs.map((userId) => (
-                <HistoryCardsStudy studyId={userId} author="John Doe" date="03/11/2003" />
+                {disputedUserIDs.map((userId,index) => (
+                <HistoryCardsStudy  key={index} studyId={userId} author="John Doe" date="03/11/2003" />
                 ))}
             </Box>
 
@@ -122,10 +122,10 @@ export default function DeepHistoryScreen() {
             <ProgressBar title="Awaiting Approval" requiredCount={approvalRequiredCount} joinedCount={approvalJoinedCount} leftMargin={180} coverage={60} />
             
             <Box sx={{display:"flex", flexDirection:"column", overflow:"scroll", maxHeight:"7em", overflowX:"hidden"}} >
-              {approvalUserIDs.map((userId) => (
-                <Box sx={{display:"flex", flexDirection:"row", marginLeft:"3em"}}>
-                  <HistoryCardsStudy studyId={userId} author={"John Doe"} date={"Some Date"} />
-                  <HistorySmallButtons background="red" title="Details" fx={() => handleDetailsClick(userId)} />
+              {approvalUserIDs.map((userId,index) => (
+                <Box  key={index} sx={{display:"flex", flexDirection:"row", marginLeft:"3em"}}>
+                  <HistoryCardsStudy   studyId={userId} author={"John Doe"} date={"Some Date"} />
+                  <HistorySmallButtons  background="red" title="Details" fx={() => handleDetailsClick(userId)} />
                 </Box>
               ))}
             </Box>
