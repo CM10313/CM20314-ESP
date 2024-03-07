@@ -142,10 +142,10 @@ describe('ViewParticipantDetails', () => {
          RequirementsObject: {
            healthRequirements: ['Allergies', 'Disabilities', 'Medication', 'PreExistingConditions'],
            demoRequirements: ['Age', 'Faculty', 'Gender', 'HighestLevelOfEducation', 'Income', 'Occupation', 'Race', 'Religion', 'Sexuality', 'YearOfStudies'],
-           accessibilityRequirements: ['AccessibilityRequirements'],
+           accesibilityRequirements: ['AccessibilityRequirements'],
            techRequirements: ['AccessToDevice'],
            privacyRequirements: ['AnonymityLevel'],
-           geographicalRequirements: ['MaxTravelTime', 'NearestCity'],
+           geographicRequirements: ['MaxTravelTime', 'NearestCity'],
            languageRequirements: ['NativeLanguage', 'OtherLanguages'],
          },
          CompensationObject:{

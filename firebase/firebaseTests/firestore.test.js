@@ -104,27 +104,28 @@ describe('Firestore Functions', () => {
       it('updateDocument should update a document ', async () => {
         const docRef = 'testDocRef'; // Mock document reference
         const newData = { data: 'testData' };
-    
+        const merge ={"merge": true}
         // Mocking doc() function
         doc.mockReturnValueOnce(docRef);
     
-        await updateDocument('collectionName', 'docId', newData);
+        await updateDocument('collectionName', 'docId', newData, merge);
         expect(doc).toHaveBeenCalledWith(db, 'collectionName', 'docId');
-        expect(updateDoc).toHaveBeenCalledWith(docRef, newData); // Expecting setDoc to be called with doc reference and data
+        expect(updateDoc).toHaveBeenCalledWith(docRef, newData, merge); // Expecting setDoc to be called with doc reference and data
       });
       it('updateDocument should log an error if updateDoc fails', async () => {
         const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {}); // Spy on console.error
     
         const docRef = 'testDocRef'; // Mock document reference
-        const newData = { data: 'testData' };
+        const newData = { data: 'testData' }
+        const merge ={"merge": true}
     
         // Mocking doc() function
         doc.mockReturnValueOnce(docRef);
         updateDoc.mockRejectedValueOnce(new Error('Test error')); // Mock setDoc to throw an error
     
-        await updateDocument('collectionName', 'docId', newData);
+        await updateDocument('collectionName', 'docId', newData, merge);
         expect(doc).toHaveBeenCalledWith(db, 'collectionName', 'docId');
-        expect(updateDoc).toHaveBeenCalledWith(docRef, newData);
+        expect(updateDoc).toHaveBeenCalledWith(docRef, newData, merge);
     
         expect(consoleErrorSpy).toHaveBeenCalledWith('Error updating document: ', new Error('Test error'));
     

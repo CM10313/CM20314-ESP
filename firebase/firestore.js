@@ -202,30 +202,6 @@ const fetchUserByDepartment = async (department) => {
     return null;
   }
 };
-const fetchUsersByDepartment = async (department) => {
-  try {
-    const q = query(collection(db, 'users'), where('department', '==', department));
-    const querySnapshot = await getDocs(q);
-
-    let users = [];
-
-    querySnapshot.forEach((doc) => {
-      users.push({
-        id: doc.id,
-      });
-    });
-    return users;
-  } catch (e) {
-    console.error("Error fetching users: ", e);
-    return [];
-  }
-};
-
-
-
-
-
-
 
 const setupDatabaseListener = (collectionName, callback) => {
   const docRef = collection(db, collectionName);

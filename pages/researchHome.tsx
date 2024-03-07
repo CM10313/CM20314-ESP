@@ -94,7 +94,7 @@ const ResearchHome: React.FC = () => {
     // Add more StudyMediumCard components here as needed
   ];
 const handlePush = () => {
-    router.push('/viewParticipantDetails?uid=PNeqhkPm0Le0LcfOK1caYeVoCYB3&studyId=2XHxM1QPyu2Xmd7YsiaW');
+    router.push('/viewParticipantDetails?uid=PNeqhkPm0Le0LcfOK1caYeVoCYB3&studyId=jd1kQsORcZkDgQnlZTjt');
 };//used to mock params  needed for participant view
 const handleDivPush = () => {
   router.push('/diversityView?studyId=2XHxM1QPyu2Xmd7YsiaW');

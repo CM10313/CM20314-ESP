@@ -130,12 +130,12 @@ const addUserToStudyAwaitingApproval = async ()=>{
                 hasReligion:studyData.studyObj.RequirementsObject.demoRequirements.includes("Religion"),
                 hasSexuality:studyData.studyObj.RequirementsObject.demoRequirements.includes("Sexuality"),
                 hasYOFS:studyData.studyObj.RequirementsObject.demoRequirements.includes("YearOfStudies"),
-                hasAccessRequirements:studyData.studyObj.RequirementsObject.accessibilityRequirements.includes("AccessibilityRequirements"),
+                hasAccessRequirements:studyData.studyObj.RequirementsObject.accesibilityRequirements.includes("AccessibilityRequirements"),
                 hasAccessToDevice:studyData.studyObj.RequirementsObject.techRequirements.includes("AccessToDevice"),
                 hasAnonymityLevel:studyData.studyObj.RequirementsObject.privacyRequirements.includes("AnonymityLevel"),
-                hasMaxTravelTime:studyData.studyObj.RequirementsObject.geographicalRequirements.includes("MaxTravelTime"),
+                hasMaxTravelTime:studyData.studyObj.RequirementsObject.geographicRequirements.includes("MaxTravelTime"),
                 hasNativeLanguage:studyData.studyObj.RequirementsObject.languageRequirements.includes("NativeLanguage"),
-                hasNearestCity:studyData.studyObj.RequirementsObject.geographicalRequirements.includes("NearestCity"),
+                hasNearestCity:studyData.studyObj.RequirementsObject.geographicRequirements.includes("NearestCity"),
                 hasOtherLanguages:studyData.studyObj.RequirementsObject.languageRequirements.includes("OtherLanguages"),
             }
             setStudyProps(StudyProps);

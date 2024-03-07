@@ -326,7 +326,7 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass,dep
                             multiline
                             rows={3}
                             onChange={handleInputChange(setDescription)}
-                            sx={{width:isMobile?'90%':'90%',padding:0,backgroundColor:'#DAE1E9',borderRadius:1,mt:-2,"&  .MuiFormHelperText-root.Mui-error": {
+                            sx={{width:isMobile?'80%':'90%',padding:0,backgroundColor:'#DAE1E9',borderRadius:1,mt:-2,"&  .MuiFormHelperText-root.Mui-error": {
                                 backgroundColor: "#F6F6F6",
                                 margin:0,
                               },}}
