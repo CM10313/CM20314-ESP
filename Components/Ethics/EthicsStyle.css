@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.horizontalBoxes {
+    display: flex;
+    flex-direction: row;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    height: 45vh;
+    width: 50vw;
+    margin: 1vh;
+    padding: 2vh;
+    border: 0.3vh solid black;
+    border-radius: 2vh;
+    font-family: sans-serif;
+}
+
+.DisputeBox {
+    display: flex;
+    flex-direction: column;
+    height: 30vh;
+    width: 96vw;
+    margin: 1vh;
+    padding: 2vh;
+    border: 0.3vh solid black;
+    border-radius: 2vh;
+    font-family: sans-serif;
+}
