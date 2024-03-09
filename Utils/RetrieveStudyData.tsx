@@ -13,15 +13,17 @@ export const fetchData = async (query:string) => {
     let departmentStudies = [];
     try {
       const users = await fetchUsersByDepartment(department);
-      for (const user of users) {
-        if(getStudies){
-          departmentStudies.push(await fetchData(`departments/${department}/Researchers/${user.id}/studies`,));
-        }
-        if(getWebinars){
-          departmentStudies.push(await fetchData(`departments/${department}/Researchers/${user.id}/webinars`));
-        }
-        if(getOthers){
-          departmentStudies.push(await fetchData(`departments/${department}/Researchers/${user.id}/others`));
+      if(users){
+        for (const user of users) {
+          if(getStudies){
+            departmentStudies.push(await fetchData(`departments/${department}/Researchers/${user.id}/studies`,));
+          }
+          if(getWebinars){
+            departmentStudies.push(await fetchData(`departments/${department}/Researchers/${user.id}/webinars`));
+          }
+          if(getOthers){
+            departmentStudies.push(await fetchData(`departments/${department}/Researchers/${user.id}/others`));
+          }
         }
       }
       return departmentStudies;

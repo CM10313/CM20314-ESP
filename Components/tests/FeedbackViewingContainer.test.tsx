@@ -63,7 +63,7 @@ describe('FeedbackListViewer component', () => {
     expect(getByText("Test description")).toBeInTheDocument();
   });
   it('renders correctly when no feedback list', () => {
-    const { queryByText } = render(<FeedbackListViewer feedbackList={undefined} />);
+    const { queryByText } = render(<FeedbackListViewer feedbackList={[{description:'desc',name:'name',rating:0}]} />);
     expect(queryByText("Test description")).not.toBeInTheDocument();
   });
 

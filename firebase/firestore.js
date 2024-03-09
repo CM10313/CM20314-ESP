@@ -225,10 +225,6 @@ const setupDatabaseListener = (collectionName, callback) => {
   return unsubscribe;
 };
 
-export default setupDatabaseListener;
-
-
-
 // Trigger the update when the page loads
 
 const clearCollection = async (collectionName) => {
@@ -377,4 +373,4 @@ async function getResearcherStudies(departmentName, researcherId) {
       throw error;
   }
 }
-    export { addDocument, fetchDocumentById, fetchDocuments, updateDocument, deleteDocument, addMultipleDocuments, fetchUserByDepartment, fetchUsersByDepartment, fetchAllStudiesByDepartment, clearCollection, updateDocumentWithArray};
+    export { addDocument, fetchDocumentById, fetchDocuments, updateDocument, deleteDocument, addMultipleDocuments, fetchUserByDepartment, fetchUsersByDepartment, fetchAllStudiesByDepartment, clearCollection, updateDocumentWithArray,setupDatabaseListener,getResearcherStudies,createFieldIfNotExists};
