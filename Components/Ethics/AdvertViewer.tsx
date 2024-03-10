@@ -10,7 +10,7 @@ interface AdvertViewerProps {
     dates: string[];
     contactDetailsAndExtLinks: string[];
     Compensation : string[]
-    ResearcherFeedBack: FeedbackViewingContainerProps
+    ResearcherFeedBack?: FeedbackViewingContainerProps
 
 }
 
@@ -88,22 +88,22 @@ const AdvertViewer: React.FC<AdvertViewerProps> = ({
 
                 <div>
                     <div style={{ margin: '15px' }}>
-                        <SentenceGrid sentences={subjectRelatedFields} title={'Related Fields'} rowSpacing={1} numberOfItemsPerRow={3} />
+                        <SentenceGrid sentences={subjectRelatedFields} rowSpacing={1} numberOfItemsPerRow={3} />
                     </div>
 
                     <div style={{ margin: '15px' }}>
-                        <SentenceGrid sentences={Compensation} title={'Compensation'} rowSpacing={1} numberOfItemsPerRow={1} />
+                        <SentenceGrid sentences={Compensation} rowSpacing={1} numberOfItemsPerRow={1} />
                     </div>
 
                     <div style={{ margin: '15px', fontStyle: 'sans-serif' }}>
-                        <SentenceGrid sentences={contactDetailsAndExtLinks} title={'Contact Details and External Links'} rowSpacing={1} numberOfItemsPerRow={2} />
+                        <SentenceGrid sentences={contactDetailsAndExtLinks}rowSpacing={1} numberOfItemsPerRow={2} />
                     </div>
 
-                    <div style={{ margin: '15px' }}>
+                    {ResearcherFeedBack?<div style={{ margin: '15px' }}>
                         
                         <FeedbackListViewer feedbackList={ResearcherFeedBack} />
                         
-                    </div>
+                    </div>:null}
                 </div>
             </div>
         </div>

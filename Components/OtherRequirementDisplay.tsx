@@ -30,7 +30,7 @@ import * as React from 'react';
  export default function OtherRequirementDisplay({
  hasAccessRequirements,hasAccessToDevice,hasAnonymityLevel,hasMaxTravelTime,hasNearestCity,hasNativeLanguage,hasOtherLanguages,accesRequirements,accessToDevice,anonymityLevel,maxTravelTime,nativeLanguage,nearestCity,otherLanguages
  }:  OtherRequirementDisplayProps) {
- console.log(typeof accessToDevice)
+  console.log(accessToDevice)
    return (
     <Box
     sx={{

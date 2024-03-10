@@ -26,9 +26,9 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
   const [upcomingStudies, setUpcomingStudies] = useState<ItemProps[]>(testBypass3);
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
-  const handleCardClick = (title: string) => {
+  const handleCardClick = (id: string,publisherId:string,department:string) => {
     // Push the user to the desired page using the title (replace '/advert/' with your desired route)
-    router.push(`/advert-preview/${title}`); // change to a generated key
+    router.push(`/advertPreview?studyId=${id}&publisherId=${publisherId}&department=${department}`);
   };
  
   useEffect(() => {
@@ -117,6 +117,8 @@ useEffect(() => {
               department:study.department || "No department",
               title: study.title || "No Title", // Ensure you have a default value if properties are missing
               borderColour: (study.publisherRating >=4 )?"#D7BE69":"#C6CFD8", // Example border colour, adjust accordingly
+              id:study.id || "No id",
+              publisherId:study.publisherId || "No publisher id",
               onCardClick: handleCardClick // Assuming handleCardClick is defined somewhere
             };
             
@@ -154,6 +156,8 @@ useEffect(() => {
           name={study.name}
           rating={study.rating}
           title={study.title}
+          id={study.id}
+          publisherId={study.publisherId}
           department={study.department}
           borderColour={study.borderColour}
           onCardClick={study.onCardClick}

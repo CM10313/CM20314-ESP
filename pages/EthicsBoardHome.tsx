@@ -6,7 +6,9 @@ import { Box } from '@mui/material';
 import SearchBar from '../Components/SearchBar';
 import YourScreenComponent2 from '../Components/Ethics/shiftPage';
 import '../Components/Ethics/EthicsStyle.css';
-import { fetchAllStudiesByDepartment, addMultipleDocuments, clearCollection } from '../firebase/firestore';
+import {fetchAllStudiesByDepartment}  from '../firebase/firestore';
+import {addMultipleDocuments} from '../firebase/firestore';
+import  {clearCollection} from '../firebase/firestore';
 import {setupDatabaseListener} from '../firebase/firestore';
 import SearchableList from '../Components/SearchableList';
 
@@ -146,7 +148,7 @@ const EthicsBoardHome: React.FC = () => {
     return (
         <div>
             <TriangleBackground />
-            <Navbar />
+            <Navbar name={''} rating={0} />
             <EthicsBoardHomeLayout />
         </div>
     );

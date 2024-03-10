@@ -1,0 +1,230 @@
+import {Button, Box, useMediaQuery, Grid, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import Navbar from '../Components/navbar';
+import TriangleBackground from '../Components/TriangleBackground';
+import { useAuth } from '../Context/AuthContext';
+import { fetchDocumentById, updateDocument} from '../firebase/firestore';
+import { ReviewDetailsObject } from './register';
+import { useState, useEffect } from 'react';
+import AdvertViewer2 from '../Components/Ethics/AdvertViewer2';
+import CircleIcon from '@mui/icons-material/Circle';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
+import { FeedbackViewingContainerProps } from '../Components/Ethics/RatingFeedBackViewer';
+
+interface StudyProps {
+        name: string;
+        title:string;
+        publisherRating:number;
+        department:string;
+        studyDescription: string;
+        joinedParticipants:number;
+        maxNoParticipants:number;
+        subjectRelatedFields: string[];
+        approvalStatus:string;
+        dates: string[];
+        contactDetails: string[];
+        externalLink:string;
+        Compensation : string[];
+        ResearcherFeedBack?: FeedbackViewingContainerProps[];
+        minimumAge:number;
+        organsiation:string;
+        location:string;
+    };
+ interface RequirementProps{
+    hasPreExisting?:boolean;
+    hasAllergies?:boolean;
+    hasDisabilities?:boolean;
+    hasMedication?:boolean;
+    hasAccessToDevice?:boolean;
+    hasNativeLanguage?:boolean;
+    hasOtherLanguages?:boolean;
+    hasNearestCity?:boolean;
+    hasMaxTravelTime?:boolean;
+    hasAnonymityLevel?:boolean;
+    hasAccessRequirements?:boolean;
+    hasFaculty?:boolean;
+    hasGender?:boolean;
+    hasRace?:boolean;
+    hasSexuality?:boolean;
+    hasYOFS?:boolean;
+    hasReligion?:boolean;
+    hasIncome?:boolean;
+    hasAge?:boolean;
+    hasOccupation?:boolean;
+    hasHLOFE?:boolean;
+}
+const AdvertPreview: React.FC<{ testBypass1?: StudyProps, testBypass2?:RequirementProps}> = ({ testBypass1={} as StudyProps, testBypass2 ={} as RequirementProps })  => {
+  const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+  const isMobile = useMediaQuery('(max-width:1000px)')
+  const [studyProps, setStudyProps]=useState<StudyProps>(testBypass1);
+  const [requirementProps, setRequirementProps]=useState<RequirementProps>(testBypass2);
+  //const [healthProps, setHealthProps]=useState<HealthDisplayProps>(testBypass1);
+  //const [demographicProps,setDemographicProps]=useState<DemoGraphicDisplayProps>(testBypass2);
+  //const [ otherProps, setOtherProps]=useState<OtherRequirementDisplayProps>(testBypass3);
+  const router = useRouter();
+let studyId = '';
+let department ='';
+let publisherId ='';
+
+if (typeof window !== 'undefined') {
+    const urlParams = new URLSearchParams(window.location.search);
+    studyId = urlParams.get('studyId') || '';
+    department = urlParams.get('department') || '';
+    publisherId = urlParams.get('publisherId') || '';
+}
+
+const addUserToStudyAwaitingApproval = async ()=>{
+    try{
+        const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
+        const currentAwaitingApprovalList = studyData.studyObj.awaitingApprovalParticipants;
+        const updatedAwaitingApprovalList = [...currentAwaitingApprovalList,id];
+        const updatedStudyDoc = {...studyData};
+        updatedStudyDoc.studyObj.awaitingApprovalParticipants = updatedAwaitingApprovalList;
+        updateDocument(`departments/${department}/Researchers/${publisherId}/studies`,studyId,updatedStudyDoc);
+        router.push("/participantHome");
+        } catch (error) {
+        // Handle any errors that occur during the process
+        console.error("Error editing user status in study", error);
+        }
+  } 
+  const homepageRedirect =()=>{
+    router.push("/participantHome");
+  }
+  
+  useEffect (()=>{
+    const fetchUserData = async ()=> {
+        console.log(studyId )
+        const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
+        const userData:any= await fetchDocumentById("users",publisherId );
+        console.log(studyData);
+        if (studyData && userData) {
+            const StudyProps: StudyProps = {
+                minimumAge:studyData.minimumAge,
+                name: studyData.publisherName,
+                studyDescription:studyData.description,
+                subjectRelatedFields:studyData.relatedFields,
+                dates:[`Closing Date:${studyData.closingDate}`,`Published: ${studyData.dateOfPublish}`,`Date of Study: ${studyData.preliminaryDate}`],
+                contactDetails:[`Email: ${userData.email} `,`Mobile: ${userData.phoneNumber}`],
+                externalLink:studyData.externalLink,
+                Compensation:[`${studyData.studyObj.CompensationObject.amount}`,`${studyData.studyObj.CompensationObject.description}`],
+                ResearcherFeedBack:userData.reviewObject.reviews,
+                title:studyData.title,
+                publisherRating:studyData.publisherRating,
+                department:studyData.department,
+                organsiation:userData.organisation,
+                joinedParticipants:studyData.studyObj.joinedParticipants.length,
+                maxNoParticipants:studyData.maxNoParticipants,
+                approvalStatus:studyData.studyObj.EthicsApprovalObject.status,
+                location:studyData.location,
+
+            }
+            const RequirementProps:RequirementProps={
+                hasAllergies:studyData.studyObj.RequirementsObject.healthRequirements.includes("Allergies"),
+                hasDisabilities:studyData.studyObj.RequirementsObject.healthRequirements.includes("Disabilities"),
+                hasMedication: studyData.studyObj.RequirementsObject.healthRequirements.includes("Medication"),
+                hasPreExisting:studyData.studyObj.RequirementsObject.healthRequirements.includes("PreExistingConditions"),
+                hasAge:studyData.studyObj.RequirementsObject.demoRequirements.includes("Age"),
+                hasFaculty:studyData.studyObj.RequirementsObject.demoRequirements.includes("Faculty"),
+                hasGender:studyData.studyObj.RequirementsObject.demoRequirements.includes("Gender"),
+                hasHLOFE:studyData.studyObj.RequirementsObject.demoRequirements.includes("HighestLevelOfEducation"),
+                hasIncome:studyData.studyObj.RequirementsObject.demoRequirements.includes("Income"),
+                hasOccupation:studyData.studyObj.RequirementsObject.demoRequirements.includes("Occupation"),
+                hasRace:studyData.studyObj.RequirementsObject.demoRequirements.includes("Race"),
+                hasReligion:studyData.studyObj.RequirementsObject.demoRequirements.includes("Religion"),
+                hasSexuality:studyData.studyObj.RequirementsObject.demoRequirements.includes("Sexuality"),
+                hasYOFS:studyData.studyObj.RequirementsObject.demoRequirements.includes("YearOfStudies"),
+                hasAccessRequirements:studyData.studyObj.RequirementsObject.accesibilityRequirements.includes("AccessibilityRequirements"),
+                hasAccessToDevice:studyData.studyObj.RequirementsObject.techRequirements.includes("AccessToDevice"),
+                hasAnonymityLevel:studyData.studyObj.RequirementsObject.privacyRequirements.includes("AnonymityLevel"),
+                hasMaxTravelTime:studyData.studyObj.RequirementsObject.geographicRequirements.includes("MaxTravelTime"),
+                hasNativeLanguage:studyData.studyObj.RequirementsObject.languageRequirements.includes("NativeLanguage"),
+                hasNearestCity:studyData.studyObj.RequirementsObject.geographicRequirements.includes("NearestCity"),
+                hasOtherLanguages:studyData.studyObj.RequirementsObject.languageRequirements.includes("OtherLanguages"),
+            }
+            setStudyProps(StudyProps);
+            setRequirementProps(RequirementProps);
+        } else {
+            console.error("userData or studyData is null");
+        }
+      }
+      fetchUserData();
+  },[department, id, publisherId, studyId])
+
+  return (
+    <>
+     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
+            <TriangleBackground />
+      <div style={{ height: '810px',display:'flex',justifyContent:'center',alignItems:'center' }}>
+       <Box sx={{width:'90%',display:'flex',justifyContent:'center'}}>
+        <Grid container rowSpacing={8} columnSpacing={4}sx={{height:'810px',mt:15}}>
+            <Grid item xs={isMobile?12:8}><AdvertViewer2 AdvertProps={studyProps} ></AdvertViewer2></Grid> 
+            <Grid item xs={isMobile?12:4}>
+            <Box sx={{width:"100%",maxWidth:'800px',height:"600px",overflowY:"auto",backgroundColor:"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}>
+                <Grid container sx={{display:'flex'}}>
+                    <Grid item xs={12}>
+                        <Typography fontSize={40} sx={{color:'#C5C5C5',ml:3,mt:1}}>Want to take part ?</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography fontSize={18} sx={{color:'#C5C5C5',ml:3,mt:1}}>This study requires your data, any field listed below will be made available to the publisher when you join.</Typography>
+                    </Grid>
+                    <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>
+                       <Box sx={{width:'80%',height:'330px',backgroundColor:'#DAE1E9',padding:2,overflowY:'scroll',display:'flex',justifyContent:'center', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#1F5095', borderRadius: '5px' } }}>
+                       <Grid container sx={{display:'flex',justifyContent:'center'}}>
+                            <Grid item xs={12} >
+                                <Typography fontSize={20} fontWeight={'bold'}sx={{color:'#000000'}}>Demographic</Typography>
+                                <Box sx={{width:'100%',backgroundColor:'#1F5095',height:'200px',overflowY:'scroll', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: 'white', borderRadius: '5px' } }}>
+                                {requirementProps.hasAge?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}}><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Age</Typography>:null}
+                                {requirementProps.hasFaculty?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Faculty</Typography>:null}
+                                {requirementProps.hasGender?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Gender</Typography>:null}
+                                {requirementProps.hasHLOFE?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Highest Level Of Education</Typography>:null}
+                                {requirementProps.hasIncome?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Income</Typography>:null}
+                                {requirementProps.hasOccupation?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Occupation</Typography>:null}
+                                {requirementProps.hasRace?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}}><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Race</Typography>:null}
+                                {requirementProps.hasReligion?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Religion</Typography>:null}
+                                {requirementProps.hasSexuality?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Sexuality</Typography>:null}
+                                {requirementProps.hasYOFS?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Year Of Studies</Typography>:null}
+                                </Box>
+                                <Typography fontSize={20} fontWeight={'bold'}sx={{color:'#000000'}}>Heatlh</Typography>
+                                <Box sx={{width:'100%',backgroundColor:'#1F5095',height:'200px',overflowY:'scroll', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: 'white', borderRadius: '5px' } }}>
+                                {requirementProps.hasAllergies?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}}><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Allergies</Typography>:null}
+                                {requirementProps.hasDisabilities?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Disabilities</Typography>:null}
+                                {requirementProps.hasMedication?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Medication</Typography>:null}
+                                {requirementProps.hasPreExisting?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Pre-Existing Conditions</Typography>:null}
+                                </Box>
+                                <Typography fontSize={20} fontWeight={'bold'}sx={{color:'#000000'}}>Other</Typography>
+                                <Box sx={{width:'100%',backgroundColor:'#1F5095',height:'200px',overflowY:'scroll', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: 'white', borderRadius: '5px' } }}>
+                                {requirementProps.hasAccessRequirements?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Access Requirements</Typography>:null}
+                                {requirementProps.hasAccessToDevice?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Access To Device</Typography>:null}
+                                {requirementProps.hasMaxTravelTime?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Max Travel Time</Typography>:null}
+                                {requirementProps.hasNearestCity?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Nearest City</Typography>:null}
+                                {requirementProps.hasNativeLanguage?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Native Language</Typography>:null}
+                                {requirementProps.hasOtherLanguages?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Other Languages</Typography>:null}
+                                {requirementProps.hasAnonymityLevel?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Anonymity Level</Typography>:null}
+                                </Box>
+                            </Grid>
+                        </Grid>
+                        </Box> 
+                    </Grid>
+                    <Grid item xs={6} sx={{display:'flex',justifyContent:'start',mt:2}}>
+                               <Button  onClick={addUserToStudyAwaitingApproval}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#84C287",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><DoneIcon></DoneIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Apply</Box></Grid></Grid></Button>
+                    </Grid>
+                    <Grid item xs={6} sx={{display:'flex',justifyContent:'start',mt:2}}>
+                               <Button  onClick={homepageRedirect}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#CD386B",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><CloseIcon></CloseIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Exit</Box></Grid></Grid></Button>
+                    </Grid>
+                </Grid>
+            </Box>
+            </Grid>
+        </Grid>
+       </Box>
+       <Box>
+       </Box>
+      </div>
+      
+    </>
+  );
+  };
+  
+  export default AdvertPreview;
+  //study data:{JSON.stringify(studyProps)}//requirements:{JSON.stringify(requirementProps)}
+  

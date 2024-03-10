@@ -1,7 +1,8 @@
 import { db } from './config'; // Assuming you export your Firestore instance as 'db' in config.js
 import { collection, setDoc, getDoc, getDocs, updateDoc, doc, deleteDoc,addDoc,query,where, onSnapshot } from 'firebase/firestore';
 
-// Add a document to a collection
+
+
 const addDocument = async (collectionName, data, uid) => {
   try {
     const docRef = doc(db, collectionName, uid);
@@ -72,6 +73,55 @@ const fetchDocumentById = async (collectionName, documentId) => {
 };
 
 
+
+const fetchUsersByDepartment = async(department) => {
+  try{
+    const q =  query(collection(db,'users'),where('department', '==',department));
+    const querySnapshot = await getDocs(q)
+    let users = []
+    querySnapshot.forEach((doc)=>{
+      users.push({
+        id:doc.id,
+      })
+    });
+    
+    return users
+  } catch (e){
+    console.error("Error fetching users:",e)
+  }
+}
+
+const fetchAllStudiesByDepartment = async (department) => {
+  try {
+   
+    const users = await fetchUsersByDepartment(department);
+    
+    let studies = [];
+
+    for (let i = 0; i < users.length; i++) {
+      const userId = users[i].id;
+      const userStudiesRef = collection(db, 'departments', department, 'Researchers', userId, 'studies');
+      const userStudiesSnapshot = await getDocs(userStudiesRef);
+    
+      userStudiesSnapshot.forEach((studyDoc) => {
+        const studyData = studyDoc.data(); // Access the data within the document
+        studies.push({
+          userId: userId,
+          studyId: studyDoc.id,
+          // Include the study data
+          studyData: studyData,
+        });
+      });
+    }
+
+   
+    return studies;
+  } catch (e) {
+    console.error("Error fetching studies:", e);
+  }
+};
+
+
 // Fetch all documents from a collection
 const fetchDocuments = async (collectionName) => {
   try {
@@ -80,18 +130,18 @@ const fetchDocuments = async (collectionName) => {
     querySnapshot.forEach((doc) => {
       docs.push({ id: doc.id, ...doc.data() });
     });
+    
     return docs;
   } catch (e) {
     console.error("Error fetching documents: ", e);
   }
 };
 
-
 // Update a document
 const updateDocument = async (collectionName, docId, newData) => {
   try {
     const docRef = doc(db, collectionName, docId);
-    await updateDoc(docRef, newData);
+    await updateDoc(docRef, newData, { merge: true });
     console.log("Document updated");
   } catch (e) {
     console.error("Error updating document: ", e);
@@ -129,76 +179,6 @@ const deleteDocument = async (collectionName, docId) => {
     console.log("Document deleted");
   } catch (e) {
     console.error("Error deleting document: ", e);
-  }
-};
-
-const fetchAllStudiesByDepartment = async (department) => {
-  try {
-   
-    const users = await fetchUsersByDepartment(department);
-    
-    let studies = [];
-
-    for (let i = 0; i < users.length; i++) {
-      const userId = users[i].id;
-      const userStudiesRef = collection(db, 'departments', department, 'Researchers', userId, 'studies');
-      const userStudiesSnapshot = await getDocs(userStudiesRef);
-    
-      userStudiesSnapshot.forEach((studyDoc) => {
-        const studyData = studyDoc.data(); // Access the data within the document
-        studies.push({
-          userId: userId,
-          studyId: studyDoc.id,
-          // Include the study data
-          studyData: studyData,
-        });
-      });
-    }
-
-    return studies;
-  } catch (e) {
-    console.error("Error fetching studies:", e);
-  }
-};
-
-
-const fetchUserByDepartment = async (department) => {
-  try {
-    const querySnapshot = await getDocs(
-      query(collection(db, 'users'), where('department', '==', department))
-    );
-    console.log(querySnapshot)
-    let user = null;
-
-    querySnapshot.forEach((doc) => {
-      user = {
-        id: doc.id
-      };
-    });
-    console.log(user)
-    return user;
-  } catch (e) {
-    console.error("Error fetching user: ", e);
-    return null;
-  }
-};
-
-const fetchUsersByDepartment = async (department) => {
-  try {
-    const q = query(collection(db, 'users'), where('department', '==', department));
-    const querySnapshot = await getDocs(q);
-
-    let users = [];
-
-    querySnapshot.forEach((doc) => {
-      users.push({
-        id: doc.id,
-      });
-    });
-    return users;
-  } catch (e) {
-    console.error("Error fetching users: ", e);
-    return [];
   }
 };
 
@@ -295,10 +275,6 @@ const clearCollection = async (collectionName) => {
         }
       };
     }
-
-
-
-
 
 export { 
   addDocument, 
