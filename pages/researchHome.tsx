@@ -11,16 +11,44 @@ import TriangleBackground from '../Components/TriangleBackground';
 import Calendar from '../Components/Calendar';
 import SearchableList from '../Components/SearchableList';
 import { useAuth } from '../Context/AuthContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchDocuments, fetchUserByDepartment, fetchUsersByDepartment } from '../firebase/firestore';
+import CircularProgress from '@mui/material/CircularProgress';
+
 const ResearchHome: React.FC = () => {
-  const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+  const {isLoggedIn, setAuth, username, overallRating, department, id} = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
+  const [studies, setStudies] = useState([]);
   const handleCardClick = (title: string) => {
     // Push the user to the desired page using the title (replace '/advert/' with your desired route)
     router.push(`/advert-preview/${title}`); // change to a generated key
   };
+
+  useEffect(() => {
+    fetchData();
+    setIsLoading(false);
+  })
+  const fetchData = async () => {
+    try{
+      const studies_arr = await fetchDocuments(`departments/${department}/Researchers/${id}/studies`)///swQ90URzscZLubKOh6t8hSAXr1V2/studies
+      setStudies(studies_arr);
+    }catch (error){
+      console.error(error)
+    }
+    
+  }
+
+  const itemPropsArray = studies.map(study => ({
+    borderColor: "#1F5095", // Adjust based on your study object
+    publisher: study.publisherName || "Default Publisher", // Adjust based on your study object
+    location: study.location || "Default Location", // Adjust based on your study object
+    date: study.preliminaryDate || "No Date Provided", // Adjust based on your study object
+    title: study.title || "No Title", // Adjust based on your study object
+    id: study.id // Assuming id is directly available
+}));
+
   const cardInputList = [
     <StudyMediumCard
       key="1"
@@ -100,6 +128,14 @@ const handleDivPush = () => {
   router.push('/diversityView?studyId=2XHxM1QPyu2Xmd7YsiaW');
 };//used to mock push for diversity view
 
+if (isLoading) {
+  return (
+    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <CircularProgress />
+    </Box>
+  );
+}
+
   return (
     <>
      <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
@@ -136,7 +172,7 @@ const handleDivPush = () => {
           <Grid item xs={isMobile?12:4.5} >
           <Box  sx={{height:'100%'}}>
           <Box  sx={{display:'flex',justifyContent:'center',mt:10,height:'100%'}}>
-            <Calendar cardInputList={[]} />
+            <Calendar cardInputList={itemPropsArray} />
             </Box>
           </Box>
           </Grid>
