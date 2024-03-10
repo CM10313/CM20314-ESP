@@ -48,8 +48,14 @@ const ResearchHome: React.FC = () => {
   }, []);
   const fetchStudies = async (dept, id_) => {
     try{
-      const studies_arr = await fetchDocuments(`departments/${dept}/Researchers/${id_}/studies`)///swQ90URzscZLubKOh6t8hSAXr1V2/studies
-      setStudies(studies_arr);
+      const studies_arr = await fetchDocuments(`departments/${dept}/Researchers/${id_}/studies`)
+      const currentDate = new Date();
+      const filteredAndSortedStudies = studies_arr
+        .filter(study => new Date(study.closingDate) >= currentDate)
+        .sort((a,b) => new Date(a.closingDate) - new Date(b.closingDate));
+
+      setStudies(filteredAndSortedStudies);
+      console.log(studies_arr);
     }catch (error){
       console.error(error)
     }
