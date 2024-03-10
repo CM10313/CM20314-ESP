@@ -155,7 +155,6 @@ const fetchAllStudiesByDepartment = async (department) => {
       });
     }
 
-   
     return studies;
   } catch (e) {
     console.error("Error fetching studies:", e);
@@ -203,88 +202,21 @@ const fetchUsersByDepartment = async (department) => {
   }
 };
 
-
-// Grabs all the studies from a particular researcher
-// const getResearcherStudies = async (researcherDepartment, researcherId) => {
-//   try{
-    
-
-//     console.log("Users In Department ");
-//     console.log(usersInDepartment)
-
-
-//     // Find the researcher by their ID
-//     const researcher = usersInDepartment.find(user => user.id === researcherId)
-    
-//     if (!researcher) {
-//       throw new Error('Researcher not found in the specified department');
-//     }
-
-//   // Retrieve the studies for the researcher
-//   //const researcherStudies = await fetchStudiesByResearcher(researcher);
-
-
-//   //console.log(researcher.studies);
-
-//   return researcher.studies; //researcherStudies;
-
-//   }
-  
-//   catch (error) {
-//     console.error("Error fetching researcher studies: ", error);
-//     throw error;
-//   }
-
-
-
-//   // try {
-//   //   // Fetch all studies asynchronously and await the result
-//   //   const studies = await fetchDocuments("Studies");
-    
-//   //   // Filter studies associated with the researcherId
-//   //   const researcherStudies = studies.filter(study => study.ResearcherID === researcherId);
-    
-//   //   // Log the filtered studies
-//   //   console.log(researcherStudies);
-    
-//   //   // Return the filtered studies if needed
-//   //   return researcherStudies;
-//   // } catch (error) {
-//   //   // Handle errors properly
-//   //   console.error("Error fetching researcher studies: ", error);
-//   //   // Optionally, you can rethrow the error to propagate it further
-//   //   throw error;
-//   // }
-// };
-
-async function getResearcherStudies(departmentName, researcherId) {
+const fetchUserById = async (userId) => {
   try {
-      // Get a reference to the department's collection
-      const departmentRef = collection(db, 'departments', departmentName);
-      console.log("studies Refrence: " + studiesRef)
-      // Get a reference to the researcher's collection within the department
-      const researcherRef = collection(departmentRef, 'Researchers', researcherId);
-      // Query the studies collection within the researcher's document
-      const studiesRef = collection(researcherRef, 'studies');
-      // Create a query to retrieve all the studies
-      const q = query(studiesRef);
-      // Execute the query and fetch the studies
-      const querySnapshot = await getDocs(q);
+    const q = query(collection(db, 'users'), where('id', '==', userId));
+    const querySnapshot = await getDocs(q);
 
-      // Extract the data from the query snapshot
-      const studies = [];
-      querySnapshot.forEach((doc) => {
-          studies.push({ id: doc.id, ...doc.data() });
-      });
-
-      console.log("Studies");
-      console.log(studies);
-      return studies;
-  } catch (error) {
-      console.error('Error fetching studies:', error);
-      throw error;
+      // Access data using .data() method
+    let userData = doc.data();
+    console.log(userData);
+    return userData;
+  } catch (e) {
+    console.error("Error fetching users: ", e);
+    return [];
   }
-}
+};
+
 
 
 const setupDatabaseListener = (collectionName, callback) => {
@@ -366,6 +298,8 @@ const clearCollection = async (collectionName) => {
 
 
 
+
+
 export { 
   addDocument, 
   fetchDocumentById, 
@@ -374,11 +308,11 @@ export {
   deleteDocument, 
   fetchUserByDepartment,
   fetchUsersByDepartment, 
-  getResearcherStudies, 
   setupDatabaseListener,
   createFieldIfNotExists,
   clearCollection,
   fetchAllStudiesByDepartment,
   updateDocumentWithArray,
   addMultipleDocuments,
+  fetchUserById
 };
