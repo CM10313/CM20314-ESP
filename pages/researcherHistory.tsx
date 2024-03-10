@@ -14,7 +14,6 @@ export default function ResearherHistoryScreen() {
 
     const [studies, setStudies] = useState([]); // State to store fetched studies
     const [hiddenStudies, setHiddenStudies] = useState([]);
-    //const [joinedParticipants, setJoinedParticipants] = useState([])
 
     const researcherId = "9XCri3v9uFTN5RgDQVszan3iKp23" // id
     const researcherDepartment = "Computer Science"
