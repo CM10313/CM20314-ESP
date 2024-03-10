@@ -5,13 +5,13 @@ import { Box, Grid, Typography } from "@mui/material";
 
 interface HistoryRowProps { 
   studyId: string;
-  author: string;
+  title: string;
   date: string;
   isPaid?: boolean;
 
 }
 
-const HistoryCardsStudy: React.FC<HistoryRowProps> = ({ studyId, author, date, isPaid=false }) => {
+const HistoryCardsStudy: React.FC<HistoryRowProps> = ({ studyId, title, date, isPaid=false }) => {
 
     return (
         <Grid item display="flex" flexDirection="row" alignItems="center" justifyContent="space-between"
@@ -34,7 +34,7 @@ const HistoryCardsStudy: React.FC<HistoryRowProps> = ({ studyId, author, date, i
             width:'60%',
           }}>
           <Box display="flex" flexDirection="row" justifyContent="space-between">
-            <Typography> {author} </Typography>
+            <Typography noWrap sx={{ overflow: "hidden", textOverflow: "ellipsis"}}> {title} </Typography>
             {isPaid && (
               <Typography sx={{ backgroundColor: "yellow", color: "white", fontSize: "1em", padding: "0.1em", marginTop: "0.3em" }}>
                   Paid

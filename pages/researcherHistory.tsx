@@ -5,34 +5,31 @@ import HiddenStudiesCards from "../Components/hiddenStudies";
 import DisputeContactCard from "../Components/disputeContact";
 import Navbar from "../Components/navbar";
 import { useAuth } from "../Context/AuthContext";
-import  getResearcherStudies  from "../firebase/firestore";
+import { fetchAllStudiesByDepartment } from "../firebase/firestore";
 import { useEffect, useState } from "react";
-import StudyCreator from "./studyCreator";
 
 
 export default function ResearherHistoryScreen() {
     const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
 
-    const hiddenIdList = [
-        "123456",
-        "7890123",
-        "23433423",
-        "34324423", 
-        "432423423"
-    ]
-
     const [studies, setStudies] = useState([]); // State to store fetched studies
     const [hiddenStudies, setHiddenStudies] = useState([]);
 
-    const researcherId = "swQ90URzscZLubKOh6t8hSAXr1V2" // id
+    const researcherId = "9XCri3v9uFTN5RgDQVszan3iKp23" // id
     const researcherDepartment = "Computer Science"
 
     useEffect(() => {
         // Fetch studies associated with the researcher
-        getResearcherStudies(researcherDepartment, researcherId).then((fetchedStudies) => {
-                setStudies(fetchedStudies); 
-                setHiddenStudies(fetchedStudies.filter(study => study.Status == "Waiting"));
+        fetchAllStudiesByDepartment(researcherDepartment).then((fetchedStudies) => {
+                
+            setStudies(
+                fetchedStudies.filter(study => study.studyData.publisherId === researcherId && 
+                    study.studyData.studyObj.EthicsApprovalObject.status != "Waiting")   
+            ); 
             
+            setHiddenStudies(
+                fetchedStudies.filter(study => study.studyData.studyObj.EthicsApprovalObject.status == "Waiting")
+            );
             })
         .catch(error => { console.error("Error fetching studies:", error); });
     }, []);
@@ -40,16 +37,19 @@ export default function ResearherHistoryScreen() {
     const historyCardList = studies.map((study,index) => (
         <HistoryCards 
             key={index} 
-            studyId={study.ResearcherID} 
-            author={study.Name} 
-            date={study.AppliedDate} />
+            studyId={study.studyId}
+            title={study.studyData.title} 
+            date={study.studyData.dateOfPublish}
+            department={researcherDepartment} 
+            />
     ))
 
     const hiddenStudiesList = hiddenStudies.map((hiddenStudy,index) => (
         <HiddenStudiesCards  
             key={index} 
-            studyId={hiddenStudy.ResearcherID} 
-            author={hiddenStudy.Name} date={hiddenStudy.AppliedDate} />
+            studyId={hiddenStudy.studyId} 
+            title={hiddenStudy.studyData.title} 
+            date={hiddenStudy.studyData.dateOfPublish} />
     ))
 
     return (
