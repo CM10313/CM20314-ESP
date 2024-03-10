@@ -82,6 +82,13 @@ const RegisterForm: React.FC = () => {
         await signUp(studentData.email, studentData.password);
         const {password, ...datawithoutpassword} = studentData;
         await addDocument('users', {...datawithoutpassword, accountType}, getUID());
+        let account_type = (studentData as any).accountType
+        let department = (studentData as any).department
+        let username = (studentData as any).username
+        let overallRating = (studentData as any).reviewObject.overallRating
+        let isLoggedIn = true;
+        let id = getUID();
+        localStorage.setItem('auth', JSON.stringify({ isLoggedIn, username,overallRating,department,account_type, id }));
         router.push('/researchHome')
       }
       catch (error) {
@@ -102,6 +109,15 @@ const RegisterForm: React.FC = () => {
         await signUp(researcherData.email, researcherData.password);
         const {password, ...datawithoutpassword} = researcherData;
         await addDocument('users', {...datawithoutpassword, accountType}, getUID());
+        let isLoggedIn = true;
+        let account_type = (researcherData as any).accountType
+        let department = (researcherData as any).department
+        let username = (researcherData as any).username
+        let overallRating = (researcherData as any).reviewObject.overallRating
+        let id = getUID();
+        //setAuth(true,username,overallRating,department,account_type, getUID());
+        localStorage.setItem('auth', JSON.stringify({ isLoggedIn, username,overallRating,department,account_type, id }));
+
         router.push('/researchHome');
       }
       catch (error) {
@@ -122,6 +138,13 @@ const RegisterForm: React.FC = () => {
         await signUp(ethicsData.email, ethicsData.password);
         const {password, ...datawithoutpassword} = ethicsData;
         await addDocument('users', {...datawithoutpassword, accountType}, getUID());
+        let isLoggedIn = true;
+        let account_type = (ethicsData as any).accountType
+        let department = (ethicsData as any).department
+        let username = (ethicsData as any).username
+        let overallRating = (ethicsData as any).reviewObject.overallRating
+        let id = getUID();
+        localStorage.setItem('auth', JSON.stringify({ isLoggedIn, username,overallRating,department,account_type, id }));
         router.push('/researchHome')
       }
       catch (error) {

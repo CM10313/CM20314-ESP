@@ -16,7 +16,11 @@ import { fetchDocuments, fetchUserByDepartment, fetchUsersByDepartment } from '.
 import CircularProgress from '@mui/material/CircularProgress';
 
 const ResearchHome: React.FC = () => {
-  const {isLoggedIn, setAuth, username, overallRating, department, id} = useAuth();
+  //const {isLoggedIn, setAuth, username, overallRating, department, id} = useAuth();
+  const [department, setDepartment] = useState('');
+  const [username, setUsername] = useState('');
+  const [overallRating, setOverallRating] = useState();
+  const [id, setId] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
@@ -27,17 +31,28 @@ const ResearchHome: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    const storedAuth = localStorage.getItem('auth');
+    if (storedAuth) {
+      const authObj = JSON.parse(storedAuth);
+      const {isLoggedIn, username, overallRating, department, account_type, id} = authObj;
+      setUsername(username);
+      setOverallRating(overallRating);
+      setDepartment(department);
+      setId(id);
+      fetchStudies(department, id);
+      
+    }
+    
     setIsLoading(false);
-  })
-  const fetchData = async () => {
+
+  }, []);
+  const fetchStudies = async (dept, id_) => {
     try{
-      const studies_arr = await fetchDocuments(`departments/${department}/Researchers/${id}/studies`)///swQ90URzscZLubKOh6t8hSAXr1V2/studies
+      const studies_arr = await fetchDocuments(`departments/${dept}/Researchers/${id_}/studies`)///swQ90URzscZLubKOh6t8hSAXr1V2/studies
       setStudies(studies_arr);
     }catch (error){
       console.error(error)
     }
-    
   }
 
   const itemPropsArray = studies.map(study => ({

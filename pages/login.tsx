@@ -56,7 +56,9 @@ const handleLoginRedirect = async () => {
     let department = (doc_data as any).department
     let username = (doc_data as any).username
     let overallRating = (doc_data as any).reviewObject.overallRating //wont work for ethics
+    let id = getUID();
     setAuth(true,username,overallRating,department,account_type, getUID());
+    localStorage.setItem('auth', JSON.stringify({ isLoggedIn, username,overallRating,department,account_type, id }));
     console.log(isLoggedIn)
     switch (account_type) {
       case "participant":

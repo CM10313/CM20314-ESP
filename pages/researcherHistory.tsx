@@ -5,13 +5,20 @@ import HiddenStudiesCards from "../Components/hiddenStudies";
 import DisputeContactCard from "../Components/disputeContact";
 import Navbar from "../Components/navbar";
 import { useAuth } from "../Context/AuthContext";
-import  getResearcherStudies  from "../firebase/firestore";
+import { fetchDocuments }  from "../firebase/firestore";
 import { useEffect, useState } from "react";
 import StudyCreator from "./studyCreator";
+import CircularProgress from '@mui/material/CircularProgress';
+import { Box } from '@mui/material';
 
 
 export default function ResearherHistoryScreen() {
-    const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+    //const {isLoggedIn,setAuth,username,overallRating,department,id} = useAuth();
+    const [department, setDepartment] = useState('');
+    const [username, setUsername] = useState('');
+    const [overallRating, setOverallRating] = useState();
+    const [id, setId] = useState();
+    const [isLoading, setIsLoading] = useState(true);
 
     const hiddenIdList = [
         "123456",
@@ -28,29 +35,55 @@ export default function ResearherHistoryScreen() {
     const researcherDepartment = "Computer Science"
 
     useEffect(() => {
-        // Fetch studies associated with the researcher
-        getResearcherStudies(researcherDepartment, researcherId).then((fetchedStudies) => {
-                setStudies(fetchedStudies); 
-                setHiddenStudies(fetchedStudies.filter(study => study.Status == "Waiting"));
-            
-            })
-        .catch(error => { console.error("Error fetching studies:", error); });
+        const storedAuth = localStorage.getItem('auth');
+        if (storedAuth) {
+            const authObj = JSON.parse(storedAuth);
+            const {isLoggedIn, username, overallRating, department, account_type, id} = authObj;
+            setUsername(username);
+            setOverallRating(overallRating);
+            setDepartment(department);
+            setId(id);
+            fetchStudies(department, id);
+            setIsLoading(false);
+      
+        }   
     }, []);
+
+    const fetchStudies = async (dept, id_) => {
+        try{
+          const studies_arr = await fetchDocuments(`departments/${dept}/Researchers/${id_}/studies`)///swQ90URzscZLubKOh6t8hSAXr1V2/studies
+          console.log(studies_arr);
+          setStudies(studies_arr);
+          setHiddenStudies(studies_arr.filter(study => study.Status == "Waiting"));
+        }catch (error){
+          console.error(error)
+        }
+      }
+
+    if (isLoading) {
+        return (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+        </Box>
+        );
+    }
 
     const historyCardList = studies.map((study,index) => (
         <HistoryCards 
             key={index} 
-            studyId={study.ResearcherID} 
-            author={study.Name} 
-            date={study.AppliedDate} />
+            studyId={study.id} 
+            author={study.publisherName} 
+            date={study.dateOfPublish} />
     ))
 
     const hiddenStudiesList = hiddenStudies.map((hiddenStudy,index) => (
         <HiddenStudiesCards  
             key={index} 
-            studyId={hiddenStudy.ResearcherID} 
-            author={hiddenStudy.Name} date={hiddenStudy.AppliedDate} />
+            studyId={hiddenStudy.id} 
+            author={hiddenStudy.publisherName} date={hiddenStudy.dateOfPublish} />
     ))
+
+
 
     return (
         <Grid container>
