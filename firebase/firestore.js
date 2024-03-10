@@ -72,7 +72,26 @@ const fetchDocumentById = async (collectionName, documentId) => {
   }
 };
 
+const fetchUserByDepartment = async (department) => {
+  try {
+    const querySnapshot = await getDocs(
+      query(collection(db, 'users'), where('department', '==', department))
+    );
+    console.log(querySnapshot)
+    let user = null;
 
+    querySnapshot.forEach((doc) => {
+      user = {
+        id: doc.id
+      };
+    });
+    console.log(user)
+    return user;
+  } catch (e) {
+    console.error("Error fetching user: ", e);
+    return null;
+  }
+};
 
 const fetchUsersByDepartment = async(department) => {
   try{
@@ -197,8 +216,6 @@ const fetchUserById = async (userId) => {
   }
 };
 
-
-
 const setupDatabaseListener = (collectionName, callback) => {
   const docRef = collection(db, collectionName);
 
@@ -275,6 +292,36 @@ const clearCollection = async (collectionName) => {
         }
       };
     }
+
+
+async function getResearcherStudies(departmentName, researcherId) {
+  try {
+      // Get a reference to the department's collection
+      const departmentRef = collection(db, 'departments', departmentName);
+      console.log("studies Refrence: " + studiesRef)
+      // Get a reference to the researcher's collection within the department
+      const researcherRef = collection(departmentRef, 'Researchers', researcherId);
+      // Query the studies collection within the researcher's document
+      const studiesRef = collection(researcherRef, 'studies');
+      // Create a query to retrieve all the studies
+      const q = query(studiesRef);
+      // Execute the query and fetch the studies
+      const querySnapshot = await getDocs(q);
+
+      // Extract the data from the query snapshot
+      const studies = [];
+      querySnapshot.forEach((doc) => {
+          studies.push({ id: doc.id, ...doc.data() });
+      });
+
+      console.log("Studies");
+      console.log(studies);
+      return studies;
+  } catch (error) {
+      console.error('Error fetching studies:', error);
+      throw error;
+  }
+}
 
 export { 
   addDocument, 
