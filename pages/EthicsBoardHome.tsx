@@ -50,6 +50,11 @@ const EthicsBoardHomeLayout: React.FC = () => {
         };
 
         fetchData(); // Fetch data every time the component mounts
+
+        // Cleanup function to remove the event listener
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
     }, []); // Empty dependency array triggers the effect only on mount
 
     useEffect(() => {
@@ -87,7 +92,7 @@ const EthicsBoardHomeLayout: React.FC = () => {
 
     const StudyReviewDataList: StudyData[] = mergedData.filter((item) => item.Status === 'In review');
 
-    const StudyDisputeDataList: StudyData[] = mergedData.filter((item) => item.Status === 'Dispute');
+    const StudyDisputeDataList: StudyData[] = mergedData.filter((item) => item.Status === 'Dispute'  || item.Status === 'resolve Requested');
 
     const [DepartmentSearchResults, setDepartmentSearchResults] = useState<StudyData[]>([]);
     const [DisputedSearchResults, setDisputedSearchResults] = useState<StudyData[]>([]);
@@ -97,6 +102,26 @@ const EthicsBoardHomeLayout: React.FC = () => {
         const newSearchResults = dataList.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
         setResults(newSearchResults);
     };
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+        // Your cleanup code here
+        console.log('Component will unmount or page is about to be unloaded.');
+
+        // Optionally, you can provide a custom message for confirmation
+        const confirmationMessage = 'Are you sure you want to leave?';
+        event.returnValue = confirmationMessage; // Standard for most browsers
+        return confirmationMessage; // For some older browsers
+    };
+
+    useEffect(() => {
+        // Attach the beforeunload event listener
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        // Cleanup function to remove the event listener
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []); // Empty dependency array means this effect runs once on mount
 
     return (
         <div className="container">
@@ -146,7 +171,7 @@ const EthicsBoardHome: React.FC = () => {
     return (
         <div>
             <TriangleBackground />
-            <Navbar />
+            <Navbar name={''} rating={0} />
             <EthicsBoardHomeLayout />
         </div>
     );

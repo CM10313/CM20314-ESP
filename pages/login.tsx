@@ -58,6 +58,7 @@ const handleLoginRedirect = async () => {
     let overallRating = (doc_data as any).reviewObject.overallRating //wont work for ethics
     setAuth(true,username,overallRating,department,account_type, getUID());
     console.log(isLoggedIn)
+    console.log(account_type)
     switch (account_type) {
       case "participant":
         router.push('/participantHome');
@@ -66,8 +67,10 @@ const handleLoginRedirect = async () => {
         router.push('/researchHome');
         break;
       case "ethics":
+        router.push('/EthicsBoardHome')
         break;
       default:
+       
         break;
     }
   }

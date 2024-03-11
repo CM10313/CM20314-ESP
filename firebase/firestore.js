@@ -72,19 +72,19 @@ const fetchDocumentById = async (collectionName, documentId) => {
 };
 
 
-const updateDocumentWithArray = async (collectionName, docId, fieldName, newArrayData) => {
+const updateDocumentWithArray = async (collectionName, docId, FieldArray, newArrayData) => {
   try {
     const docRef = doc(db, collectionName, docId);
     const docSnapshot = await getDoc(docRef);
 
     if (docSnapshot.exists()) {
       const existingData = docSnapshot.data();
-      const existingArray = existingData[fieldName] || [];
+      const existingArray = existingData[FieldArray] || [];
 
       const updatedArray = [...existingArray, ...newArrayData];
 
-      // Update the document with the modified array
-      await setDoc(docRef, { [fieldName]: updatedArray }, { merge: true });
+      // Update the document with the modified array within the nested field
+      await setDoc(docRef, { [FieldArray]: updatedArray }, { merge: true });
 
       console.log("Document updated with array: ", docRef.id);
     } else {
@@ -202,29 +202,6 @@ const fetchUserByDepartment = async (department) => {
     return null;
   }
 };
-const fetchUsersByDepartment = async (department) => {
-  try {
-    const q = query(collection(db, 'users'), where('department', '==', department));
-    const querySnapshot = await getDocs(q);
-
-    let users = [];
-
-    querySnapshot.forEach((doc) => {
-      users.push({
-        id: doc.id,
-      });
-    });
-    return users;
-  } catch (e) {
-    console.error("Error fetching users: ", e);
-    return [];
-  }
-};
-
-
-
-
-
 
 
 const setupDatabaseListener = (collectionName, callback) => {

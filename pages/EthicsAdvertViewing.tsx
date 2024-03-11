@@ -7,6 +7,8 @@ import { addDocument, createFieldIfNotExists, fetchDocumentById, fetchDocuments,
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import FeedbackForms from "../Components/Ethics/FeedbackForms";
+import RequirementsCard from "../Components/studyRequirementsCard";
+import HighlightDetector from "../Components/Ethics/Highlighter";
 
 
 interface EthicsAdvertViewingProps {
@@ -31,7 +33,7 @@ const EthicsAdvertViewing: React.FC = () => {
 
     const fetchData = async () => {
         try {
-            const studyDocs = await fetchDocuments('Studies');
+            const studyDocs = await fetchDocumentsById('Studie');
 
             for (const doc of studyDocs || []) {
                 await updateDocument(
@@ -58,35 +60,36 @@ const EthicsAdvertViewing: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        const fetchDataAndStore = async () => {
-            try {
-                const result = await fetchData();
+    // useEffect(() => {
+    //     const fetchDataAndStore = async () => {
+    //         try {
+    //             const result = await fetchData();
 
-                if (!storedStudyData) {
-                    setStoredStudyData(result);
-                }
+    //             if (!storedStudyData) {
+    //                 setStoredStudyData(result);
+    //             }
 
-                const userData = await fetchDocumentById('users', result?.publisherId);
+    //             const userData = await fetchDocumentById('users', result?.publisherId);
 
-                if (userData) {
-                    setStoredUserData(userData);
-                } else {
-                    console.warn('User data not available');
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
+    //             if (userData) {
+    //                 setStoredUserData(userData);
+    //             } else {
+    //                 console.warn('User data not available');
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //         }
+    //     };
 
-        fetchDataAndStore();
+    //     fetchDataAndStore();
 
-    }, []);
+    // }, []);
 
     return (
         <div>
+            <HighlightDetector/>
             <TriangleBackground />
-            <Navbar />
+            <Navbar name={""} rating={0} />
             {testAdvertCardProps && storedStudyData && storedUserData && (
                 <div style={{ marginTop: '5px' }}>
                     <AdvertViewer
@@ -133,6 +136,11 @@ const EthicsAdvertViewing: React.FC = () => {
                 >
                     View Current Sample Demographics
                 </Button>
+
+                <div style={{ position: 'absolute', top: '150px', right: '75px' }}>
+                    <RequirementsCard />
+                </div>
+                
 
                 {/* {testAdvertCardProps && storedStudyData && (
                     <FeedbackForms destinationUserId={storedStudyData?.publisherId} destinationName={storedUserData?.username} />
