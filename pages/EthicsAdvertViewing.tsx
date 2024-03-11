@@ -33,7 +33,7 @@ const EthicsAdvertViewing: React.FC = () => {
 
     const fetchData = async () => {
         try {
-            const studyDocs = await fetchDocumentsById('Studie');
+            const studyDocs = await fetchDocuments('Studies');
 
             for (const doc of studyDocs || []) {
                 await updateDocument(
@@ -60,30 +60,30 @@ const EthicsAdvertViewing: React.FC = () => {
         }
     };
 
-    // useEffect(() => {
-    //     const fetchDataAndStore = async () => {
-    //         try {
-    //             const result = await fetchData();
+    useEffect(() => {
+        const fetchDataAndStore = async () => {
+            try {
+                const result = await fetchData();
 
-    //             if (!storedStudyData) {
-    //                 setStoredStudyData(result);
-    //             }
+                if (!storedStudyData) {
+                    setStoredStudyData(result);
+                }
 
-    //             const userData = await fetchDocumentById('users', result?.publisherId);
+                const userData = await fetchDocumentById('users', result?.publisherId);
 
-    //             if (userData) {
-    //                 setStoredUserData(userData);
-    //             } else {
-    //                 console.warn('User data not available');
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching data:', error);
-    //         }
-    //     };
+                if (userData) {
+                    setStoredUserData(userData);
+                } else {
+                    console.warn('User data not available');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
 
-    //     fetchDataAndStore();
+        fetchDataAndStore();
 
-    // }, []);
+    }, []);
 
     return (
         <div>
