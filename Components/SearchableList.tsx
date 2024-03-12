@@ -78,7 +78,7 @@ export default function SearchableList({
        <>
              <Box  sx={{height:'100%',width:isSmallerThanMaxSize?'100%':width}}>
                 <Box  sx={{display:'flex',justifyContent:'center',ml:7,alignItems:'flex-start',flexDirection:'column',mt:marginTop}}>
-                <Typography fontSize={titleSize} sx={{color:'#C5C5C5'}}>{title}</Typography>
+                <Typography fontSize={titleSize} sx={{color:'#C5C5C5',overflow:'scroll',width:'90%'}}>{title}</Typography>
                 {searchBarEnabled?<SearchBar onReturn={handleSearch}></SearchBar>:null }
                 <Box sx={{ width: '100%', height: '2px', backgroundColor: '#1870A0',mt:2}} ></Box>
                 {progressBarEnabled?<Box sx={{mt:2,width:'100%'}}> <ProgressBar joinedCount={joinedCount?joinedCount:0} requiredCount={requiredCount?requiredCount:0} title={barTitle?barTitle:''}></ProgressBar></Box> :null}

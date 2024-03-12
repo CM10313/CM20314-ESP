@@ -1,58 +1,94 @@
 import { Grid} from "@mui/material";
-import HistoryCards from "../Components/historyCards";
+import HistoryCards, { HistoryCardProps } from "../Components/historyCards";
 import SearchableList from "../Components/SearchableList";
 import HiddenStudiesCards from "../Components/hiddenStudies";
 import DisputeContactCard from "../Components/disputeContact";
 import Navbar from "../Components/navbar";
 import { useAuth } from "../Context/AuthContext";
-
 import { fetchAllStudiesByDepartment } from "../firebase/firestore";
-
 import { useEffect, useState } from "react";
 
 
-export default function ResearherHistoryScreen() {
+const ResearcherHistoryScreen: React.FC<{ testBypass1?: HistoryCardProps[], testBypass2?:HistoryCardProps[]}> = ({ testBypass1 = [], testBypass2 = []}) => {
     const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
 
-    const [studies, setStudies] = useState([]); // State to store fetched studies
-    const [hiddenStudies, setHiddenStudies] = useState([]);
+    const [studies, setStudies] = useState<HistoryCardProps[]>(testBypass1); // State to store fetched studies
+    const [hiddenStudies, setHiddenStudies] =useState<HistoryCardProps[]>(testBypass2);
 
     const researcherId = "9XCri3v9uFTN5RgDQVszan3iKp23" // id
     const researcherDepartment = "Computer Science"
 
     useEffect(() => {
-        // Fetch studies associated with the researcher
-        fetchAllStudiesByDepartment(researcherDepartment).then((fetchedStudies) => {
-                
-            setStudies(
-                fetchedStudies.filter(study => study.studyData.publisherId === researcherId && 
-                    study.studyData.studyObj.EthicsApprovalObject.status != "Waiting")   
-            ); 
-            
-            setHiddenStudies(
-                fetchedStudies.filter(study => study.studyData.studyObj.EthicsApprovalObject.status == "Waiting")
-            );
-            })
-        .catch(error => { console.error("Error fetching studies:", error); });
+        const getHistoryInfo = async () => {
+            try {
+                const allDepartmentStudies: any = await fetchAllStudiesByDepartment(researcherDepartment);
+                if (allDepartmentStudies) {
+                    const tempLive: HistoryCardProps[] = [];
+                    const tempHidden: HistoryCardProps[] = [];
+                    const extractedLive: HistoryCardProps[] = [];
+                    const extractedHidden: HistoryCardProps[] = [];
+                    
+                    allDepartmentStudies.forEach((study: any) => {
+                        if (study.studyData.publisherId === id) {
+                            if (study.studyData.studyObj.EthicsApprovalObject.status !== "Waiting") {
+                                const liveStudy: HistoryCardProps = {
+                                    author: study.studyData.publisherName,
+                                    title: study.studyData.title,
+                                    date:study.studyData.preliminaryDate,
+                                    location:study.studyData.location,
+                                    department: study.studyData.department,
+                                    studyId: study.studyId,
+                                    publisherId: study.userId,
+                                };
+                                extractedLive.push(liveStudy);
+                            } else {
+                                const hiddenStudy: HistoryCardProps = {
+                                    author: study.studyData.publisherName,
+                                    title: study.studyData.title,
+                                    date:study.studyData.preliminaryDate,
+                                    location:study.studyData.location,
+                                    department: study.studyData.department,
+                                    studyId: study.studyId,
+                                    publisherId: study.userId,
+                                };
+                                extractedHidden.push(hiddenStudy);
+                            }
+                        }
+                    });
+                    setStudies(extractedLive);
+                    setHiddenStudies(extractedHidden);
+                }
+            } catch (error) {
+                console.error("Error fetching history info:", error);
+            }
+        };
+    
+        getHistoryInfo();
     }, []);
+    
 
     const historyCardList = studies.map((study,index) => (
         <HistoryCards 
-            key={index} 
+            key={index}
             studyId={study.studyId}
-            title={study.studyData.title} 
-            date={study.studyData.dateOfPublish}
-            department={researcherDepartment} 
-            author={"test"} location={"test"}
-            />
+            title={study.title}
+            date={study.date}
+            department={study.department}
+            author={study.author}
+            location={study.location} 
+            publisherId={study.publisherId}            />
     ))
 
-    const hiddenStudiesList = hiddenStudies.map((hiddenStudy,index) => (
+    const hiddenStudiesList = hiddenStudies.map((study,index) => (
         <HiddenStudiesCards  
-            key={index}
-            studyId={hiddenStudy.studyId}
-            title={hiddenStudy.studyData.title}
-            date={hiddenStudy.studyData.dateOfPublish} author={"test"} location={"test"} />
+        key={index}
+        studyId={study.studyId}
+        title={study.title}
+        date={study.date}
+        department={study.department}
+        author={study.author}
+        location={study.location} 
+        publisherId={study.publisherId}  />
     ))
 
     return (
@@ -93,3 +129,4 @@ export default function ResearherHistoryScreen() {
     );
 
 }
+export default ResearcherHistoryScreen

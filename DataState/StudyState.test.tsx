@@ -30,7 +30,9 @@ describe('useStudyState', () => {
             description: "Some description",
             allPaid: true,
             disputingParticipants: ["participant1"],
-            paidParticipants: ["participant2"]
+            paidParticipants: ["participant2"],
+            participantsRated:["participant2"],
+            participantsHaveRated:["participant2"],
           },
           RequirementsObject: {
             demoRequirements: ['demo1', 'demo2'],
@@ -39,7 +41,7 @@ describe('useStudyState', () => {
             geographicRequirements: ['geo1', 'geo2'],
             languageRequirements: ['lang1', 'lang2'],
             privacyRequirements: ['privacy1', 'privacy2'],
-            accesibilityRequirements: ['accessibility1', 'accessibility2']
+            accessibilityRequirements: ['accessibility1', 'accessibility2']
           },
           joinedParticipants: ['participant3'],
           awaitingApprovalParticipants: ['participant4'],
@@ -84,7 +86,9 @@ describe('useStudyState', () => {
         description: "Some description",
         allPaid: true,
         disputingParticipants: ["participant1"],
-        paidParticipants: ["participant2"]
+        paidParticipants: ["participant2"],
+        participantsRated:["participant2"],
+        participantsHaveRated:["participant2"],
       },
       RequirementsObject: {
         demoRequirements: ['demo1', 'demo2'],
@@ -93,7 +97,7 @@ describe('useStudyState', () => {
         geographicRequirements: ['geo1', 'geo2'],
         languageRequirements: ['lang1', 'lang2'],
         privacyRequirements: ['privacy1', 'privacy2'],
-        accesibilityRequirements: ['accessibility1', 'accessibility2']
+        accessibilityRequirements: ['accessibility1', 'accessibility2']
       },
       joinedParticipants: ['participant3'],
       awaitingApprovalParticipants: ['participant4'],

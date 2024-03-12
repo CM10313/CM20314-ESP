@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import ResearchHome from '../pages/researchHome';
+import ResearchHome from '../pages/researcherHome';
 import { AuthContext, AuthProvider } from '../Context/AuthContext';
 
 // Mock useRouter

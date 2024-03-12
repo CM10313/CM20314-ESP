@@ -5,23 +5,21 @@ import {Grid, useMediaQuery} from "@mui/material";
 import HistoryCardsStudy from "./historyCardsStudy";
 import HistorySmallButtons from "./historySmallButtons";
 import { fetchAllStudiesByDepartment } from "../firebase/firestore";
+export interface HistoryCardProps {
+  studyId: string;
+  author: string;
+  date: string;
+  title: string;
+  location: string;
+  department: string;
+  publisherId: string;
+}
 
-const HistoryCards: React.FC<{ studyId: string, author:string, date:string,title:string,location:string,department:string }> = ({ studyId, author, date ,title, location,department}) => {
-  const router = useRouter();
+const HistoryCards: React.FC<HistoryCardProps> = ({ studyId, author, date, title, location, department, publisherId }) => {
+const router = useRouter();
   const [isCompleted, setIsCompleted] = useState(false);
-  
-  const queryData = {
-    studyId: studyId,
-    studyTitle: title,
-    studyDate: date, 
-    studyDepartment: department
-  }
-
   const handleSeeParticipantsClick = () => {
-    router.push({
-      pathname: `/deepHistory/`,
-      query: queryData
-    });
+    router.push(`/deepHistory?studyId=${studyId}`);
   };
 
   const handleMarkCompleteClick = () => {
@@ -29,7 +27,7 @@ const HistoryCards: React.FC<{ studyId: string, author:string, date:string,title
   };
 
   const handleDiversityClick = () => {
-    router.push(`/diversity/${studyId}`);
+    router.push(`/diversityView?studyId=${studyId}`);
   };
   
   
