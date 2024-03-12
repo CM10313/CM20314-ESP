@@ -18,7 +18,6 @@ interface QueryParams {
 }
 
 export default function DeepHistoryScreen() {
-  
   const router = useRouter();
   const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
   
@@ -49,6 +48,7 @@ export default function DeepHistoryScreen() {
     }
   };
   
+
   useEffect(() => {
     if (studyId && studyDepartment) {
       fetchData();
@@ -90,9 +90,10 @@ export default function DeepHistoryScreen() {
     };
 
 
+
     return (
       <Box>
-        <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
+        <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} accountType={accountType?accountType:"Guest Type"}/>
 
         <Grid container>
           <Grid item sm={12} md={8} display={"flex"} flexDirection={"row"} marginBlockEnd={3}>

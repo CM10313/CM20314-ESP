@@ -22,7 +22,7 @@ import CalendarCard, { CalendarCardProps, ItemProps } from '../Components/Calend
 const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypass2?: DisputeRowProps[],testBypass3?: ItemProps[] }> = ({ testBypass1 = [], testBypass2 = [],testBypass3 = [] }) => {
   const [liveStudies, setLiveStudies] = useState<StudyMediumCardProps[]>(testBypass1);
   const [rejectedStudies, setRejectedStudies] = useState<DisputeRowProps[]>(testBypass2);
-  const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+  const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
   const [upcomingStudies, setUpcomingStudies] = useState<ItemProps[]>(testBypass3);
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
@@ -79,6 +79,10 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
               studyId: study.Id || "No Id",
               publisher: study.publisherName || "No Publisher",
               date: study.preliminaryDate || "No date",
+              buttonTitle:"See Study",
+              department:study.department,
+              publisherId:study.publisherId,
+              buttonFunction:()=>handleCardClick(study.id,study.publisherId,study.department),
             }
             extractedRejections.push(rejectedProps);
           });
@@ -158,7 +162,7 @@ useEffect(() => {
 
   return (
     <>
-     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
+     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}  accountType={accountType?accountType:"Guest Type"}/>
             <TriangleBackground />
       <div style={{ height: '810px' }}>
         <Grid container spacing={2} sx={{height:'100%'}}>
@@ -199,7 +203,7 @@ useEffect(() => {
                 <Box sx={{ml:isMobile?0:-7}}>
                 <SearchableList
                       rowSpacing={0}
-                      cardInputList={rejectedStudies.map((study,index)=>(<DisputeRow key={index} studyTitle={study.studyTitle} publisher={study.publisher} date={study.date} studyId={study.studyId}></DisputeRow>))}
+                      cardInputList={rejectedStudies.map((study,index)=>(<DisputeRow key={index} studyTitle={study.studyTitle} publisher={study.publisher} date={study.date} studyId={study.studyId} buttonTitle='View Study' department={study.department} publisherId={study.publisherId} buttonFunction={()=>handleCardClick(study.studyId,study.publisherId,study.department)}></DisputeRow>))}
                       numberOfItemsPerRow={1}
                       width={"100%"}
                       title={"Rejections"}

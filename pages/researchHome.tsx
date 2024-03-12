@@ -14,8 +14,9 @@ import { useAuth } from '../Context/AuthContext';
 import { useEffect } from 'react';
 import { fetchDocuments, fetchUserByDepartment, fetchUsersByDepartment } from '../firebase/firestore';
 const ResearchHome: React.FC = () => {
-  
-  const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+
+  const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
+
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
   const handleCardClick = (title: string) => {
@@ -103,7 +104,7 @@ const handleDivPush = () => {
 
   return (
     <>
-     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
+     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}  accountType={accountType?accountType:"Guest Type"}/>
             <TriangleBackground />
       <div style={{ height: '810px' }}>
         <Grid container spacing={2} sx={{height:'100%'}}>

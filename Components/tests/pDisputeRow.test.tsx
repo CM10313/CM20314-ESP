@@ -23,6 +23,10 @@ describe('DisputeRow component', () => {
             publisher: 'Test Publisher',
             date: '2024-03-01',
             studyId: 'testId',
+            buttonTitle:'Review',
+            buttonFunction:()=>{},
+            department:'department',
+            publisherId:'pubId',
           };
       
           // Mock useRouter's push function
@@ -38,10 +42,14 @@ describe('DisputeRow component', () => {
         // Mock useMediaQuery to return true (indicating mobile view)
         require('@mui/material').useMediaQuery.mockReturnValue(true);
         const disputeRowProps: DisputeRowProps = {
-            studyTitle: 'Test Study',
-            publisher: 'Test Publisher',
-            date: '2024-03-01',
-            studyId: 'testId',
+          studyTitle: 'Test Study',
+          publisher: 'Test Publisher',
+          date: '2024-03-01',
+          studyId: 'testId',
+          buttonTitle:'Review',
+          buttonFunction:()=>{},
+          department:'department',
+          publisherId:'pubId',
           };
       
           // Mock useRouter's push function
@@ -56,9 +64,13 @@ describe('DisputeRow component', () => {
   it('navigates to review page when "Review" button is clicked', () => {
     const disputeRowProps: DisputeRowProps = {
       studyTitle: 'Test Study',
-      publisher: 'Test Publisher',
-      date: '2024-03-01',
-      studyId: 'testId',
+            publisher: 'Test Publisher',
+            date: '2024-03-01',
+            studyId: 'testId',
+            buttonTitle:'Review',
+            buttonFunction:jest.fn(),
+            department:'department',
+            publisherId:'pubId',
     };
 
     // Mock useRouter's push function
@@ -74,6 +86,6 @@ describe('DisputeRow component', () => {
     fireEvent.click(getByText('Review'));
 
     // Assert that useRouter's push function was called with the expected route
-    expect(pushMock).toHaveBeenCalledWith('/review/testId');
+    expect(disputeRowProps.buttonFunction).toHaveBeenCalledWith();
   });
 });

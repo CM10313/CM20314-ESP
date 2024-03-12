@@ -12,7 +12,7 @@ import fillAgeDict, { fillDict, fillIncomeDict } from "../Utils/diversityExtract
 
 
  const DiversityView: React.FC<{ testBypass1?: BarGraphProps, testBypass2?: HorizontalBarGraphProps,testBypass3?:DonughtGraphProps }> = ({ testBypass1={} as BarGraphProps, testBypass2 ={} as HorizontalBarGraphProps,testBypass3 ={} as DonughtGraphProps })  => {
-    const {isLoggedIn,username,overallRating,id,department} = useAuth();
+    const {isLoggedIn,username,overallRating,id,department,accountType} = useAuth();
     const isMobile = useMediaQuery('(max-width:1000px)')
     const [incomeProps, setIncomeProps]=useState<BarGraphProps>(testBypass1);
     const [ageProps,setAgeProps]=useState<BarGraphProps>(testBypass1);
@@ -183,7 +183,7 @@ import fillAgeDict, { fillDict, fillIncomeDict } from "../Utils/diversityExtract
 
     return (
         <Box sx={{height:'810px',width:'100%'}}> 
-            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}/>
+            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} accountType={accountType?accountType:"Guest Type"}/>
             <TriangleBackground />
             <Grid container sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
                 <Grid item xs={isMobile?12:4}  sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>

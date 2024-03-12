@@ -12,8 +12,12 @@ import {updateDocumentWithArray} from "../firebase/firestore";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import FeedbackForms from "../Components/Ethics/FeedbackForms";
+
+import { useAuth } from "../Context/AuthContext";
+
 import RequirementsCard from "../Components/studyRequirementsCard";
 import HighlightDetector from "../Components/Ethics/Highlighter";
+
 
 
 interface EthicsAdvertViewingProps {
@@ -25,7 +29,7 @@ interface EthicsAdvertViewingProps {
 }
 
 const EthicsAdvertViewing: React.FC = () => {
-
+    const {isLoggedIn,username,overallRating,id,department,accountType} = useAuth();
     const handleAddDocument = async () => {
 
     };
@@ -94,7 +98,7 @@ const EthicsAdvertViewing: React.FC = () => {
         <div>
             <HighlightDetector/>
             <TriangleBackground />
-            <Navbar name={""} rating={0} />
+            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} accountType={accountType?accountType:"Guest Type"}/>
             {testAdvertCardProps && storedStudyData && storedUserData && (
                 <div style={{ marginTop: '5px' }}>
                     <AdvertViewer

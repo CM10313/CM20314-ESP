@@ -6,12 +6,17 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { updateDocumentWithArray } from '../../firebase/firestore';
-
-const FeedbackForms = ({ destinationUserId , destinationName }: { destinationUserId :string , destinationName: string }) => {
+import { fetchDocumentById, updateDocument } from '../../firebase/firestore';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import StarIcon from '@mui/icons-material/Star';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
+const FeedbackForms = ({ userId , destinationName,usersName,markAsRated,ratingStatus }: { userId :string , destinationName: string, usersName:string,markAsRated:()=>void,ratingStatus:boolean }) => {
     const [description, setDescription] = useState('');
-    const [name, setName] = useState('');
     const [rating, setRating] = useState(0);
+    const [open, setOpen] = useState(false);
 
     const handleRatingChange = (event: React.ChangeEvent<{}>, newRating: number | null) => {
         if (newRating !== null) {
@@ -20,35 +25,83 @@ const FeedbackForms = ({ destinationUserId , destinationName }: { destinationUse
     };
 
     const handleSubmit = () => {
-        if (!description || !name || rating === 0) {
-            // Show an error message or perform any other action to handle empty submissions
+        if (!description || !usersName || rating === 0) {
             console.error('Please fill in all fields before submitting.');
             return;
         }
-
-        // Perform actions with description, name, and rating
-        console.log('Submitted Feedback:', { description, name, rating });
-
-        const feedbackArray = [
-            { description: description, name: name, rating: rating }
-        ];
-
-        updateDocumentWithArray('users', destinationUserId , 'Feedback', feedbackArray);
-
+        setOpen(false)
+        const review = { description: description, name: usersName, rating: rating };
+        alterRating(review);
         setDescription('');
-        setName('');
         setRating(0);
     };
+    const alterRating= async(review:{description:string,name:string,rating:number})=>{
+        try{
+        const userData:any= await fetchDocumentById("users",userId );
+        const currentReviewObject = userData.reviewObject;
+        const updatedUserDoc = {...userData};
+        const updatedReviewsList = [...currentReviewObject.reviews,review];
+        const originalNumberOfRatings = currentReviewObject.numberOfRatings;
+        updatedUserDoc.reviewObject.numberOfRatings = originalNumberOfRatings + 1;
+        updatedUserDoc.reviewObject.overallRating = (((currentReviewObject.overallRating*originalNumberOfRatings)+rating)/updatedUserDoc.reviewObject.numberOfRatings).toFixed(2);;
+        updatedUserDoc.reviewObject.reviews = updatedReviewsList;
+        updateDocument('users',userId,updatedUserDoc);
+        markAsRated();
+        } catch (error) {
+        console.error("Error rating user", error);
+        }
+    }
 
     return (
-        <Grid container justifyContent="center" alignItems="center" minHeight="100vh">
+        <>
+            <Button variant="contained"
+          onClick={() => setOpen(ratingStatus?false:true)}
+          sx={{
+            backgroundColor: ratingStatus?"#D7BE69":"#1F5095",
+            fontWeight: "bold",
+            height: "80px",
+            width: "96%",
+            maxWidth:'250px',
+            borderRadius: "0.6em",
+          }}>
+          <Typography>{ratingStatus?"Rated":"Rate"}</Typography>
+          <Typography>...</Typography>
+        </Button>
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogContent>
+        <Grid container justifyContent="center" alignItems="center" >
             <Grid item xs={12} sm={8} md={6}>
                 <Paper elevation={3} style={{ padding: 20 }}>
-                    <Typography variant="h5" gutterBottom>
-                        Want to give feedback on your experience with {destinationName}
+                    <Grid container>
+                        <Grid item xs={6}>
+                            <Typography fontSize={25} fontWeight="bold"  sx={{mt:1}}>
+                                Feedback
+                            </Typography>
+                        </Grid> 
+                        <Grid item xs={6} >
+                            <DialogActions >
+                                <Button data-testid="close-button" onClick={() => setOpen(false) } sx={{color:'black'}}><CloseIcon></CloseIcon></Button>
+                            </DialogActions>
+                        </Grid>                    
+                    </Grid>
+                    <Typography fontSize={15} fontWeight="bold" >
+                        How would you rate the study by {destinationName} ?
                     </Typography>
                     <form>
                         <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                                <Box display="flex" alignItems="center">
+                                    <Box mr={2}>Rating:</Box>
+                                    <Rating
+                                        name="rating"
+                                        value={rating}
+                                        precision={0.5}
+                                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                                        onChange={handleRatingChange}
+                                        aria-label="Rating"
+                                    />
+                                </Box>
+                            </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     fullWidth
@@ -61,33 +114,13 @@ const FeedbackForms = ({ destinationUserId , destinationName }: { destinationUse
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField
-                                    fullWidth
-                                    label="Name"
-                                    variant="outlined"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Box display="flex" alignItems="center">
-                                    <Box mr={2}>Rating:</Box>
-                                    <Rating
-                                        name="rating"
-                                        value={rating}
-                                        precision={0.5}
-                                        onChange={handleRatingChange}
-                                    />
-                                </Box>
-                            </Grid>
-                            <Grid item xs={12}>
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     fullWidth
                                     onClick={handleSubmit}
                                 >
-                                    SUBMIT FEEDBACK FOR OTHERS TO SEE
+                                    Submit
                                 </Button>
                             </Grid>
                         </Grid>
@@ -95,6 +128,10 @@ const FeedbackForms = ({ destinationUserId , destinationName }: { destinationUse
                 </Paper>
             </Grid>
         </Grid>
+        </DialogContent>
+               
+            </Dialog>
+        </>
     );
 };
 

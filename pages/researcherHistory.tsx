@@ -5,12 +5,14 @@ import HiddenStudiesCards from "../Components/hiddenStudies";
 import DisputeContactCard from "../Components/disputeContact";
 import Navbar from "../Components/navbar";
 import { useAuth } from "../Context/AuthContext";
+
 import { fetchAllStudiesByDepartment } from "../firebase/firestore";
+
 import { useEffect, useState } from "react";
 
 
 export default function ResearherHistoryScreen() {
-    const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+    const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
 
     const [studies, setStudies] = useState([]); // State to store fetched studies
     const [hiddenStudies, setHiddenStudies] = useState([]);
@@ -54,7 +56,7 @@ export default function ResearherHistoryScreen() {
 
     return (
         <Grid container>
-            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}/>
+            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}  accountType={accountType?accountType:"Guest Type"}/>
             <Grid item sm={12} md={8}>
                 <SearchableList 
                     rowSpacing={0}

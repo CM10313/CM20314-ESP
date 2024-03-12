@@ -58,7 +58,7 @@ export default function StudyMediumCard({
                 </Grid>
             </Grid>
             <Grid item xs={12}>
-                <Typography  fontSize={11} sx={{maxHeight:'70px',overflowY:'auto',mb:2}}>
+                <Typography  fontSize={11} sx={{maxHeight:'70px',overflowY:'scroll',mb:2}}>
                 {title}
                 </Typography> 
             </Grid>  

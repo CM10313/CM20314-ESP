@@ -54,19 +54,19 @@ describe('ViewParticipantDetails', () => {
         // Mock useMediaQuery to return true (indicating mobile view)
         require('@mui/material').useMediaQuery.mockReturnValue(true);
     
-        const { getByText } = render(<ViewParticipantDetails />);
+        const { getByText } = render(<ViewParticipantDetails testBypass4={''} />);
      
       });
       it('renders properly when isMobile is false', () => {
         // Mock useMediaQuery to return true (indicating mobile view)
         require('@mui/material').useMediaQuery.mockReturnValue(false);
     
-        const { getByText } = render(<ViewParticipantDetails />);
+        const { getByText } = render(<ViewParticipantDetails testBypass4={''} />);
      
       });
   
   it('renders with the correct initial state', () => {
-    const { getByText } = render(<ViewParticipantDetails />);
+    const { getByText } = render(<ViewParticipantDetails testBypass4={''} />);
     
     // Check if the "Demographic" button is initially selected
   
@@ -81,19 +81,19 @@ describe('ViewParticipantDetails', () => {
   });
 
   it('changes visible content when button is clicked', () => {
-    const { getByText } = render(<ViewParticipantDetails />);
+    const { getByText } = render(<ViewParticipantDetails testBypass4={''} />);
     
     // Click on the "Health" button
     fireEvent.click(getByText('Health'));
   });
   it('changes visible content when button is clicked', () => {
-    const { getByText } = render(<ViewParticipantDetails />);
+    const { getByText } = render(<ViewParticipantDetails testBypass4={''} />);
     
     // Click on the "Health" button
     fireEvent.click(getByText('Other'));
   });
   it('changes visible content when button is clicked', () => {
-    const { getByText } = render(<ViewParticipantDetails />);
+    const { getByText } = render(<ViewParticipantDetails testBypass4={''} />);
     
     // Click on the "Health" button
     fireEvent.click(getByText('Health'));
@@ -101,7 +101,7 @@ describe('ViewParticipantDetails', () => {
   });
   it('updates the rejection reason state when a key is pressed in the rejection reason field', () => {
     const { getByLabelText, getByRole , getByText } = render(
-        <ViewParticipantDetails/>
+        <ViewParticipantDetails testBypass4={''}/>
     );
     const descriptionInput = getByLabelText('Reason for Rejection') as HTMLInputElement; // Cast to HTMLInputElement
     // Simulate typing in the password field
@@ -112,7 +112,7 @@ describe('ViewParticipantDetails', () => {
   });
   it('displays  rejection reason error when an incorrect  rejection reason is entered', () => {
     const { getByLabelText, getByRole , getByText } = render(
-        <ViewParticipantDetails/>
+        <ViewParticipantDetails testBypass4={''}/>
     );
     const descriptionInput = getByLabelText('Reason for Rejection') as HTMLInputElement; // Cast to HTMLInputElement
 
@@ -186,7 +186,7 @@ describe('ViewParticipantDetails', () => {
     (React.useState as jest.Mock).mockImplementationOnce(() => [[], jest.fn()]); // Mocking setRejectedStudies here
 
     // Render the component
-    render(<ViewParticipantDetails />);
+    render(<ViewParticipantDetails testBypass4={''} />);
 
     // Assert that fetchDocumentById is called with correct arguments
     expect(require('../firebase/firestore').fetchDocumentById).toHaveBeenCalledWith('users', expect.anything());
@@ -219,7 +219,7 @@ describe('ViewParticipantDetails', () => {
     (React.useState as jest.Mock).mockImplementationOnce(() => [[], jest.fn()]); // Mocking setRejectedStudies here
 
     // Render the component
-    render(<ViewParticipantDetails />);
+    render(<ViewParticipantDetails testBypass4={''} />);
 
     // Assert that fetchDocumentById is called with correct arguments
     expect(require('../firebase/firestore').fetchDocumentById).toHaveBeenCalledWith('users', expect.anything());
@@ -252,7 +252,7 @@ describe('ViewParticipantDetails', () => {
         id: "fake",
         setAuth: jest.fn((isLoggedIn, username, overallRating, department, accountType, id) => {})
       }}>
-          <ViewParticipantDetails/>
+          <ViewParticipantDetails testBypass4={''}/>
       </AuthContext.Provider>)
   });
   it('renders without crashing when state is present', () => {
@@ -307,7 +307,7 @@ describe('ViewParticipantDetails', () => {
     }
   const {getByText}=render(
     
-          <ViewParticipantDetails testBypass1={healthProps} testBypass2={demoProps} testBypass3={otherProps}/>
+          <ViewParticipantDetails testBypass1={healthProps} testBypass2={demoProps} testBypass3={otherProps} testBypass4={''}/>
       )
       expect(getByText('18')).toBeInTheDocument();
   });
@@ -319,7 +319,7 @@ describe('ViewParticipantDetails', () => {
     const otherProps=undefined;
   const {getByText}=render(
     
-          <ViewParticipantDetails testBypass1={healthProps} testBypass2={demoProps} testBypass3={otherProps}/>
+          <ViewParticipantDetails testBypass1={healthProps} testBypass2={demoProps} testBypass3={otherProps} testBypass4={''}/>
       )
 
   });
@@ -375,13 +375,13 @@ describe('ViewParticipantDetails', () => {
     }
   const {getByText}=render(
     
-          <ViewParticipantDetails testBypass1={healthProps} testBypass2={demoProps} testBypass3={otherProps}/>
+          <ViewParticipantDetails testBypass1={healthProps} testBypass2={demoProps} testBypass3={otherProps} testBypass4={''}/>
       )
       expect(getByText('21')).toBeInTheDocument();
   });
   it('calls the rejection function', () => {
     const { getByLabelText, getByRole , getByText } = render(
-        <ViewParticipantDetails/>
+        <ViewParticipantDetails testBypass4={''}/>
     );
     const descriptionInput = getByLabelText('Reason for Rejection') as HTMLInputElement; // Cast to HTMLInputElement
     // Simulate typing in the password field
@@ -390,5 +390,4 @@ describe('ViewParticipantDetails', () => {
     // Check if the password state is updated
     fireEvent.click(getByText('Reject'));//faked because use state  mock interferes
   });
-  
 });

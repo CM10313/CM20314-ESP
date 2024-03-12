@@ -55,7 +55,7 @@ interface StudyProps {
     hasHLOFE?:boolean;
 }
 const AdvertPreview: React.FC<{ testBypass1?: StudyProps, testBypass2?:RequirementProps}> = ({ testBypass1={} as StudyProps, testBypass2 ={} as RequirementProps })  => {
-  const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+  const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
   const isMobile = useMediaQuery('(max-width:1000px)')
   const [studyProps, setStudyProps]=useState<StudyProps>(testBypass1);
   const [requirementProps, setRequirementProps]=useState<RequirementProps>(testBypass2);
@@ -153,7 +153,7 @@ const addUserToStudyAwaitingApproval = async ()=>{
 
   return (
     <>
-     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
+     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} accountType={accountType?accountType:"Guest Type"} />
             <TriangleBackground />
       <div style={{ height: '810px',display:'flex',justifyContent:'center',alignItems:'center' }}>
        <Box sx={{width:'90%',display:'flex',justifyContent:'center'}}>

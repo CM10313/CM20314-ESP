@@ -35,7 +35,7 @@ export default function Cards() {
             <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', maxHeight: '5em', whiteSpace: 'normal' }}>
               <Typography variant="body2">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus fermentum diam id rhoncus aliquet. 
-                Ut quis orci luctus, sollicitudin metus quis, sodales arcu. jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+                Ut quis orci luctus, sollicitudin metus quis, sodales arcu. 
               </Typography>
             </Box>
           </CardContent>

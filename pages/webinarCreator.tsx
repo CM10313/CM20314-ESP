@@ -45,7 +45,7 @@ enum UserType{
   }
 
   const WebinarCreator: React.FC<Props> = ({ jestBypass }) => {
-    const {username,overallRating,id,department} = useAuth();
+    const {username,overallRating,id,department,accountType} = useAuth();
   const router = useRouter();
   const handleStudySubmit= (data:WebinarData,uid:String,department:String) =>{
       console.log(data);
@@ -63,7 +63,7 @@ enum UserType{
     return (
         <>
        
-     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}/>
+     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}  accountType={accountType?accountType:"Guest Type"}/>
             <TriangleBackground />
       <div style={{ height: '810px' }}>
         <WebinarDialog onSubmit={handleStudySubmit} handleHomeRedirect={handleHomeDirect} jestBypass={jestBypass} uid={id} department={department} overallRating={overallRating} username={username}></WebinarDialog>
