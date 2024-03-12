@@ -3,6 +3,10 @@ import { addMultipleDocuments, clearCollection, deleteDocument, fetchAllStudiesB
 import AdvertViewer from './AdvertViewer';
 import { useRouter } from 'next/router';
 import { Refresh } from '@mui/icons-material';
+import { useAuth } from '../../Context/AuthContext';
+
+
+
 
 interface EthicsAdvertCardProps {
     name: string;
@@ -29,6 +33,8 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
     const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
     const [studyStatus, setStudyStatus] = useState<string | null>(null);
     const router = useRouter();
+
+    const { isLoggedIn, setAuth, username, overallRating, id ,department} = useAuth();
 
     useEffect(() => {
         // Fetch study status when the component mounts
@@ -72,7 +78,7 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
         setOriginalColor('#0c6a7d');
 
         
-        if (studyStatus=== 'Waiting'){
+        if (studyStatus === 'Waiting'){
             await updateDocument('Studies',studyId, {Status:'In review'})
             setClickedView(false)
         }
@@ -219,6 +225,8 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
                                  ? '#28a745'
                                  : clickedReject
                                  ? '#dc3545'
+                                 : ReviewStatus === 'Disputed'  && studyStatus === 'resolve Requested'
+                                 ? '#53075c'
                                  : ReviewStatus === 'Disputed'
                                  ? '#dc3545'
                                  : ReviewStatus === 'Waiting'

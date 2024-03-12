@@ -72,6 +72,21 @@ const fetchDocumentById = async (collectionName, documentId) => {
   }
 };
 
+
+const updateDocumentWithArray = async (collectionName, docId, FieldArray, newArrayData) => {
+  try {
+    const docRef = doc(db, collectionName, docId);
+    const docSnapshot = await getDoc(docRef);
+
+    if (docSnapshot.exists()) {
+      const existingData = docSnapshot.data();
+      const existingArray = existingData[FieldArray] || [];
+
+      const updatedArray = [...existingArray, ...newArrayData];
+
+      // Update the document with the modified array within the nested field
+      await setDoc(docRef, { [FieldArray]: updatedArray }, { merge: true });
+
 const fetchUserByDepartment = async (department) => {
   try {
     const querySnapshot = await getDocs(
@@ -79,6 +94,7 @@ const fetchUserByDepartment = async (department) => {
     );
     console.log(querySnapshot)
     let user = null;
+
 
     querySnapshot.forEach((doc) => {
       user = {
@@ -198,6 +214,19 @@ const deleteDocument = async (collectionName, docId) => {
     console.log("Document deleted");
   } catch (e) {
     console.error("Error deleting document: ", e);
+  }
+};
+
+    querySnapshot.forEach((doc) => {
+      user = {
+        id: doc.id
+      };
+    });
+    console.log(user)
+    return user;
+  } catch (e) {
+    console.error("Error fetching user: ", e);
+    return null;
   }
 };
 

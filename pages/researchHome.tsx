@@ -14,6 +14,7 @@ import { useAuth } from '../Context/AuthContext';
 import { useEffect } from 'react';
 import { fetchDocuments, fetchUserByDepartment, fetchUsersByDepartment } from '../firebase/firestore';
 const ResearchHome: React.FC = () => {
+  
   const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();

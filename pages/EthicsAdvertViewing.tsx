@@ -12,6 +12,8 @@ import {updateDocumentWithArray} from "../firebase/firestore";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import FeedbackForms from "../Components/Ethics/FeedbackForms";
+import RequirementsCard from "../Components/studyRequirementsCard";
+import HighlightDetector from "../Components/Ethics/Highlighter";
 
 
 interface EthicsAdvertViewingProps {
@@ -90,6 +92,7 @@ const EthicsAdvertViewing: React.FC = () => {
 
     return (
         <div>
+            <HighlightDetector/>
             <TriangleBackground />
             <Navbar name={""} rating={0} />
             {testAdvertCardProps && storedStudyData && storedUserData && (
@@ -138,6 +141,11 @@ const EthicsAdvertViewing: React.FC = () => {
                 >
                     View Current Sample Demographics
                 </Button>
+
+                <div style={{ position: 'absolute', top: '150px', right: '75px' }}>
+                    <RequirementsCard />
+                </div>
+                
 
                 {/* {testAdvertCardProps && storedStudyData && (
                     <FeedbackForms destinationUserId={storedStudyData?.publisherId} destinationName={storedUserData?.username} />
