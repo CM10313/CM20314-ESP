@@ -36,7 +36,7 @@ const DeepHistoryRow: React.FC<{ participantId: string }> = ({ participantId }) 
     const isMobile = useMediaQuery('(max-width:1000px)')
     return (
         <Grid container display="flex" flexDirection="row" justifyContent="space-evenly">
-            <Grid item xs={isMobile?6:4.5}><HistoryCardsStudy studyId={participantId} title={selectedUserName} date="03/11/2003" /></Grid>
+            <Grid item xs={isMobile?6:4.5}><HistoryCardsStudy studyId={participantId} title={'test'} date="03/11/2003" author={"test"} /></Grid>
             <Grid item xs={isMobile?6:2.5}> <HistorySmallButtons background="#1F5095" title="Details" fx={handleDetailsClick} /></Grid>
             <Grid item xs={isMobile?6:2.5}> <HistorySmallButtons  background={rateClicked ? "#D7BE69" : "#1870A0"} title={rateClicked ? "Rated" : "Rate"}  fx={handleRateClick} /></Grid>
             <Grid item xs={isMobile?6:2.5}><HistorySmallButtons background={payClicked ? "#D7BE69" : "#1870A0"} title={payClicked ? "Paid" : "Payment Code"} fx={handlePayChange} /></Grid>

@@ -7,7 +7,7 @@ import DeepHistoryRow from "../Components/deepHistoryRow";
 import SearchableList from "../Components/SearchableList";
 import HistoryCardsStudy from "../Components/historyCardsStudy";
 import HistorySmallButtons from "../Components/historySmallButtons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Key } from "react";
 import { fetchAllStudiesByDepartment, fetchUserById } from "../firebase/firestore";
 
 interface QueryParams {
@@ -19,7 +19,7 @@ interface QueryParams {
 
 export default function DeepHistoryScreen() {
   const router = useRouter();
-  const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+  const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
   
   const {
     studyId,
@@ -33,7 +33,7 @@ export default function DeepHistoryScreen() {
   const disputeJoinedCount = 5;
   const disputeRequiredCount = 10;
   const approvalJoinedCount = 20;
-  const approvalRequiredCount = null;
+  const approvalRequiredCount = 30;
 
   const [studies, setStudies] = useState([]); // State to store fetched studies
   
@@ -67,18 +67,18 @@ export default function DeepHistoryScreen() {
       <DeepHistoryRow key={index} participantId={userId} /> 
     ));
 
-    paidList = study.studyData.studyObj.CompensationObject.paidParticipants.map((userId:string, index) => (
-      <HistoryCardsStudy key={index} studyId={userId} author={studyTitle} date={studyDate} />
+    paidList = study.studyData.studyObj.CompensationObject.paidParticipants.map((userId:string, index: Key | null | undefined) => (
+      <HistoryCardsStudy key={index} studyId={userId} author={studyTitle} date={studyDate} title={"test"} />
     ));
 
 
-    disputeList = study.studyData.studyObj.CompensationObject.disputingParticipants.map((userId:string, index) => (
-      <HistoryCardsStudy studyId={userId} author="John Doe" date="03/11/2003" />
+    disputeList = study.studyData.studyObj.CompensationObject.disputingParticipants.map((userId:string, index: Key | null | undefined) => (
+      <HistoryCardsStudy  key={index} studyId={userId} author="John Doe" date="03/11/2003" title={"test"} />
     ));   
 
-    awaitingApproval = study.studyData.studyObj.awaitingApprovalParticipants.map((userId:string, index) => (
-      <Box sx={{display:"flex", flexDirection:"row", marginLeft:"3em"}}>
-      <HistoryCardsStudy studyId={userId} title={"John Doe"} date={"Some Date"} />
+    awaitingApproval = study.studyData.studyObj.awaitingApprovalParticipants.map((userId:string, index: Key | null | undefined) => (
+      <Box  key={index} sx={{display:"flex", flexDirection:"row", marginLeft:"3em"}}>
+      <HistoryCardsStudy studyId={userId} title={"John Doe"} date={"Some Date"} author={"test"} />
       <HistorySmallButtons background="red" title="Details" fx={() => handleDetailsClick(userId)} />
     </Box>
     )); 

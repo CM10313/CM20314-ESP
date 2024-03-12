@@ -52,10 +52,11 @@ const handleLoginRedirect = async () => {
     await signIn(email, password);
     //check account type then push research/ethics/participant home page
     let doc_data:any  = await fetchDocumentById('users', getUID());
+    console.log(doc_data);
     let account_type = (doc_data as any).accountType
     let department = (doc_data as any).department
     let username = (doc_data as any).username
-    let overallRating = (doc_data as any).reviewObject.overallRating //wont work for ethics
+    let overallRating = (doc_data as any).reviewObject?.overallRating || 5;//sets default of 5 for ethics users
     setAuth(true,username,overallRating,department,account_type, getUID());
     console.log(isLoggedIn)
     console.log(account_type)

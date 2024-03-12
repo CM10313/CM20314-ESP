@@ -75,7 +75,7 @@ const ParticipantAdvertScreen: React.FC = () => {
     return (
         <div>
             <TriangleBackground />
-            <Navbar name={""} rating={0} />
+            <Navbar name={""} rating={0} accountType={""} />
             {testAdvertCardProps && storedStudyData && storedUserData && (
                 <div style={{ marginTop: '5px' }}>
                     <AdvertViewer

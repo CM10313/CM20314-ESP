@@ -9,6 +9,7 @@ describe('HistoryCardsStudy component', () => {
       studyId: '123456',
       author: 'John Doe',
       date: '2024-03-01',
+      title:'title',
     };
 
     // Render the component
@@ -23,6 +24,7 @@ describe('HistoryCardsStudy component', () => {
       studyId: '123456',
       author: 'John Doe',
       date: '2024-03-01',
+      title:'title',
     };
 
     // Render the component

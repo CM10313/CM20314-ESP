@@ -6,7 +6,7 @@ import HistoryCardsStudy from "./historyCardsStudy";
 import HistorySmallButtons from "./historySmallButtons";
 import { fetchAllStudiesByDepartment } from "../firebase/firestore";
 
-const HistoryCards: React.FC<{ studyId: string, author:string, date:string,title:string,location:string }> = ({ studyId, author, date ,title, location}) => {
+const HistoryCards: React.FC<{ studyId: string, author:string, date:string,title:string,location:string,department:string }> = ({ studyId, author, date ,title, location,department}) => {
   const router = useRouter();
   const [isCompleted, setIsCompleted] = useState(false);
   

@@ -43,15 +43,16 @@ export default function ResearherHistoryScreen() {
             title={study.studyData.title} 
             date={study.studyData.dateOfPublish}
             department={researcherDepartment} 
+            author={"test"} location={"test"}
             />
     ))
 
     const hiddenStudiesList = hiddenStudies.map((hiddenStudy,index) => (
         <HiddenStudiesCards  
-            key={index} 
-            studyId={hiddenStudy.studyId} 
-            title={hiddenStudy.studyData.title} 
-            date={hiddenStudy.studyData.dateOfPublish} />
+            key={index}
+            studyId={hiddenStudy.studyId}
+            title={hiddenStudy.studyData.title}
+            date={hiddenStudy.studyData.dateOfPublish} author={"test"} location={"test"} />
     ))
 
     return (

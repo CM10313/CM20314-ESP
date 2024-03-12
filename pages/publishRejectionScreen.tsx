@@ -44,7 +44,7 @@ const PublishRejectionScreen: React.FC<PublishRejectionScreenProps> = () => {
 
     return (
         <div>
-            <Navbar name={''} rating={0} />
+            <Navbar name={''} rating={0} accountType={''} />
             <TriangleBackground />
 
             <div style={{ position: 'absolute', top: '5vh', left: '150vh'}}>

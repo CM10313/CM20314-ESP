@@ -5,7 +5,7 @@ import { Box, Grid, Typography } from "@mui/material";
 
 interface HistoryRowProps { 
   studyId: string;
-  title: string;
+  author:string;
   date: string;
   isPaid?: boolean;
   title:string;
