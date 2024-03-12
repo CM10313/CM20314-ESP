@@ -17,7 +17,6 @@ interface QueryParams {
 }
 
 export default function DeepHistoryScreen() {
-  
   const router = useRouter();
   
   const {
@@ -43,7 +42,7 @@ export default function DeepHistoryScreen() {
     router.push(`/details/${studyId}`);
   };
   
-  const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+  const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
     
     // Create a row for all of the userIds in the list above
     const rowList = participantStudyIDs.map((userId,index) => (
@@ -52,7 +51,7 @@ export default function DeepHistoryScreen() {
 
     return (
       <Box>
-        <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
+        <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} accountType={accountType?accountType:"Guest Type"}/>
 
         <Grid container>
           <Grid item sm={12} md={8} display={"flex"} flexDirection={"row"} marginBlockEnd={3}>

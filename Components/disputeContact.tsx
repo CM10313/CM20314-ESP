@@ -16,7 +16,7 @@ export default function DisputeContactCard(){
                 }}>
             <Typography fontSize={40} fontWeight={"bold"}> Having Issues With A Dispute?</Typography>
             <Typography> Resolve this via a department coordinator</Typography>
-            <Typography> Contact: departmentname@ac.uk </Typography>
+            <Typography> Contact: departmentname@bath.ac.uk </Typography>
         </Grid>
     )
 }

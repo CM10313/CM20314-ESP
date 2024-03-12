@@ -11,6 +11,7 @@ import {addMultipleDocuments} from '../firebase/firestore';
 import  {clearCollection} from '../firebase/firestore';
 import {setupDatabaseListener} from '../firebase/firestore';
 import SearchableList from '../Components/SearchableList';
+import { useAuth } from '../Context/AuthContext';
 
 type StudyData = {
     name: string;
@@ -145,10 +146,11 @@ const EthicsBoardHomeLayout: React.FC = () => {
 };
 
 const EthicsBoardHome: React.FC = () => {
+    const {isLoggedIn,username,overallRating,id,department,accountType} = useAuth();
     return (
         <div>
             <TriangleBackground />
-            <Navbar name={''} rating={0} />
+            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} accountType={accountType?accountType:"Guest Type"} />
             <EthicsBoardHomeLayout />
         </div>
     );

@@ -22,7 +22,7 @@ import { useParams } from 'next/navigation';
 
 
 const ViewParticipantDetails: React.FC<{ testBypass1?: HealthDisplayProps | (() => HealthDisplayProps), testBypass2?: DemoGraphicDisplayProps,testBypass3?:OtherRequirementDisplayProps }> = ({ testBypass1={} as HealthDisplayProps, testBypass2 ={} as DemoGraphicDisplayProps,testBypass3 ={} as OtherRequirementDisplayProps })  => {
-  const {isLoggedIn,setAuth,username,overallRating,id,department} = useAuth();
+  const {isLoggedIn,setAuth,username,overallRating,id,department,accountType} = useAuth();
   const isMobile = useMediaQuery('(max-width:1000px)')
   const isExtraSmall = useMediaQuery('(max-width:800px)')
   const [visibleContent, setVisibleContent] = useState("Demographic");
@@ -191,7 +191,7 @@ if (typeof window !== 'undefined') {
   //for study get requirements then use requirements to set
   return (
     <>
-     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
+     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}  accountType={accountType?accountType:"Guest Type"}/>
             <TriangleBackground />
       <div style={{ height: '810px',display:'flex',justifyContent:'center',alignItems:'center' }}>
        <Box sx={{height:'560px',width:'90%',maxWidth:'1000px',backgroundColor:'#FFFEFE',boxShadow: '10px 10px 10px 10px rgba(0, 0, 0, 0.5)',overflowY:'auto'}}>

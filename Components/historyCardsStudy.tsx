@@ -8,10 +8,11 @@ interface HistoryRowProps {
   author: string;
   date: string;
   isPaid?: boolean;
-
+  title:string;
+  location?:string;
 }
 
-const HistoryCardsStudy: React.FC<HistoryRowProps> = ({ studyId, author, date, isPaid=false }) => {
+const HistoryCardsStudy: React.FC<HistoryRowProps> = ({ studyId, author, date, isPaid,title,location }) => {
 
     return (
         <Grid item display="flex" flexDirection="row" alignItems="center" justifyContent="space-between"
@@ -34,14 +35,15 @@ const HistoryCardsStudy: React.FC<HistoryRowProps> = ({ studyId, author, date, i
             width:'60%',
           }}>
           <Box display="flex" flexDirection="row" justifyContent="space-between">
-            <Typography> {author} </Typography>
+            <Typography> {title} </Typography>
             {isPaid && (
               <Typography sx={{ backgroundColor: "yellow", color: "white", fontSize: "1em", padding: "0.1em", marginTop: "0.3em" }}>
                   Paid
             </Typography>)}
-            <Image src="/images/smiley.png" alt="smiley image" width={30} height={30} />
           </Box>
-          <Typography fontSize={"0.75em"} sx={{wordWrap:"break-word"}}> <b> #{studyId} </b> </Typography>
+          <Typography fontSize={10} sx={{wordWrap:"break-word"}}> <b> {author} </b> </Typography>
+         {location &&(<Typography fontSize={10} sx={{wordWrap:"break-word"}}> <b> {location} </b> </Typography>)} 
+          <Typography fontSize={10} sx={{wordWrap:"break-word"}}> <b> #{studyId} </b> </Typography>
         </Box>
         
         <Typography fontSize="1em" color="white" padding="0.5em" width="30%">

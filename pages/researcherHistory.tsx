@@ -5,13 +5,13 @@ import HiddenStudiesCards from "../Components/hiddenStudies";
 import DisputeContactCard from "../Components/disputeContact";
 import Navbar from "../Components/navbar";
 import { useAuth } from "../Context/AuthContext";
-import  getResearcherStudies  from "../firebase/firestore";
+import  {getResearcherStudies}  from "../firebase/firestore";
 import { useEffect, useState } from "react";
 import StudyCreator from "./studyCreator";
 
 
 export default function ResearherHistoryScreen() {
-    const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+    const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
 
     const hiddenIdList = [
         "123456",
@@ -54,7 +54,7 @@ export default function ResearherHistoryScreen() {
 
     return (
         <Grid container>
-            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}/>
+            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}  accountType={accountType?accountType:"Guest Type"}/>
             <Grid item sm={12} md={8}>
                 <SearchableList 
                     rowSpacing={0}

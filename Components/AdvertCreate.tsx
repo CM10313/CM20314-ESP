@@ -71,7 +71,7 @@ export default function AdvertCreate({
                       sx={{width:'100%',height:'29px',
                       }}
                     >
-                      <Typography sx={{overflow:'auto',color:'white'}} fontSize={'15px'}>{item}</Typography>
+                      <Typography sx={{ color:'white'}} fontSize={'15px'}>{item}</Typography>
                     </CustomToggleButton>
                   </Grid>
                 ))}

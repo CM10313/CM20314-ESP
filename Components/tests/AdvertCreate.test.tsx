@@ -70,4 +70,48 @@ describe('AdvertCreate Component', () => {
 
     expect(pushMock).toHaveBeenCalledWith("/webinarCreator");
   });
+  it('mocks the useRouter hook', () => {
+    const pushMock = jest.fn();
+    const useRouterMock = jest.spyOn(require('next/router'), 'useRouter');
+    useRouterMock.mockReturnValue({ push: pushMock });
+
+    const { getByRole, getByText } = render(
+      <AdvertCreate
+        advertTypes={advertTypes}
+        width={width}
+        height={height}
+        textAreaContent={textAreaContent}
+      />
+    );
+
+    const createButton = getByRole('button', { name: /Create/i });
+    expect(createButton).toBeInTheDocument();
+
+    fireEvent.click(getByText('Other'));
+    fireEvent.click(createButton);
+
+    expect(pushMock).toHaveBeenCalledWith("/otherCreator");
+  });
+  it('mocks the useRouter hook', () => {
+    const pushMock = jest.fn();
+    const useRouterMock = jest.spyOn(require('next/router'), 'useRouter');
+    useRouterMock.mockReturnValue({ push: pushMock });
+
+    const { getByRole, getByText } = render(
+      <AdvertCreate
+        advertTypes={advertTypes}
+        width={width}
+        height={height}
+        textAreaContent={textAreaContent}
+      />
+    );
+
+    const createButton = getByRole('button', { name: /Create/i });
+    expect(createButton).toBeInTheDocument();
+
+    fireEvent.click(getByText('Study'));
+    fireEvent.click(createButton);
+
+    expect(pushMock).toHaveBeenCalledWith("/studyCreator");
+  });
 });

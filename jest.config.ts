@@ -1,4 +1,3 @@
-// jest.config.ts
 import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
@@ -15,7 +14,7 @@ const config: Config.InitialOptions = {
       statements: 80
     }
   },
-  // Include testMatch configuration to include .tsx files
+  // Consolidated testMatch pattern to include all test files
   testMatch: [
     '**/__tests__/**/*.[jt]s?(x)', // Include .js, .jsx, .ts, .tsx files in __tests__ directories
     '**/?(*.)+(spec|test).[tj]s?(x)', // Include .js, .jsx, .ts, .tsx files with spec or test in the filename
@@ -23,4 +22,5 @@ const config: Config.InitialOptions = {
 };
 
 export default config;
+
 

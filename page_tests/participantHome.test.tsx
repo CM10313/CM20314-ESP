@@ -204,7 +204,7 @@ describe('ResearchHome component', () => {
           'Computer Science': [mockLiveStudiesData],
         });
         const testBypass1 = [{ name: 'Study 1', rating: 4, department: 'Computer Science', title: 'Study 1', borderColour: '#D7BE69',onCardClick:()=>{},id:"id",publisherId:'pubId' }];
-        const testBypass2 = [{ studyTitle: 'Rejected Study 1', studyId: '1', publisher: 'Publisher 1', date: '2024-03-01' }];
+        const testBypass2 = [{ studyTitle: 'Rejected Study 1', studyId: '1', publisher: 'Publisher 1', date: '2024-03-01',buttonTitle:"title",department:'department',publisherId:"id",buttonFunction:()=>{} }];
         const testBypass3 = [{ borderColor:"green",title:"title",location:'location', publisher: 'Publisher 1',date:"date",id:'id' }];
         // Render the component
         const { getByText } = render(<ParticipantHome  testBypass1={testBypass1} testBypass2={testBypass2} testBypass3={testBypass3}/>);
