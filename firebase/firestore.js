@@ -73,6 +73,41 @@ const fetchDocumentById = async (collectionName, documentId) => {
 };
 
 
+const updateDocumentWithArray = async (collectionName, docId, FieldArray, newArrayData) => {
+  try {
+    const docRef = doc(db, collectionName, docId);
+    const docSnapshot = await getDoc(docRef);
+
+    if (docSnapshot.exists()) {
+      const existingData = docSnapshot.data();
+      const existingArray = existingData[FieldArray] || [];
+
+      const updatedArray = [...existingArray, ...newArrayData];
+
+      // Update the document with the modified array within the nested field
+      await setDoc(docRef, { [FieldArray]: updatedArray }, { merge: true });
+
+const fetchUserByDepartment = async (department) => {
+  try {
+    const querySnapshot = await getDocs(
+      query(collection(db, 'users'), where('department', '==', department))
+    );
+    console.log(querySnapshot)
+    let user = null;
+
+
+    querySnapshot.forEach((doc) => {
+      user = {
+        id: doc.id
+      };
+    });
+    console.log(user)
+    return user;
+  } catch (e) {
+    console.error("Error fetching user: ", e);
+    return null;
+  }
+};
 
 const fetchUsersByDepartment = async(department) => {
   try{
@@ -90,8 +125,6 @@ const fetchUsersByDepartment = async(department) => {
     console.error("Error fetching users:",e)
   }
 }
-
-
 
 const fetchAllStudiesByDepartment = async (department) => {
   try {
@@ -139,7 +172,6 @@ const fetchDocuments = async (collectionName) => {
   }
 };
 
-
 // Update a document
 const updateDocument = async (collectionName, docId, newData) => {
   try {
@@ -185,14 +217,6 @@ const deleteDocument = async (collectionName, docId) => {
   }
 };
 
-const fetchUserByDepartment = async (department) => {
-  try {
-    const querySnapshot = await getDocs(
-      query(collection(db, 'users'), where('department', '==', department))
-    );
-    console.log(querySnapshot)
-    let user = null;
-
     querySnapshot.forEach((doc) => {
       user = {
         id: doc.id
@@ -206,6 +230,20 @@ const fetchUserByDepartment = async (department) => {
   }
 };
 
+const fetchUserById = async (userId) => {
+  try {
+    const q = query(collection(db, 'users'), where('id', '==', userId));
+    const querySnapshot = await getDocs(q);
+
+      // Access data using .data() method
+    let userData = doc.data();
+    console.log(userData);
+    return userData;
+  } catch (e) {
+    console.error("Error fetching users: ", e);
+    return [];
+  }
+};
 
 const setupDatabaseListener = (collectionName, callback) => {
   const docRef = collection(db, collectionName);
@@ -224,33 +262,6 @@ const setupDatabaseListener = (collectionName, callback) => {
   // Return an unsubscribe function to stop listening when needed
   return unsubscribe;
 };
-
-// Trigger the update when the page loads
-
-const clearCollection = async (collectionName) => {
-  if (collectionName == 'Studies'){
-        try {
-          const collectionRef = collection(db, collectionName);
-
-          // Retrieve all documents in the collection
-          const querySnapshot = await getDocs(collectionRef);
-
-          // Delete each document
-          querySnapshot.forEach(async (doc) => {
-            await deleteDoc(doc.ref);
-            console.log('Document deleted: ', doc.id);
-          });
-
-          console.log('Collection cleared.');
-        } catch (e) {
-          console.error('Error clearing collection: ', e);
-        }
-      };
-    }
-
-
-
-
 
 const createFieldIfNotExists = async (collectionName, docId, fieldName, fieldType) => {
   try {
@@ -290,60 +301,27 @@ const createFieldIfNotExists = async (collectionName, docId, fieldName, fieldTyp
   }
 };
 
+const clearCollection = async (collectionName) => {
+  if (collectionName == 'Studies'){
+        try {
+          const collectionRef = collection(db, collectionName);
 
+          // Retrieve all documents in the collection
+          const querySnapshot = await getDocs(collectionRef);
 
-// Grabs all the studies from a particular researcher
-// const getResearcherStudies = async (researcherDepartment, researcherId) => {
-//   try{
-    
+          // Delete each document
+          querySnapshot.forEach(async (doc) => {
+            await deleteDoc(doc.ref);
+            console.log('Document deleted: ', doc.id);
+          });
 
-//     console.log("Users In Department ");
-//     console.log(usersInDepartment)
+          console.log('Collection cleared.');
+        } catch (e) {
+          console.error('Error clearing collection: ', e);
+        }
+      };
+    }
 
-
-//     // Find the researcher by their ID
-//     const researcher = usersInDepartment.find(user => user.id === researcherId)
-    
-//     if (!researcher) {
-//       throw new Error('Researcher not found in the specified department');
-//     }
-
-//   // Retrieve the studies for the researcher
-//   //const researcherStudies = await fetchStudiesByResearcher(researcher);
-
-
-//   //console.log(researcher.studies);
-
-//   return researcher.studies; //researcherStudies;
-
-//   }
-  
-//   catch (error) {
-//     console.error("Error fetching researcher studies: ", error);
-//     throw error;
-//   }
-
-
-
-//   // try {
-//   //   // Fetch all studies asynchronously and await the result
-//   //   const studies = await fetchDocuments("Studies");
-    
-//   //   // Filter studies associated with the researcherId
-//   //   const researcherStudies = studies.filter(study => study.ResearcherID === researcherId);
-    
-//   //   // Log the filtered studies
-//   //   console.log(researcherStudies);
-    
-//   //   // Return the filtered studies if needed
-//   //   return researcherStudies;
-//   // } catch (error) {
-//   //   // Handle errors properly
-//   //   console.error("Error fetching researcher studies: ", error);
-//   //   // Optionally, you can rethrow the error to propagate it further
-//   //   throw error;
-//   // }
-// };
 
 async function getResearcherStudies(departmentName, researcherId) {
   try {
@@ -373,4 +351,20 @@ async function getResearcherStudies(departmentName, researcherId) {
       throw error;
   }
 }
-    export { addDocument, fetchDocumentById, fetchDocuments, updateDocument, deleteDocument, addMultipleDocuments, fetchUserByDepartment, fetchUsersByDepartment, fetchAllStudiesByDepartment, clearCollection, updateDocumentWithArray,setupDatabaseListener,getResearcherStudies,createFieldIfNotExists};
+
+export { 
+  addDocument, 
+  fetchDocumentById, 
+  fetchDocuments, 
+  updateDocument, 
+  deleteDocument, 
+  fetchUserByDepartment,
+  fetchUsersByDepartment, 
+  setupDatabaseListener,
+  createFieldIfNotExists,
+  clearCollection,
+  fetchAllStudiesByDepartment,
+  updateDocumentWithArray,
+  addMultipleDocuments,
+  fetchUserById
+};

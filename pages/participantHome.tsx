@@ -26,9 +26,21 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
   const [upcomingStudies, setUpcomingStudies] = useState<ItemProps[]>(testBypass3);
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
-  const handleCardClick = (id: string,publisherId:string,department:string) => {
+  const handleCardClick =  async (studyid: string,publisherId:string,department:string) => {
     // Push the user to the desired page using the title (replace '/advert/' with your desired route)
-    router.push(`/advertPreview?studyId=${id}&publisherId=${publisherId}&department=${department}`);
+      await router.push({
+        pathname: '/participantAdvertScreen',
+        query: {
+          name: username,
+          studyId: studyid,
+          researcherId:publisherId,
+          department:department,
+          appliedDate: '',
+          ReviewStatus: '',
+          profilePicture: ''
+        },
+
+      })
   };
  
   useEffect(() => {
@@ -108,6 +120,7 @@ useEffect(() => {
   const fetchStudyList = async () => {
     try {
       const studyDict = await getAllStudies(true,true,true);
+      console.log(studyDict)
       const extractedStudies: StudyMediumCardProps[] = [];
       for (const departmentStudies of Object.values(studyDict)) {
         // Iterate over studies in the current department

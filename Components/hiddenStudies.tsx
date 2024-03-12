@@ -3,7 +3,10 @@ import { useRouter } from "next/router";
 import HistoryCardsStudy from "./historyCardsStudy";
 import HistorySmallButtons from "./historySmallButtons";
 
+
 const HiddenStudiesCards: React.FC<{ studyId: string, author:string, date:string,title:string,location:string }> = ({ studyId, author, date,title,location }) => {
+
+
     const router = useRouter();
     const handleReview = () => {
         router.push(`/review/${studyId}`);
