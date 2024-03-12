@@ -1,9 +1,18 @@
 import { db } from './config'; // Assuming you export your Firestore instance as 'db' in config.js
+import { collection, setDoc, getDoc, getDocs, updateDoc, doc, deleteDoc,addDoc,query,where, onSnapshot } from 'firebase/firestore';
 
-import { collection, setDoc, getDoc, getDocs, updateDoc, doc, deleteDoc,addDoc , query , where , onSnapshot} from 'firebase/firestore';
 
 
-// Add a document to a collection
+const addDocument = async (collectionName, data, uid) => {
+  try {
+    const docRef = doc(db, collectionName, uid);
+    await setDoc(docRef, data);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
+
 
 const addMultipleDocuments = async (collectionName, dataArray, idPropertyName) => {
   try {
@@ -22,15 +31,6 @@ const addMultipleDocuments = async (collectionName, dataArray, idPropertyName) =
 };
 
 
-const addDocument = async (collectionName, data, uid) => {
-  try {
-    const docRef = doc(db, collectionName, uid);
-    await setDoc(docRef, data);
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
-};
 export const addSpecialDocument = async (collectionName, data) => {
   try {
     const docRef = await addDoc(collection(db, collectionName), data);
@@ -39,6 +39,7 @@ export const addSpecialDocument = async (collectionName, data) => {
     console.error("Error adding nested document: ", e);
   }
 };
+
 export const createNestedDocument = async (parentCollectionName, collectionName, data, uid) => {
   try {
     const parentDocRef = doc(db, parentCollectionName, uid);
@@ -86,15 +87,27 @@ const updateDocumentWithArray = async (collectionName, docId, FieldArray, newArr
       // Update the document with the modified array within the nested field
       await setDoc(docRef, { [FieldArray]: updatedArray }, { merge: true });
 
-      console.log("Document updated with array: ", docRef.id);
-    } else {
-      console.error("Document does not exist!");
-    }
-  } catch (e) {
-    console.error("Error updating document: ", e);
-  }
-}
+const fetchUserByDepartment = async (department) => {
+  try {
+    const querySnapshot = await getDocs(
+      query(collection(db, 'users'), where('department', '==', department))
+    );
+    console.log(querySnapshot)
+    let user = null;
 
+
+    querySnapshot.forEach((doc) => {
+      user = {
+        id: doc.id
+      };
+    });
+    console.log(user)
+    return user;
+  } catch (e) {
+    console.error("Error fetching user: ", e);
+    return null;
+  }
+};
 
 const fetchUsersByDepartment = async(department) => {
   try{
@@ -112,8 +125,6 @@ const fetchUsersByDepartment = async(department) => {
     console.error("Error fetching users:",e)
   }
 }
-
-
 
 const fetchAllStudiesByDepartment = async (department) => {
   try {
@@ -161,7 +172,6 @@ const fetchDocuments = async (collectionName) => {
   }
 };
 
-
 // Update a document
 const updateDocument = async (collectionName, docId, newData) => {
   try {
@@ -173,6 +183,30 @@ const updateDocument = async (collectionName, docId, newData) => {
   }
 };
 
+
+const updateDocumentWithArray = async (collectionName, docId, fieldName, newArrayData) => {
+  try {
+    const docRef = doc(db, collectionName, docId);
+    const docSnapshot = await getDoc(docRef);
+
+    if (docSnapshot.exists()) {
+      const existingData = docSnapshot.data();
+      const existingArray = existingData[fieldName] || [];
+
+      const updatedArray = [...existingArray, ...newArrayData];
+
+      // Update the document with the modified array
+      await setDoc(docRef, { [fieldName]: updatedArray }, { merge: true });
+
+      console.log("Document updated with array: ", docRef.id);
+    } else {
+      console.error("Document does not exist!");
+    }
+  } catch (e) {
+    console.error("Error updating document: ", e);
+  }
+}
+
 // Delete a document
 const deleteDocument = async (collectionName, docId) => {
   try {
@@ -182,13 +216,6 @@ const deleteDocument = async (collectionName, docId) => {
     console.error("Error deleting document: ", e);
   }
 };
-const fetchUserByDepartment = async (department) => {
-  try {
-    const querySnapshot = await getDocs(
-      query(collection(db, 'users'), where('department', '==', department))
-    );
-    console.log(querySnapshot)
-    let user = null;
 
     querySnapshot.forEach((doc) => {
       user = {
@@ -203,6 +230,20 @@ const fetchUserByDepartment = async (department) => {
   }
 };
 
+const fetchUserById = async (userId) => {
+  try {
+    const q = query(collection(db, 'users'), where('id', '==', userId));
+    const querySnapshot = await getDocs(q);
+
+      // Access data using .data() method
+    let userData = doc.data();
+    console.log(userData);
+    return userData;
+  } catch (e) {
+    console.error("Error fetching users: ", e);
+    return [];
+  }
+};
 
 const setupDatabaseListener = (collectionName, callback) => {
   const docRef = collection(db, collectionName);
@@ -221,37 +262,6 @@ const setupDatabaseListener = (collectionName, callback) => {
   // Return an unsubscribe function to stop listening when needed
   return unsubscribe;
 };
-
-export default setupDatabaseListener;
-
-
-
-// Trigger the update when the page loads
-
-const clearCollection = async (collectionName) => {
-  if (collectionName == 'Studies'){
-        try {
-          const collectionRef = collection(db, collectionName);
-
-          // Retrieve all documents in the collection
-          const querySnapshot = await getDocs(collectionRef);
-
-          // Delete each document
-          querySnapshot.forEach(async (doc) => {
-            await deleteDoc(doc.ref);
-            console.log('Document deleted: ', doc.id);
-          });
-
-          console.log('Collection cleared.');
-        } catch (e) {
-          console.error('Error clearing collection: ', e);
-        }
-      };
-    }
-
-
-
-
 
 const createFieldIfNotExists = async (collectionName, docId, fieldName, fieldType) => {
   try {
@@ -291,6 +301,70 @@ const createFieldIfNotExists = async (collectionName, docId, fieldName, fieldTyp
   }
 };
 
-export { createFieldIfNotExists };
+const clearCollection = async (collectionName) => {
+  if (collectionName == 'Studies'){
+        try {
+          const collectionRef = collection(db, collectionName);
 
-export { addDocument, fetchDocumentById, fetchDocuments, updateDocument, deleteDocument,addMultipleDocuments, fetchUserByDepartment,fetchUsersByDepartment, fetchAllStudiesByDepartment , clearCollection ,updateDocumentWithArray};
+          // Retrieve all documents in the collection
+          const querySnapshot = await getDocs(collectionRef);
+
+          // Delete each document
+          querySnapshot.forEach(async (doc) => {
+            await deleteDoc(doc.ref);
+            console.log('Document deleted: ', doc.id);
+          });
+
+          console.log('Collection cleared.');
+        } catch (e) {
+          console.error('Error clearing collection: ', e);
+        }
+      };
+    }
+
+
+async function getResearcherStudies(departmentName, researcherId) {
+  try {
+      // Get a reference to the department's collection
+      const departmentRef = collection(db, 'departments', departmentName);
+      console.log("studies Refrence: " + studiesRef)
+      // Get a reference to the researcher's collection within the department
+      const researcherRef = collection(departmentRef, 'Researchers', researcherId);
+      // Query the studies collection within the researcher's document
+      const studiesRef = collection(researcherRef, 'studies');
+      // Create a query to retrieve all the studies
+      const q = query(studiesRef);
+      // Execute the query and fetch the studies
+      const querySnapshot = await getDocs(q);
+
+      // Extract the data from the query snapshot
+      const studies = [];
+      querySnapshot.forEach((doc) => {
+          studies.push({ id: doc.id, ...doc.data() });
+      });
+
+      console.log("Studies");
+      console.log(studies);
+      return studies;
+  } catch (error) {
+      console.error('Error fetching studies:', error);
+      throw error;
+  }
+}
+
+export { 
+  addDocument, 
+  fetchDocumentById, 
+  fetchDocuments, 
+  updateDocument, 
+  deleteDocument, 
+  fetchUserByDepartment,
+  fetchUsersByDepartment, 
+  setupDatabaseListener,
+  createFieldIfNotExists,
+  clearCollection,
+  fetchAllStudiesByDepartment,
+  updateDocumentWithArray,
+  addMultipleDocuments,
+  fetchUserById
+};

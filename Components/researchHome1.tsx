@@ -25,79 +25,55 @@ const ResearchHome: React.FC = () => {
       key="1"
       name="John Doe"
       rating={4.5}
-      pfp=""
       title="Lorem ipsum dolor sit amet"
-      link=""
       borderColour="#1F5095"
-      onCardClick={handleCardClick}
-    />,
+      onCardClick={handleCardClick} department={''} id={''} publisherId={''}    />,
     <StudyMediumCard
       key="2"
       name="Jane Smith"
       rating={3.8}
-      pfp=""
       title="Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,Consectetur adipiscing elit,v"
-      link=""
       borderColour="#1F5095"
-      onCardClick={handleCardClick}
-    />,<StudyMediumCard
-    key="1"
-    name="John Doe"
-    rating={4.5}
-    pfp=""
-    title="Lorem ipsum dolor sit amet"
-    link=""
-    borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,
+      onCardClick={handleCardClick} department={''} id={''} publisherId={''}    />,<StudyMediumCard
+      key="1"
+      name="John Doe"
+      rating={4.5}
+      title="Lorem ipsum dolor sit amet"
+      borderColour="#1F5095"
+      onCardClick={handleCardClick} department={''} id={''} publisherId={''}  />,
   <StudyMediumCard
     key="2"
     name="Jane Smith"
     rating={3.8}
-    pfp=""
     title="Consectetur adipiscing elit"
-    link=""
     borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,<StudyMediumCard
-  key="1"
-  name="John Doe"
-  rating={4.5}
-  pfp=""
-  title="Lorem ipsum dolor sit amet"
-  link=""
-  borderColour="#1F5095"
-  onCardClick={handleCardClick}
-/>,
+    onCardClick={handleCardClick} department={''} id={''} publisherId={''}  />,<StudyMediumCard
+    key="1"
+    name="John Doe"
+    rating={4.5}
+    title="Lorem ipsum dolor sit amet"
+    borderColour="#1F5095"
+    onCardClick={handleCardClick} department={''} id={''} publisherId={''}/>,
 <StudyMediumCard
   key="2"
   name="Jane Smith"
   rating={3.8}
-  pfp=""
   title="Consectetur adipiscing elit"
-  link=""
   borderColour="#1F5095"
-  onCardClick={handleCardClick}
-/>,<StudyMediumCard
-    key="1"
-    name="John Doe"
-    rating={4.5}
-    pfp=""
-    title="Lorem ipsum dolor sit amet"
-    link=""
-    borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,
+  onCardClick={handleCardClick} department={''} id={''} publisherId={''}/>,<StudyMediumCard
+  key="1"
+  name="John Doe"
+  rating={4.5}
+  title="Lorem ipsum dolor sit amet"
+  borderColour="#1F5095"
+  onCardClick={handleCardClick} department={''} id={''} publisherId={''}  />,
   <StudyMediumCard
     key="2"
     name="Jane Smith"
     rating={3.8}
-    pfp=""
     title="Consectetur adipiscing elit"
-    link=""
     borderColour="#1F5095"
-    onCardClick={handleCardClick}
-  />,
+    onCardClick={handleCardClick} department={''} id={''} publisherId={''}  />,
     // Add more StudyMediumCard components here as needed
   ];
   return (

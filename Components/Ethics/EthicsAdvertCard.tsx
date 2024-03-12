@@ -1,6 +1,5 @@
 import React, { use, useEffect, useState } from 'react';
-import { addMultipleDocuments, clearCollection, deleteDocument, fetchAllStudiesByDepartment, fetchDocumentById, updateDocument } from '../../firebase/firestore';
-import setupDatabaseListener from '../../firebase/firestore';;
+import { addMultipleDocuments, clearCollection, deleteDocument, fetchAllStudiesByDepartment, fetchDocumentById, setupDatabaseListener, updateDocument } from '../../firebase/firestore';
 import AdvertViewer from './AdvertViewer';
 import { useRouter } from 'next/router';
 import { Refresh } from '@mui/icons-material';

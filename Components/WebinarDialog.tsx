@@ -63,7 +63,7 @@ export default function WebinarDialog({ onSubmit,handleHomeRedirect,jestBypass,u
             } else {
                 setSubmitError("You cannot submit as required fields are not fullfilled or data is in an invalid format.");
             }
-        },[closingDate,preliminaryDate,externalLinkError,titleError,descriptionError])
+        },[closingDate, preliminaryDate, externalLinkError, titleError, descriptionError, closingDateError, preliminaryDateError])
       
         type SetterFunction<T> = React.Dispatch<React.SetStateAction<T>>;
 
