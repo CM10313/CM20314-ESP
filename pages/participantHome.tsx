@@ -22,7 +22,12 @@ import CalendarCard, { CalendarCardProps, ItemProps } from '../Components/Calend
 const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypass2?: DisputeRowProps[],testBypass3?: ItemProps[] }> = ({ testBypass1 = [], testBypass2 = [],testBypass3 = [] }) => {
   const [liveStudies, setLiveStudies] = useState<StudyMediumCardProps[]>(testBypass1);
   const [rejectedStudies, setRejectedStudies] = useState<DisputeRowProps[]>(testBypass2);
-  const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+  //const {isLoggedIn,setAuth,username,overallRating,id} = useAuth();
+  const [department, setDepartment] = useState('');
+  const [username, setUsername] = useState('');
+  const [overallRating, setOverallRating] = useState();
+  const [id, setId] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [upcomingStudies, setUpcomingStudies] = useState<ItemProps[]>(testBypass3);
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
@@ -32,6 +37,16 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
   };
  
   useEffect(() => {
+    const storedAuth = localStorage.getItem('auth');
+    if (storedAuth) {
+      const authObj = JSON.parse(storedAuth);
+      const {isLoggedIn, username, overallRating, department, account_type, id} = authObj;
+      setUsername(username);
+      setOverallRating(overallRating);
+      setDepartment(department);
+      setId(id);
+    }
+    
     const getRejectedStudies = async () => {
       try {
         // Fetch user information
@@ -98,6 +113,7 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
       }
     }
     getRejectedStudies();
+    setIsLoading(false);
   }, []);
 
 useEffect(() => {

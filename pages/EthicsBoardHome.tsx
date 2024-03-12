@@ -23,8 +23,23 @@ type StudyData = {
 const EthicsBoardHomeLayout: React.FC = () => {
     const [studyData, setStudyData] = useState<any[]>([]);
     const [mergedData, setMergedData] = useState<any[]>([]);
+    const [department, setDepartment] = useState('');
+    const [username, setUsername] = useState('');
+    const [overallRating, setOverallRating] = useState();
+    const [id, setId] = useState();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        const storedAuth = localStorage.getItem('auth');
+        if (storedAuth) {
+            const authObj = JSON.parse(storedAuth);
+            const {isLoggedIn, username, overallRating, department, account_type, id} = authObj;
+            setUsername(username);
+            setOverallRating(overallRating);
+            setDepartment(department);
+            setId(id);
+        }
+        
         const fetchData = async () => {
             try {
                 await clearCollection('Studies');

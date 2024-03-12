@@ -50,12 +50,22 @@ const makeLoginErrorFriendly=(loginError:string)=>{
 const handleLoginRedirect = async () => {
   try {
     await signIn(email, password);
+
     //check account type then push research/ethics/participant home page
     let doc_data:any  = await fetchDocumentById('users', getUID());
+
     let account_type = (doc_data as any).accountType
+
     let department = (doc_data as any).department
+
     let username = (doc_data as any).username
-    let overallRating = (doc_data as any).reviewObject.overallRating //wont work for ethics
+
+    let overallRating = 0;
+    if (account_type != 'ethics') {
+      let overallRating = (doc_data as any).reviewObject.overallRating //wont work for ethics
+    }
+    
+
     let id = getUID();
     setAuth(true,username,overallRating,department,account_type, getUID());
     localStorage.setItem('auth', JSON.stringify({ isLoggedIn, username,overallRating,department,account_type, id }));
@@ -68,6 +78,7 @@ const handleLoginRedirect = async () => {
         router.push('/researchHome');
         break;
       case "ethics":
+        router.push('/EthicsBoardHome');
         break;
       default:
         break;

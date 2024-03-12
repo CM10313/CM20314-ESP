@@ -5,7 +5,7 @@ import TriangleBackground from '../Components/TriangleBackground';
 import StudyDialog from '../Components/StudyDialog';
 import { EthicsData } from './register';
 
-import { useMediaQuery, Box } from '@mui/material';
+
 import { StudyState } from '../DataState/StudyState';
 import { Faculty } from '../DataState/UserExtraInfo';
 import { addDocument, addSpecialDocument, createNestedDocument } from '../firebase/firestore';
@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { useAuth } from '../Context/AuthContext';
 
 import CircularProgress from '@mui/material/CircularProgress';
+import { useMediaQuery, Box } from '@mui/material';
 interface Props {
   jestBypass: boolean;
 }

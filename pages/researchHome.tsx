@@ -40,9 +40,7 @@ const ResearchHome: React.FC = () => {
       setDepartment(department);
       setId(id);
       fetchStudies(department, id);
-      
     }
-    
     setIsLoading(false);
 
   }, []);

@@ -89,7 +89,7 @@ const RegisterForm: React.FC = () => {
         let isLoggedIn = true;
         let id = getUID();
         localStorage.setItem('auth', JSON.stringify({ isLoggedIn, username,overallRating,department,account_type, id }));
-        router.push('/researchHome')
+        router.push('/participantHome')
       }
       catch (error) {
         if (error instanceof Error){
@@ -145,7 +145,7 @@ const RegisterForm: React.FC = () => {
         let overallRating = (ethicsData as any).reviewObject.overallRating
         let id = getUID();
         localStorage.setItem('auth', JSON.stringify({ isLoggedIn, username,overallRating,department,account_type, id }));
-        router.push('/researchHome')
+        router.push('/EthicsBoardHome');
       }
       catch (error) {
         if (error instanceof Error){

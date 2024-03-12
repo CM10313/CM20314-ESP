@@ -5,13 +5,17 @@ import TriangleBackground from '../Components/TriangleBackground';
 import StudyDialog from '../Components/StudyDialog';
 import { EthicsData } from './register';
 
-import { useMediaQuery } from '@mui/material';
 import { StudyState } from '../DataState/StudyState';
 import { Faculty } from '../DataState/UserExtraInfo';
 import { addDocument, addSpecialDocument, createNestedDocument } from '../firebase/firestore';
 import { useRouter } from 'next/router';
 import { useAuth } from '../Context/AuthContext';
 import WebinarDialog from '../Components/WebinarDialog';
+
+
+import CircularProgress from '@mui/material/CircularProgress';
+import { useMediaQuery, Box } from '@mui/material';
+
 interface Props {
   jestBypass: boolean;
 }
@@ -45,7 +49,11 @@ enum UserType{
   }
 
   const WebinarCreator: React.FC<Props> = ({ jestBypass }) => {
-    const {username,overallRating,id,department} = useAuth();
+    const [department, setDepartment] = useState('');
+  const [username, setUsername] = useState('');
+  const [overallRating, setOverallRating] = useState();
+  const [id, setId] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const handleStudySubmit= (data:WebinarData,uid:String,department:String) =>{
       console.log(data);
@@ -56,6 +64,29 @@ enum UserType{
  
   const handleHomeDirect =()=>{
     router.push('/researchHome');//needs to change based on user type
+  }
+
+  useEffect(() => {
+    const storedAuth = localStorage.getItem('auth');
+    if (storedAuth) {
+      const authObj = JSON.parse(storedAuth);
+      const {isLoggedIn, username, overallRating, department, account_type, id} = authObj;
+      setUsername(username);
+      setOverallRating(overallRating);
+      setDepartment(department);
+      setId(id);
+      
+    }
+    
+    setIsLoading(false);
+  })
+
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <CircularProgress />
+      </Box>
+    );
   }
 
     //need a way to go back to start of input sequence
