@@ -23,6 +23,7 @@ describe('useStudyState', () => {
             rejectedByID:"",
             rejectedByName:"",
             rejectionReason:"",
+            changedContent:"",
           },
           CompensationObject: {
             amount: "100",
@@ -79,6 +80,7 @@ describe('useStudyState', () => {
         rejectedByID:"",
         rejectedByName:"",
         rejectionReason:"",
+        changedContent:"",
       },
       CompensationObject: {
         amount: "100",

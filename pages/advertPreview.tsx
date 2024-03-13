@@ -1,4 +1,4 @@
-import {Button, Box, useMediaQuery, Grid, Typography } from '@mui/material';
+import {Button, Box, useMediaQuery, Grid, Typography, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import Navbar from '../Components/navbar';
 import TriangleBackground from '../Components/TriangleBackground';
@@ -54,11 +54,18 @@ interface StudyProps {
     hasOccupation?:boolean;
     hasHLOFE?:boolean;
 }
-const AdvertPreview: React.FC<{ testBypass1?: StudyProps, testBypass2?:RequirementProps}> = ({ testBypass1={} as StudyProps, testBypass2 ={} as RequirementProps })  => {
+interface EthicalStatus{
+    status:string;
+    changedContent:string; 
+    isStudy:boolean;
+}
+const AdvertPreview: React.FC<{ testBypass1?: StudyProps, testBypass2?:RequirementProps,testBypass3?:EthicalStatus}> = ({ testBypass1={} as StudyProps, testBypass2 ={} as RequirementProps,testBypass3={}as EthicalStatus })  => {
   const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
   const isMobile = useMediaQuery('(max-width:1000px)')
   const [studyProps, setStudyProps]=useState<StudyProps>(testBypass1);
   const [requirementProps, setRequirementProps]=useState<RequirementProps>(testBypass2);
+  const [rejectionReason,setRejectionReason]=useState("");
+  const [ethicalProps,setEthicalProps]=useState<EthicalStatus>(testBypass3);
   //const [healthProps, setHealthProps]=useState<HealthDisplayProps>(testBypass1);
   //const [demographicProps,setDemographicProps]=useState<DemoGraphicDisplayProps>(testBypass2);
   //const [ otherProps, setOtherProps]=useState<OtherRequirementDisplayProps>(testBypass3);
@@ -134,7 +141,7 @@ const addUserToStudyAwaitingApproval = async ()=>{
                 hasReligion:studyData.studyObj.RequirementsObject.demoRequirements.includes("Religion"),
                 hasSexuality:studyData.studyObj.RequirementsObject.demoRequirements.includes("Sexuality"),
                 hasYOFS:studyData.studyObj.RequirementsObject.demoRequirements.includes("YearOfStudies"),
-                hasAccessRequirements:studyData.studyObj.RequirementsObject.accesibilityRequirements.includes("AccessibilityRequirements"),
+                hasAccessRequirements:studyData.studyObj.RequirementsObject.accessibilityRequirements.includes("AccessibilityRequirements"),
                 hasAccessToDevice:studyData.studyObj.RequirementsObject.techRequirements.includes("AccessToDevice"),
                 hasAnonymityLevel:studyData.studyObj.RequirementsObject.privacyRequirements.includes("AnonymityLevel"),
                 hasMaxTravelTime:studyData.studyObj.RequirementsObject.geographicRequirements.includes("MaxTravelTime"),
@@ -142,14 +149,69 @@ const addUserToStudyAwaitingApproval = async ()=>{
                 hasNearestCity:studyData.studyObj.RequirementsObject.geographicRequirements.includes("NearestCity"),
                 hasOtherLanguages:studyData.studyObj.RequirementsObject.languageRequirements.includes("OtherLanguages"),
             }
+            const EthicalStatus:EthicalStatus={
+                status: studyData.hasOwnProperty('studyObj') && studyData.studyObj !== null ?
+                (studyData.studyObj?.EthicsApprovalObject?.status) : studyData.EthicsApprovalObject?.status,
+                changedContent: studyData.hasOwnProperty('studyObj') && studyData.studyObj !== null ?
+                (studyData.studyObj?.EthicsApprovalObject?.changedContent) : studyData.EthicsApprovalObject?.changedContent,
+                isStudy:studyData.hasOwnProperty('studyObj') && studyData.studyObj !== null ?true:false,
+            };
             setStudyProps(StudyProps);
             setRequirementProps(RequirementProps);
+            setEthicalProps(EthicalStatus);
         } else {
             console.error("userData or studyData is null");
         }
       }
       fetchUserData();
   },[department, id, publisherId, studyId])
+ const approveStudy= async (isStudy:boolean)=>{
+        try{
+        const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
+        const updatedStudyDoc = {...studyData};
+        if(isStudy){
+            updatedStudyDoc.studyObj.EthicsApprovalObject.status = "Accept";
+            updatedStudyDoc.studyObj.EthicsApprovalObject.changedContent = "";
+            updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByID = "";
+            updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByName = "";
+            updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByReason = "";
+        }else{
+            updatedStudyDoc.EthicsApprovalObject.status = "Accept";
+            updatedStudyDoc.EthicsApprovalObject.changedContent = "";
+            updatedStudyDoc.EthicsApprovalObject.rejectedByID = "";
+            updatedStudyDoc.EthicsApprovalObject.rejectedByName = "";
+            updatedStudyDoc.EthicsApprovalObject.rejectedByReason = "";
+        }
+        updateDocument(`departments/${department}/Researchers/${publisherId}/studies`,studyId,updatedStudyDoc);
+        router.push(`/ethicsHome`);
+        } catch (error) {
+        console.error("Error rating user", error);
+        }
+ }
+ const rejectStudy= async (isStudy:boolean)=>{
+    try{
+        const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
+        const updatedStudyDoc = {...studyData};
+        if(isStudy){
+            updatedStudyDoc.studyObj.EthicsApprovalObject.status = "Rejected";
+            updatedStudyDoc.studyObj.EthicsApprovalObject.changedContent = "";
+            updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByID = id;
+            updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByName = username;
+            updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByReason = rejectionReason;
+        }else{
+            updatedStudyDoc.EthicsApprovalObject.status = "Rejected";
+            updatedStudyDoc.EthicsApprovalObject.changedContent = "";
+            updatedStudyDoc.EthicsApprovalObject.rejectedByID = id;
+            updatedStudyDoc.EthicsApprovalObject.rejectedByName = username;
+            updatedStudyDoc.EthicsApprovalObject.rejectedByReason = rejectionReason;
+        }
+        updateDocument(`departments/${department}/Researchers/${publisherId}/studies`,studyId,updatedStudyDoc);
+        router.push(`/ethicsHome`);
+        } catch (error) {
+        console.error("Error rating user", error);
+        }
+ }
+
 
   return (
     <>
@@ -184,6 +246,7 @@ const addUserToStudyAwaitingApproval = async ()=>{
                                 {requirementProps.hasReligion?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Religion</Typography>:null}
                                 {requirementProps.hasSexuality?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Sexuality</Typography>:null}
                                 {requirementProps.hasYOFS?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Year Of Studies</Typography>:null}
+                                {!requirementProps.hasAge&&!requirementProps.hasFaculty&&!requirementProps.hasGender&&!requirementProps.hasHLOFE&&!requirementProps.hasIncome&&!requirementProps.hasOccupation&&!requirementProps.hasRace&&!requirementProps.hasReligion&&!requirementProps.hasSexuality&&!requirementProps.hasYOFS?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} >This study has no demographic requirements</Typography>:null}
                                 </Box>
                                 <Typography fontSize={20} fontWeight={'bold'}sx={{color:'#000000'}}>Heatlh</Typography>
                                 <Box sx={{width:'100%',backgroundColor:'#1F5095',height:'200px',overflowY:'scroll', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: 'white', borderRadius: '5px' } }}>
@@ -191,6 +254,7 @@ const addUserToStudyAwaitingApproval = async ()=>{
                                 {requirementProps.hasDisabilities?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Disabilities</Typography>:null}
                                 {requirementProps.hasMedication?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Medication</Typography>:null}
                                 {requirementProps.hasPreExisting?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Pre-Existing Conditions</Typography>:null}
+                                {!requirementProps.hasAllergies&&!requirementProps.hasDisabilities&&!requirementProps.hasMedication&&!requirementProps.hasPreExisting?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} >This study has no health requirements</Typography>:null}
                                 </Box>
                                 <Typography fontSize={20} fontWeight={'bold'}sx={{color:'#000000'}}>Other</Typography>
                                 <Box sx={{width:'100%',backgroundColor:'#1F5095',height:'200px',overflowY:'scroll', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: 'white', borderRadius: '5px' } }}>
@@ -201,20 +265,57 @@ const addUserToStudyAwaitingApproval = async ()=>{
                                 {requirementProps.hasNativeLanguage?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Native Language</Typography>:null}
                                 {requirementProps.hasOtherLanguages?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Other Languages</Typography>:null}
                                 {requirementProps.hasAnonymityLevel?<Typography  fontSize={20}sx={{color:'white',ml:2,mt:1}} ><CircleIcon sx={{fontSize:'10px',mb:0.45,mr:1}}></CircleIcon>Anonymity Level</Typography>:null}
+                                {!requirementProps.hasAccessRequirements&&!requirementProps.hasAccessToDevice&&!requirementProps.hasMaxTravelTime&&!requirementProps.hasNearestCity&&!requirementProps.hasNativeLanguage&&!requirementProps.hasOtherLanguages&&!requirementProps.hasAnonymityLevel?<Typography fontSize={20} sx={{color:'white',ml:2,mt:1}} >This study has no other requirements</Typography>:null}
+
                                 </Box>
                             </Grid>
                         </Grid>
                         </Box> 
                     </Grid>
+                    {accountType!=="ethics"?(<>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'start',mt:2}}>
                                <Button  onClick={addUserToStudyAwaitingApproval}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#84C287",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><DoneIcon></DoneIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Apply</Box></Grid></Grid></Button>
                     </Grid>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'start',mt:2}}>
-                               <Button  onClick={homepageRedirect}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#CD386B",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><CloseIcon></CloseIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Exit</Box></Grid></Grid></Button>
-                    </Grid>
+                               <Button onClick={homepageRedirect}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#CD386B",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><CloseIcon></CloseIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Exit</Box></Grid></Grid></Button>
+                    </Grid></>):null}
                 </Grid>
             </Box>
             </Grid>
+            {accountType=="ethics"?(<>
+            <Grid item xs={isMobile?12:4}><Box sx={{width:"100%",maxWidth:'800px',height:"250px",overflowY:"auto",backgroundColor:"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}><Typography fontSize={25}sx={{ml:2,mt:2}}>Once approved this advert will be published to all users </Typography> <Button onClick={()=>approveStudy(ethicalProps.isStudy)}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#84C287",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><DoneIcon></DoneIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Approve</Box></Grid></Grid></Button></Box></Grid>
+            {ethicalProps.changedContent!=="" && ethicalProps.changedContent!==undefined?(<Grid item xs={isMobile?12:4}><Box sx={{width:"100%",maxWidth:'800px',height:"250px",overflowY:"auto",backgroundColor:"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}><Typography fontSize={20}sx={{ml:2,mt:2}}>Here is what the publisher said they changed </Typography><Box sx={{width:'90%',backgroundColor: "#F6F6F6",ml:2,mt:2,height:'150px'}}><Typography>{ethicalProps.changedContent}</Typography></Box> </Box></Grid>):null}
+            <Grid item xs={isMobile?12:4}><Box sx={{width:"100%",maxWidth:'800px',height:"250px",overflowY:"auto",backgroundColor:"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Typography fontSize={25}sx={{ml:2,mt:2}}>Please provide details of why you wish to reject this advert </Typography> 
+                    </Grid>
+                    <Grid item xs={12} sx={{ml:2,mt:4}}>
+                    <TextField
+                            label="Description"
+                            variant="outlined"
+                            value={rejectionReason}
+                            multiline
+                            rows={3}
+                            onChange={e=>setRejectionReason(e.target.value)}
+                            sx={{width:isMobile?'80%':'90%',padding:0,backgroundColor:'#DAE1E9',borderRadius:1,mt:-2,"&  .MuiFormHelperText-root.Mui-error": {
+                                backgroundColor: "#F6F6F6",
+                                margin:0,
+                              },}}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sx={{ml:2}}>
+                        <Button disabled={rejectionReason===""}  onClick={()=>rejectStudy(ethicalProps.isStudy)}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#CD386B",ml:1}}>
+                            <Grid container>
+                                <Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}>
+                                    <CloseIcon></CloseIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Reject</Box>
+                                </Grid>
+                            </Grid>
+                        </Button>
+                    </Grid>
+                </Grid>
+                
+               </Box></Grid></>):null}
         </Grid>
        </Box>
        <Box>

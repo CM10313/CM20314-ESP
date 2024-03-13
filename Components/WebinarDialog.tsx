@@ -40,7 +40,8 @@ export default function WebinarDialog({ onSubmit,handleHomeRedirect,jestBypass,u
         status:"Waiting",
         rejectedById:"",
         rejectedByName:"",
-        rejectionReason:""
+        rejectionReason:"",
+        changedContent:"",
     }
     const publisherId = uid;
     const joinedParticipants:string[]= [];

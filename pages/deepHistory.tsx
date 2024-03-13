@@ -38,7 +38,6 @@ export default function DeepHistoryScreen() {
       await Promise.all(
         participantIds.map(async (participantId) => {
           const userData: any = await fetchDocumentById("users", participantId);
-          console.log(userData)
           if (userData) {
             userNamesDict[participantId] = userData.username;
           }
@@ -116,9 +115,9 @@ export default function DeepHistoryScreen() {
       <HistorySmallButtons background="red" title="Details" fx={() => handleDetailsClick(item.userId)} />
     </Box>
   ));
-    const handleDetailsClick = (studyId: string) => {
-      router.push(`/details/${studyId}`);
-    }
+  const handleDetailsClick = (participantId:string) => {
+    router.push(`/viewParticipantDetails?uid=${participantId}&studyId=${studyId}`);
+  };
     console.log(awaitingApproval.length);
 
     return (

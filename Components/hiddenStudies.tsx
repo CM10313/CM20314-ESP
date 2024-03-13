@@ -4,7 +4,7 @@ import HistoryCardsStudy from "./historyCardsStudy";
 import HistorySmallButtons from "./historySmallButtons";
 
 
-const HiddenStudiesCards: React.FC<{ studyId: string, author:string, date:string,title:string,location:string }> = ({ studyId, author, date,title,location }) => {
+const HiddenStudiesCards: React.FC<{ studyId: string, author:string, date:string,title:string,location:string,department:string,publisherId:string }> = ({ studyId, author, date,title,location,department,publisherId }) => {
 
 
     const router = useRouter();
