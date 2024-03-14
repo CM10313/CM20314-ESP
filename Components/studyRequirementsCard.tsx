@@ -19,7 +19,7 @@ export default function RequirementsCard({ showButtons = true }) {
 
     const { id } = useAuth();
     const [formSubmitted, setFormSubmitted] = useState(false)
-    const [awaitingApprovalList, setAwaitingApprovalList] = useState([]);
+    const [awaitingApprovalList, setAwaitingApprovalList] = useState<any[]>([]);
     const router = useRouter();
     const studyDetails = router.query;
     
@@ -27,8 +27,11 @@ export default function RequirementsCard({ showButtons = true }) {
         // Fetch the data from the database
         const fetchData = async () => {
             try {
-                const documentData = await fetchDocumentById(`departments/${studyDetails.department}/Researchers/${studyDetails.researcherId}/studies`, studyDetails.studyId);
-                setAwaitingApprovalList(documentData?.studyObj.awaitingApprovalParticipants)
+                const documentData:any = await fetchDocumentById(`departments/${studyDetails.department}/Researchers/${studyDetails.researcherId}/studies`, studyDetails.studyId);
+                if(documentData){
+                    setAwaitingApprovalList(documentData?.studyObj.awaitingApprovalParticipants)
+                }
+                
                
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -38,7 +41,10 @@ export default function RequirementsCard({ showButtons = true }) {
     }, []); 
 
     useEffect(() => {
-        setFormSubmitted(awaitingApprovalList.includes(id));
+        if(awaitingApprovalList){
+            setFormSubmitted(awaitingApprovalList.includes(id));
+        }
+        
     }, [awaitingApprovalList, id]);
 
 

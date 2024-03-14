@@ -12,6 +12,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import { FeedbackViewingContainerProps } from '../Components/Ethics/RatingFeedBackViewer';
 import WebinarViewer from '../Components/Ethics/WebinarViewer';
+import HighlightDetector from '../Components/Ethics/Highlighter';
 
 interface StudyProps {
         name: string;
@@ -274,6 +275,7 @@ const addUserToStudyAwaitingApproval = async ()=>{
     <>
      <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} accountType={accountType?accountType:"Guest Type"} />
             <TriangleBackground />
+            <HighlightDetector/>
       <div style={{ height: '810px',display:'flex',justifyContent:'center',alignItems:'center' }}>
        <Box sx={{width:'90%',display:'flex',justifyContent:'center'}}>
         <Grid container rowSpacing={8} columnSpacing={4}sx={{height:'810px',mt:15}}>

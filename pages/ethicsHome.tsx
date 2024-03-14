@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import DisputeRow from '../Components/pDisputeRow';
 
 
+
 interface eventDetailProps{
     publisherId:string;
     id:string;

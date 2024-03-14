@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import {Grid, useMediaQuery} from "@mui/material";
 import HistoryCardsStudy from "./historyCardsStudy";
 import HistorySmallButtons from "./historySmallButtons";
-import { fetchAllStudiesByDepartment } from "../firebase/firestore";
 export interface HistoryCardProps {
   studyId: string;
   author: string;

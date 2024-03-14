@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {    FeedbackListViewer , FeedbackViewingContainerProps} from './RatingFeedBackViewer';
 import { fetchDocumentById } from '../../firebase/firestore';
-import SentenceGrid from './SentenceGrid';
+import SentenceGrid2 from './SentenceGrid2';
 
 interface AdvertViewerProps {
     name: string;
@@ -83,20 +83,20 @@ const AdvertViewer: React.FC<AdvertViewerProps> = ({
                 }}
             >
                 <div style={{ margin: '20px' }}>
-                    <SentenceGrid sentences={dates} title={'Study Dates'} rowSpacing={1} numberOfItemsPerRow={2} />
+                    <SentenceGrid2 sentences={dates} title={'Study Dates'} rowSpacing={1} numberOfItemsPerRow={2} />
                 </div>
 
                 <div>
                     <div style={{ margin: '15px' }}>
-                        <SentenceGrid sentences={subjectRelatedFields} rowSpacing={1} numberOfItemsPerRow={3} />
+                        <SentenceGrid2 sentences={subjectRelatedFields} rowSpacing={1} numberOfItemsPerRow={3} />
                     </div>
 
                     <div style={{ margin: '15px' }}>
-                        <SentenceGrid sentences={Compensation} rowSpacing={1} numberOfItemsPerRow={1} />
+                        <SentenceGrid2 sentences={Compensation} rowSpacing={1} numberOfItemsPerRow={1} />
                     </div>
 
                     <div style={{ margin: '15px', fontStyle: 'sans-serif' }}>
-                        <SentenceGrid sentences={contactDetailsAndExtLinks}rowSpacing={1} numberOfItemsPerRow={2} />
+                        <SentenceGrid2 sentences={contactDetailsAndExtLinks}rowSpacing={1} numberOfItemsPerRow={2} />
                     </div>
 
                     {ResearcherFeedBack?<div style={{ margin: '15px' }}>
