@@ -8,7 +8,7 @@ import SearchableList from "../Components/SearchableList";
 import HistoryCardsStudy from "../Components/historyCardsStudy";
 import HistorySmallButtons from "../Components/historySmallButtons";
 import { useState, useEffect, Key, ReactElement } from "react";
-import { fetchAllStudiesByDepartment, fetchDocumentById, fetchUserById } from "../firebase/firestore";
+import { fetchAllEventsByDepartment, fetchDocumentById, fetchUserById } from "../firebase/firestore";
 
 interface userItem{
   userId:string;
@@ -116,7 +116,7 @@ export default function DeepHistoryScreen() {
     </Box>
   ));
   const handleDetailsClick = (participantId:string) => {
-    router.push(`/viewParticipantDetails?uid=${participantId}&studyId=${studyId}`);
+    router.push(`/viewParticipantDetails?uid=${participantId}&studyId=${studyId}&canAccept=true`);
   };
     console.log(awaitingApproval.length);
 

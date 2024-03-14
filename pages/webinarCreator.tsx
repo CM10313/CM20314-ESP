@@ -55,7 +55,7 @@ enum UserType{
   }
  
   const handleHomeDirect =()=>{
-    router.push('/researchHome');//needs to change based on user type
+    router.push('/researcherHome');//needs to change based on user type
   }
 
     //need a way to go back to start of input sequence

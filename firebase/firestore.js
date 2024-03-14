@@ -110,7 +110,7 @@ const fetchUsersByDepartment = async(department) => {
   }
 }
 
-const fetchAllStudiesByDepartment = async (department) => {
+const fetchAllEventsByDepartment = async (department,eventType) => {
   try {
    
     const users = await fetchUsersByDepartment(department);
@@ -119,7 +119,7 @@ const fetchAllStudiesByDepartment = async (department) => {
 
     for (let i = 0; i < users.length; i++) {
       const userId = users[i].id;
-      const userStudiesRef = collection(db, 'departments', department, 'Researchers', userId, 'studies');
+      const userStudiesRef = collection(db, 'departments', department, 'Researchers', userId, eventType);
       const userStudiesSnapshot = await getDocs(userStudiesRef);
     
       userStudiesSnapshot.forEach((studyDoc) => {
@@ -335,7 +335,7 @@ export {
   setupDatabaseListener,
   createFieldIfNotExists,
   clearCollection,
-  fetchAllStudiesByDepartment,
+  fetchAllEventsByDepartment,
   updateDocumentWithArray,
   addMultipleDocuments,
   fetchUserById

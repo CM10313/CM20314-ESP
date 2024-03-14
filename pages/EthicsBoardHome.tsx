@@ -6,7 +6,7 @@ import { Box } from '@mui/material';
 import SearchBar from '../Components/SearchBar';
 import YourScreenComponent2 from '../Components/Ethics/shiftPage';
 import '../Components/Ethics/EthicsStyle.css';
-import {fetchAllStudiesByDepartment}  from '../firebase/firestore';
+import {fetchAllEventsByDepartment}  from '../firebase/firestore';
 import {addMultipleDocuments} from '../firebase/firestore';
 import  {clearCollection} from '../firebase/firestore';
 import {setupDatabaseListener} from '../firebase/firestore';
@@ -29,7 +29,7 @@ const EthicsBoardHomeLayout: React.FC = () => {
         const fetchData = async () => {
             try {
                 await clearCollection('Studies');
-                const DepartmentStudiesData = await fetchAllStudiesByDepartment('Computer Science');
+                const DepartmentStudiesData = await fetchAllEventsByDepartment('Computer Science','studies');
                 console.log(DepartmentStudiesData);
                 if (DepartmentStudiesData) {
                     // Map and extract specific fields

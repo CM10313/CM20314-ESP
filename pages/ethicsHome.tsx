@@ -6,7 +6,7 @@ import { Box, Grid, useMediaQuery } from '@mui/material';
 import SearchBar from '../Components/SearchBar';
 import YourScreenComponent2 from '../Components/Ethics/shiftPage';
 import '../Components/Ethics/EthicsStyle.css';
-import {fetchAllStudiesByDepartment}  from '../firebase/firestore';
+import {fetchAllEventsByDepartment}  from '../firebase/firestore';
 import {addMultipleDocuments} from '../firebase/firestore';
 import  {clearCollection} from '../firebase/firestore';
 import {setupDatabaseListener} from '../firebase/firestore';
@@ -95,22 +95,36 @@ const EthicsHome: React.FC<{ testBypass1?: eventDetailProps[], testBypass2?:even
     
     
     const router = useRouter();
-    const handleView=(studyId:string,publisherId:string,department:string)=>{
+    const handleView=(studyId:string,publisherId:string,department:string,isStudy:boolean,isAccepted:boolean)=>{
         console.log(department)
-        router.push(`/advertPreview?studyId=${studyId}&publisherId=${publisherId}&department=${department}`);
+        if(isAccepted){
+            if(isStudy){
+                router.push(`/advertPreview?studyId=${studyId}&publisherId=${publisherId}&department=${department}&eventType=study&status=Accept`);
+                return;
+            }else{
+                router.push(`/advertPreview?studyId=${studyId}&publisherId=${publisherId}&department=${department}&status=Accept`);
+                return;
+            }
+        }if(isStudy){
+            router.push(`/advertPreview?studyId=${studyId}&publisherId=${publisherId}&department=${department}&eventType=study`);
+        }else{
+            router.push(`/advertPreview?studyId=${studyId}&publisherId=${publisherId}&department=${department}`);
+        }
+        
+        
     }
     const liveList = liveStudies.map((study,index)=>(
-    <HistoryCardsStudy status={"Live"} backgroundColor={"#84C287"}key={index} textColor={"white"} studyId={study.id} title={study.title} author={study.publisherId} date={study.publishedDate} onClick={()=>handleView(study.id,study.publisherId,department)}></HistoryCardsStudy>
+    <HistoryCardsStudy status={"Live"} backgroundColor={"#84C287"}key={index} textColor={"white"} studyId={study.id} title={study.title} author={study.publisherId} date={study.publishedDate} onClick={()=>handleView(study.id,study.publisherId,department,study.isStudy,true)}></HistoryCardsStudy>
     ))
     const rejectedList = rejectedStudies.map((study,index)=>(
-        <HistoryCardsStudy status={"Rejected"}backgroundColor={"#D87171"} textColor={"white"}key={index} studyId={study.id} title={study.title} author={study.publisherId} date={study.publishedDate} onClick={()=>handleView(study.id,study.publisherId,department)}></HistoryCardsStudy>
+        <HistoryCardsStudy status={"Rejected"}backgroundColor={"#D87171"} textColor={"white"}key={index} studyId={study.id} title={study.title} author={study.publisherId} date={study.publishedDate} onClick={()=>handleView(study.id,study.publisherId,department,study.isStudy,false)}></HistoryCardsStudy>
     ))
     const disputedList = disputedStudies.map((study,index)=>(
 
-        <DisputeRow key={index} studyTitle={study.title} publisher={study.publisherId} date={study.publishedDate} studyId={study.id} buttonTitle='Resolve' department={department} publisherId={study.publisherId} buttonFunction={()=>handleView(study.id,study.publisherId,department)}></DisputeRow>
+        <DisputeRow key={index} studyTitle={study.title} publisher={study.publisherId} date={study.publishedDate} studyId={study.id} buttonTitle='Resolve' department={department} publisherId={study.publisherId} buttonFunction={()=>handleView(study.id,study.publisherId,department,study.isStudy,false)}></DisputeRow>
     ))
     const waitingList = waitingStudies.map((study,index)=>(
-        <DisputeRow key={index} studyTitle={study.title} publisher={study.publisherId} date={study.publishedDate} studyId={study.id} buttonTitle='View' department={department} publisherId={study.publisherId} buttonFunction={()=>handleView(study.id,study.publisherId,department)}></DisputeRow>
+        <DisputeRow key={index} studyTitle={study.title} publisher={study.publisherId} date={study.publishedDate} studyId={study.id} buttonTitle='View' department={department} publisherId={study.publisherId} buttonFunction={()=>handleView(study.id,study.publisherId,department,study.isStudy,false)}></DisputeRow>
     ))
     const isMedium = useMediaQuery('(max-width:1200px)')
     const isMobile = useMediaQuery('(max-width:800px)')

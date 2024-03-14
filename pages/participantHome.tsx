@@ -28,19 +28,9 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
   const router = useRouter();
   const handleCardClick =  async (studyid: string,publisherId:string,department:string) => {
     // Push the user to the desired page using the title (replace '/advert/' with your desired route)
-      await router.push({
-        pathname: '/participantAdvertScreen',
-        query: {
-          name: username,
-          studyId: studyid,
-          researcherId:publisherId,
-          department:department,
-          appliedDate: '',
-          ReviewStatus: '',
-          profilePicture: ''
-        },
-
-      })
+    router.push(`/advertPreview?studyId=${studyid}&publisherId=${publisherId}&department=${department}&eventType='study'`);
+      
+      
   };
  
   useEffect(() => {
@@ -127,7 +117,10 @@ useEffect(() => {
         departmentStudies.forEach((studyList: any) => { // Using 'any' temporarily, replace with appropriate type
           // Iterate over studies in the current study list
           studyList.forEach((study: any) => {
+            console.log(study)
+            const status = study.hasOwnProperty('studyObj') && study.studyObj !== null ? study.studyObj.EthicsApprovalObject.status : study.EthicsApprovalObject.status;
             // Extract the data you need from the study object and create StudyMediumCardProps
+
             const studyProps: StudyMediumCardProps = {
               name: study.publisherName || "No name for publisher", // Ensure you have a default value if properties are missing professor name
               rating: study.publisherRating || 0 , // Example rating, adjust accordingly
@@ -138,9 +131,10 @@ useEffect(() => {
               publisherId:study.publisherId || "No publisher id",
               onCardClick: handleCardClick // Assuming handleCardClick is defined somewhere
             };
-            
             // Add the created StudyMediumCardProps to extractedStudies
-            extractedStudies.push(studyProps);
+            if(status=="Accept"){
+              extractedStudies.push(studyProps);
+            }
           });
         });
       }

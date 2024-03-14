@@ -11,6 +11,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import { FeedbackViewingContainerProps } from '../Components/Ethics/RatingFeedBackViewer';
+import WebinarViewer from '../Components/Ethics/WebinarViewer';
 
 interface StudyProps {
         name: string;
@@ -31,6 +32,17 @@ interface StudyProps {
         organsiation:string;
         location:string;
     };
+    interface WebinarProps{
+        title:string;
+        publisherRating:number;
+        department:string;
+        studyDescription: string;
+        joinedParticipants:number;
+        subjectRelatedFields: string[];
+        approvalStatus:string;
+        dates: string[];
+        externalLink:string;
+    }
  interface RequirementProps{
     hasPreExisting?:boolean;
     hasAllergies?:boolean;
@@ -59,10 +71,11 @@ interface EthicalStatus{
     changedContent:string; 
     isStudy:boolean;
 }
-const AdvertPreview: React.FC<{ testBypass1?: StudyProps, testBypass2?:RequirementProps,testBypass3?:EthicalStatus}> = ({ testBypass1={} as StudyProps, testBypass2 ={} as RequirementProps,testBypass3={}as EthicalStatus })  => {
+const AdvertPreview: React.FC<{ testBypass1?: StudyProps, testBypass2?:RequirementProps,testBypass3?:EthicalStatus,testBypass4?:WebinarProps}> = ({ testBypass1={} as StudyProps, testBypass2 ={} as RequirementProps,testBypass3={}as EthicalStatus,testBypass4={}as WebinarProps })  => {
   const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
   const isMobile = useMediaQuery('(max-width:1000px)')
   const [studyProps, setStudyProps]=useState<StudyProps>(testBypass1);
+  const [webinarProps, setWebinarProps]=useState<WebinarProps>(testBypass4);
   const [requirementProps, setRequirementProps]=useState<RequirementProps>(testBypass2);
   const [rejectionReason,setRejectionReason]=useState("");
   const [ethicalProps,setEthicalProps]=useState<EthicalStatus>(testBypass3);
@@ -73,14 +86,19 @@ const AdvertPreview: React.FC<{ testBypass1?: StudyProps, testBypass2?:Requireme
 let studyId = '';
 let department ='';
 let publisherId ='';
+let eventType ='';
+let status = "";
 
 if (typeof window !== 'undefined') {
     const urlParams = new URLSearchParams(window.location.search);
     studyId = urlParams.get('studyId') || '';
     department = urlParams.get('department') || '';
     publisherId = urlParams.get('publisherId') || '';
+    eventType = urlParams.get('eventType') || '';
+    status = urlParams.get('status')|| '';
 }
-
+const eventIsStudy = eventType == "study";
+const isApproved = status == "Accept";
 const addUserToStudyAwaitingApproval = async ()=>{
     try{
         const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
@@ -100,11 +118,9 @@ const addUserToStudyAwaitingApproval = async ()=>{
   }
   
   useEffect (()=>{
-    const fetchUserData = async ()=> {
-        console.log(studyId )
+    const fetchStudyData = async ()=> {
         const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
         const userData:any= await fetchDocumentById("users",publisherId );
-        console.log(studyData);
         if (studyData && userData) {
             const StudyProps: StudyProps = {
                 minimumAge:studyData.minimumAge,
@@ -163,26 +179,64 @@ const addUserToStudyAwaitingApproval = async ()=>{
             console.error("userData or studyData is null");
         }
       }
-      fetchUserData();
+      const fetchEventData = async ()=> {
+        const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/webinars`,studyId);
+        const userData:any= await fetchDocumentById("users",publisherId );
+        if (studyData && userData) {
+            const WebinarProps: WebinarProps = {
+                studyDescription:studyData.description,
+                subjectRelatedFields:studyData.relatedFields,
+                dates:[`Closing Date:${studyData.closingDate}`,`Published: ${studyData.dateOfPublish}`,`Date of Study: ${studyData.preliminaryDate}`],
+                externalLink:studyData.externalLink,
+                title:studyData.title,
+                publisherRating:studyData.publisherRating,
+                department:studyData.department,
+                joinedParticipants:studyData.joinedParticipants.length,
+                approvalStatus:studyData.EthicsApprovalObject.status,
+            }
+            const EthicalStatus:EthicalStatus={
+                status: studyData.hasOwnProperty('studyObj') && studyData.studyObj !== null ?
+                (studyData.studyObj?.EthicsApprovalObject?.status) : studyData.EthicsApprovalObject?.status,
+                changedContent: studyData.hasOwnProperty('studyObj') && studyData.studyObj !== null ?
+                (studyData.studyObj?.EthicsApprovalObject?.changedContent) : studyData.EthicsApprovalObject?.changedContent,
+                isStudy:studyData.hasOwnProperty('studyObj') && studyData.studyObj !== null ?true:false,
+            };
+            setWebinarProps(WebinarProps);
+            setEthicalProps(EthicalStatus);
+        } else {
+            console.error("userData or studyData is null");
+        }
+      }
+      if(eventIsStudy){
+        fetchStudyData();
+      }else{
+        fetchEventData();
+      }
   },[department, id, publisherId, studyId])
  const approveStudy= async (isStudy:boolean)=>{
         try{
-        const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
-        const updatedStudyDoc = {...studyData};
+        
         if(isStudy){
+            const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
+            const updatedStudyDoc = {...studyData};
             updatedStudyDoc.studyObj.EthicsApprovalObject.status = "Accept";
             updatedStudyDoc.studyObj.EthicsApprovalObject.changedContent = "";
             updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByID = "";
             updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByName = "";
             updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByReason = "";
+            updateDocument(`departments/${department}/Researchers/${publisherId}/studies`,studyId,updatedStudyDoc);
         }else{
+            const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/webinars`,studyId);
+            const updatedStudyDoc = {...studyData};
+            console.log("hey")
+            console.log(studyData)
             updatedStudyDoc.EthicsApprovalObject.status = "Accept";
             updatedStudyDoc.EthicsApprovalObject.changedContent = "";
             updatedStudyDoc.EthicsApprovalObject.rejectedByID = "";
             updatedStudyDoc.EthicsApprovalObject.rejectedByName = "";
             updatedStudyDoc.EthicsApprovalObject.rejectedByReason = "";
+            updateDocument(`departments/${department}/Researchers/${publisherId}/webinars`,studyId,updatedStudyDoc);
         }
-        updateDocument(`departments/${department}/Researchers/${publisherId}/studies`,studyId,updatedStudyDoc);
         router.push(`/ethicsHome`);
         } catch (error) {
         console.error("Error rating user", error);
@@ -190,22 +244,25 @@ const addUserToStudyAwaitingApproval = async ()=>{
  }
  const rejectStudy= async (isStudy:boolean)=>{
     try{
-        const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
-        const updatedStudyDoc = {...studyData};
         if(isStudy){
+            const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
+            const updatedStudyDoc = {...studyData};
             updatedStudyDoc.studyObj.EthicsApprovalObject.status = "Rejected";
             updatedStudyDoc.studyObj.EthicsApprovalObject.changedContent = "";
             updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByID = id;
             updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByName = username;
             updatedStudyDoc.studyObj.EthicsApprovalObject.rejectedByReason = rejectionReason;
+            updateDocument(`departments/${department}/Researchers/${publisherId}/studies`,studyId,updatedStudyDoc);
         }else{
+            const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/webinars`,studyId);
+            const updatedStudyDoc = {...studyData};
             updatedStudyDoc.EthicsApprovalObject.status = "Rejected";
             updatedStudyDoc.EthicsApprovalObject.changedContent = "";
             updatedStudyDoc.EthicsApprovalObject.rejectedByID = id;
             updatedStudyDoc.EthicsApprovalObject.rejectedByName = username;
             updatedStudyDoc.EthicsApprovalObject.rejectedByReason = rejectionReason;
+            updateDocument(`departments/${department}/Researchers/${publisherId}/webinars`,studyId,updatedStudyDoc);
         }
-        updateDocument(`departments/${department}/Researchers/${publisherId}/studies`,studyId,updatedStudyDoc);
         router.push(`/ethicsHome`);
         } catch (error) {
         console.error("Error rating user", error);
@@ -220,7 +277,7 @@ const addUserToStudyAwaitingApproval = async ()=>{
       <div style={{ height: '810px',display:'flex',justifyContent:'center',alignItems:'center' }}>
        <Box sx={{width:'90%',display:'flex',justifyContent:'center'}}>
         <Grid container rowSpacing={8} columnSpacing={4}sx={{height:'810px',mt:15}}>
-            <Grid item xs={isMobile?12:8}><AdvertViewer2 AdvertProps={studyProps} ></AdvertViewer2></Grid> 
+        {eventIsStudy&&(<><Grid item xs={isMobile?12:8}><AdvertViewer2 AdvertProps={studyProps} ></AdvertViewer2></Grid> 
             <Grid item xs={isMobile?12:4}>
             <Box sx={{width:"100%",maxWidth:'800px',height:"600px",overflowY:"auto",backgroundColor:"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}>
                 <Grid container sx={{display:'flex'}}>
@@ -281,11 +338,12 @@ const addUserToStudyAwaitingApproval = async ()=>{
                     </Grid></>):null}
                 </Grid>
             </Box>
-            </Grid>
+            </Grid></> )}
+            {!eventIsStudy&&(<Grid item xs={isMobile?12:4}><WebinarViewer WebinarProps={webinarProps} ></WebinarViewer></Grid>)}
             {accountType=="ethics"?(<>
-            <Grid item xs={isMobile?12:4}><Box sx={{width:"100%",maxWidth:'800px',height:"250px",overflowY:"auto",backgroundColor:"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}><Typography fontSize={25}sx={{ml:2,mt:2}}>Once approved this advert will be published to all users </Typography> <Button onClick={()=>approveStudy(ethicalProps.isStudy)}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#84C287",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><DoneIcon></DoneIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Approve</Box></Grid></Grid></Button></Box></Grid>
+            {!isApproved&&(<Grid item xs={isMobile?12:4}><Box sx={{width:"100%",maxWidth:'800px',height:"250px",overflowY:"auto",backgroundColor:"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}><Typography fontSize={25}sx={{ml:2,mt:2}}>Once approved this advert will be published to all users </Typography> <Button onClick={()=>approveStudy(ethicalProps.isStudy)}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#84C287",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><DoneIcon></DoneIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Approve</Box></Grid></Grid></Button></Box></Grid>)}
             {ethicalProps.changedContent!=="" && ethicalProps.changedContent!==undefined?(<Grid item xs={isMobile?12:4}><Box sx={{width:"100%",maxWidth:'800px',height:"250px",overflowY:"auto",backgroundColor:"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}><Typography fontSize={20}sx={{ml:2,mt:2}}>Here is what the publisher said they changed </Typography><Box sx={{width:'90%',backgroundColor: "#F6F6F6",ml:2,mt:2,height:'150px'}}><Typography>{ethicalProps.changedContent}</Typography></Box> </Box></Grid>):null}
-            <Grid item xs={isMobile?12:4}><Box sx={{width:"100%",maxWidth:'800px',height:"250px",overflowY:"auto",backgroundColor:"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}>
+            {!isApproved&&(<Grid item xs={isMobile?12:4}><Box sx={{width:"100%",maxWidth:'800px',height:"250px",overflowY:"auto",backgroundColor:"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}>
                 <Grid container>
                     <Grid item xs={12}>
                         <Typography fontSize={25}sx={{ml:2,mt:2}}>Please provide details of why you wish to reject this advert </Typography> 
@@ -315,7 +373,7 @@ const addUserToStudyAwaitingApproval = async ()=>{
                     </Grid>
                 </Grid>
                 
-               </Box></Grid></>):null}
+               </Box></Grid>)}</>):null}
         </Grid>
        </Box>
        <Box>
