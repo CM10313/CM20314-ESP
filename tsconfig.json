@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["jest", "@testing-library/react"],
+    "types": ["jest", "@testing-library/react","node", "@testing-library/jest-dom"],
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -13,7 +13,6 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"],
     "plugins": [
       {
         "name": "next"
