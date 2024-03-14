@@ -41,7 +41,8 @@ export default function OtherDialog({ onSubmit,handleHomeRedirect,jestBypass,uid
         status:"Waiting",
         rejectedById:"",
         rejectedByName:"",
-        rejectionReason:""
+        rejectionReason:"",
+        changedStatus:"",
     }
     const publisherId = uid;
     const joinedParticipants:string[]= [];

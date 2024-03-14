@@ -65,10 +65,10 @@ const handleLoginRedirect = async () => {
         router.push('/participantHome');
         break;
       case "researcher":
-        router.push('/researchHome');
+        router.push('/researcherHome');
         break;
       case "ethics":
-        router.push('/EthicsBoardHome')
+        router.push('/ethicsHome')
         break;
       default:
        

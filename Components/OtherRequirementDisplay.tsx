@@ -25,12 +25,12 @@ import * as React from 'react';
   maxTravelTime?:string;
   anonymityLevel?:string;
   accesRequirements?:string;
+  hasOtherProps:boolean;
  }
  
  export default function OtherRequirementDisplay({
- hasAccessRequirements,hasAccessToDevice,hasAnonymityLevel,hasMaxTravelTime,hasNearestCity,hasNativeLanguage,hasOtherLanguages,accesRequirements,accessToDevice,anonymityLevel,maxTravelTime,nativeLanguage,nearestCity,otherLanguages
+ hasAccessRequirements,hasAccessToDevice,hasAnonymityLevel,hasMaxTravelTime,hasNearestCity,hasNativeLanguage,hasOtherLanguages,accesRequirements,accessToDevice,anonymityLevel,maxTravelTime,nativeLanguage,nearestCity,otherLanguages,hasOtherProps
  }:  OtherRequirementDisplayProps) {
-  console.log(accessToDevice)
    return (
     <Box
     sx={{
@@ -49,6 +49,7 @@ import * as React from 'react';
     {hasNearestCity?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Nearest City</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{nearestCity}</Typography></Box></Box></Grid>:null}
     {hasNativeLanguage?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Native Language</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{nativeLanguage}</Typography></Box></Box></Grid>:null}
     {hasOtherLanguages?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Other Languages</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{otherLanguages}</Typography></Box></Box></Grid>:null}
+    {hasOtherProps?null:<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Other</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>No Data Available, as you did not set any requirements for this study</Typography></Box></Box></Grid>}
     </Grid>
   
   </Box>

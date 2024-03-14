@@ -28,7 +28,7 @@ export interface DiversityObject{
   geographicRequirements:string[]; 
   languageRequirements:string[];
   privacyRequirements:string[];
-  accesibilityRequirements:string[];
+  accessibilityRequirements:string[];
   }
   export interface EthicsApprovalObject{
     status:String;
@@ -50,6 +50,7 @@ export interface DiversityObject{
         rejectedByID:String;
         rejectedByName:String;
         rejectionReason:String;
+        changedContent:String;
     }
     CompensationObject: {
         amount: string;
@@ -58,6 +59,8 @@ export interface DiversityObject{
         allPaid: boolean;
         disputingParticipants: string[];
         paidParticipants: string[];
+        participantsRated: string[];
+        participantsHaveRated: string[];
     };
     RequirementsObject: {
         demoRequirements: string[];
@@ -66,7 +69,7 @@ export interface DiversityObject{
         geographicRequirements: string[];
         languageRequirements: string[];
         privacyRequirements: string[];
-        accesibilityRequirements: string[];
+        accessibilityRequirements: string[];
     };
     joinedParticipants: string[];
     awaitingApprovalParticipants: string[];
@@ -87,6 +90,7 @@ export const useStudyState = (): [StudyState, React.Dispatch<React.SetStateActio
         rejectedByID:"",
         rejectedByName:"",
         rejectionReason:"",
+        changedContent:"",
       },
       CompensationObject: {
           amount: "",
@@ -94,7 +98,9 @@ export const useStudyState = (): [StudyState, React.Dispatch<React.SetStateActio
           description: "None",
           allPaid: false,
           disputingParticipants: [],
-          paidParticipants: []
+          paidParticipants: [],
+          participantsRated:[],
+          participantsHaveRated:[],
       },
       RequirementsObject: {
           demoRequirements: [],
@@ -103,7 +109,7 @@ export const useStudyState = (): [StudyState, React.Dispatch<React.SetStateActio
           geographicRequirements: [],
           languageRequirements: [],
           privacyRequirements: [],
-          accesibilityRequirements: []
+          accessibilityRequirements: []
       },
       joinedParticipants: [],
       awaitingApprovalParticipants: [],

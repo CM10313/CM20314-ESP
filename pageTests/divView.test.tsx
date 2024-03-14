@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import ResearchHome from '../pages/researchHome';
+import ResearchHome from '../pages/researcherHome';
 import { AuthContext, AuthProvider } from '../Context/AuthContext';
 import ParticipantHome from '../pages/participantHome';
 import '@testing-library/jest-dom';

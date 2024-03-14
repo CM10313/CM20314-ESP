@@ -53,7 +53,7 @@ AdvertProps
                             <Grid container  sx={{display:'flex',}}>
                             <Grid item xs={3} sx={{display:'flex',justifyContent:'end',ml:3,mr:isMobile?3:0}}>
                                     <Box sx={{display:'flex',width:"160px",height:'40px',backgroundColor:"#C5DBE7",borderRadius:'5px',justifyContent:"start",alignItems:'center',overflow:'auto'}}>
-                                        <Typography fontSize={16} sx={{color:"#000000",whiteSpace: 'nowrap',ml:1}}>{`${AdvertProps.joinedParticipants}/${AdvertProps.maxNoParticipants} Participantsfgdfgfdgdf`}</Typography>
+                                        <Typography fontSize={16} sx={{color:"#000000",whiteSpace: 'nowrap',ml:1}}>{`${AdvertProps.joinedParticipants}/${AdvertProps.maxNoParticipants} Participants`}</Typography>
                                     </Box>
                                 </Grid>
                                 <Grid item xs={3} sx={{display:'flex',justifyContent:'end',ml:isMobile?0:3,mr:isMobile?3:0}}>

@@ -31,10 +31,11 @@ export interface  DemoGraphicDisplayProps {
  age?:string;
  occupation?:string; 
  hlofe?:string;
+ hasDemoProps:boolean;
 }
 
 export default function DemoGraphicDisplay({
-hasAge,hasFaculty,hasGender,hasIncome,hasOccupation,hasRace,hasReligion,hasSexuality,hasYOFS,hasHLOFE,age,hlofe,yofs,faculty,gender,sexuality,race,religion,income,occupation
+hasAge,hasFaculty,hasGender,hasIncome,hasOccupation,hasRace,hasReligion,hasSexuality,hasYOFS,hasHLOFE,age,hlofe,yofs,faculty,gender,sexuality,race,religion,income,occupation,hasDemoProps
 }:  DemoGraphicDisplayProps) {
 
   return (
@@ -58,7 +59,7 @@ hasAge,hasFaculty,hasGender,hasIncome,hasOccupation,hasRace,hasReligion,hasSexua
       {hasSexuality?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Sexuality</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{sexuality}</Typography></Box></Box></Grid>:null}
       {hasYOFS?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Year of Studies</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{yofs}</Typography></Box></Box></Grid>:null}
       {hasHLOFE?<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Highest Level of Education</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>{hlofe}</Typography></Box></Box></Grid>:null}
-
+      {hasDemoProps?null:<Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',height:'100px'}}><Typography fontSize={24}>Demographic</Typography><Box sx={{height:'100px',width:'100%',backgroundColor:"#DAE1E9",borderRadius:'5px',overflowY:'auto',overflowWrap: 'break-word'}}><Typography fontSize={15} sx={{ml:1}}>No Data Available, as you did not set any requirements for this study</Typography></Box></Box></Grid>}
       </Grid>
     
     </Box>

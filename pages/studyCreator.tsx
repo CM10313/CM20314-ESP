@@ -42,18 +42,13 @@ enum UserType{
     const {isLoggedIn,setAuth,username,overallRating,id,department,accountType} = useAuth();
   const router = useRouter();
   const handleStudySubmit= (data:StudyData,uid:String,department:String) =>{
-      console.log(data);
       addSpecialDocument(`departments/${department}/Researchers/${uid}/studies`,data)
-     //addDocument("studies",data,"swQ90URzscZLubKOh6t8hSAXr1V2")
      return;
   }
  
   const handleHomeDirect =()=>{
-    router.push('/researchHome');//needs to cheange based on user type
+    router.push('/researchHome');
   }
-
-    //need a way to go back to start of input sequence
-    // ethics and professor types
     return (
         <>
        

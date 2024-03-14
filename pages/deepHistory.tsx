@@ -7,96 +7,124 @@ import DeepHistoryRow from "../Components/deepHistoryRow";
 import SearchableList from "../Components/SearchableList";
 import HistoryCardsStudy from "../Components/historyCardsStudy";
 import HistorySmallButtons from "../Components/historySmallButtons";
-import { useState, useEffect, Key } from "react";
-import { fetchAllStudiesByDepartment, fetchUserById } from "../firebase/firestore";
+import { useState, useEffect, Key, ReactElement } from "react";
+import { fetchAllStudiesByDepartment, fetchDocumentById, fetchUserById } from "../firebase/firestore";
 
-interface QueryParams {
-  studyId: string;
-  studyTitle: string,
-  studyDate: string,
-  studyDepartment: string,
+interface userItem{
+  userId:string;
+  name:string;
+  isRated:boolean;
 }
-
 export default function DeepHistoryScreen() {
   const router = useRouter();
-  const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
-  
-  const {
-    studyId,
-    studyTitle,
-    studyDate,
-    studyDepartment,
-  }:QueryParams = router.query;
-  
-  const paidJoinedCount = 10;
-  const paidRequiredCount = 10;
-  const disputeJoinedCount = 5;
-  const disputeRequiredCount = 10;
-  const approvalJoinedCount = 20;
-  const approvalRequiredCount = 30;
+  const {isLoggedIn,setAuth,username,overallRating,id,accountType,department} = useAuth();
+  let studyId = '';
 
-  const [studies, setStudies] = useState([]); // State to store fetched studies
-  
-  const fetchData = async () => {
-    try {
-      const fetchedStudies = await fetchAllStudiesByDepartment(studyDepartment);
-      const filteredStudies = fetchedStudies.filter(study => study.studyId === studyId);
-      setStudies(filteredStudies);
-
-    } catch (error) {
-      console.error("Error fetching studies:", error);
+    if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        studyId = urlParams.get('studyId') || '';
     }
-  };
-  
 
-  useEffect(() => {
-    if (studyId && studyDepartment) {
-      fetchData();
-    }
-  }, [studyId, studyDepartment]);
-  
-  let rowList = ["No study Found"];
-  let paidList;
-  let disputeList;
-  let awaitingApproval = ["No study Found"];
-
-  if (studies.length > 0) {
-    const study = studies[0]; // Assuming you're interested in the first study
-    // Create a row for each userId in the joinedParticipants list of the first study
-    rowList = study.studyData.studyObj.joinedParticipants.map((userId:string, index) => (
-      <DeepHistoryRow key={index} participantId={userId} /> 
-    ));
-
-    paidList = study.studyData.studyObj.CompensationObject.paidParticipants.map((userId:string, index: Key | null | undefined) => (
-      <HistoryCardsStudy key={index} studyId={userId} author={studyTitle} date={studyDate} title={"test"} />
-    ));
-
-
-    disputeList = study.studyData.studyObj.CompensationObject.disputingParticipants.map((userId:string, index: Key | null | undefined) => (
-      <HistoryCardsStudy  key={index} studyId={userId} author="John Doe" date="03/11/2003" title={"test"} />
-    ));   
-
-    awaitingApproval = study.studyData.studyObj.awaitingApprovalParticipants.map((userId:string, index: Key | null | undefined) => (
-      <Box  key={index} sx={{display:"flex", flexDirection:"row", marginLeft:"3em"}}>
-      <HistoryCardsStudy studyId={userId} title={"John Doe"} date={"Some Date"} author={"test"} />
-      <HistorySmallButtons background="red" title="Details" fx={() => handleDetailsClick(userId)} />
-    </Box>
-    )); 
-  }
-  
-    // should be Same as the details click in deepHistoryRow
-    const handleDetailsClick = (studyId: string) => {
-      router.push(`/details/${studyId}`);
+  const [joinedParticipants,setJoinedParticipants]= useState<userItem[]>([]); 
+  const [awaitingApprovalParticipants,setAwaitingApprovalParticipants]= useState<userItem[]>([]); 
+  const [paidParticipants,setPaidParticipants]= useState<userItem[]>([]); 
+  const [disputedParticipants,setDisputedParticipants]= useState<userItem[]>([]); 
+  const [maxNoParticipants,setMaxNoParticipants]= useState(0);
+  useEffect(()=>{
+    const fetchUserNames = async (participantIds: string[]) => {
+      const userNamesDict: { [key: string]: string } = {};
+    
+      // Fetch names for each participant ID
+      await Promise.all(
+        participantIds.map(async (participantId) => {
+          const userData: any = await fetchDocumentById("users", participantId);
+          if (userData) {
+            userNamesDict[participantId] = userData.username;
+          }
+        })
+      );
+    
+      return userNamesDict;
     };
+    const fetchData = async () => {
+      try {
+        const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${id}/studies`,studyId);
+        if(studyData){
+          console.log(studyData)
+          const joinedParticipantsList = studyData.studyObj.joinedParticipants
+          const awaitingApprovalParticipantsList = studyData.studyObj.awaitingApprovalParticipants
+          const paidParticipantsList =  studyData.studyObj.CompensationObject.paidParticipants
+          const ratedParticipantsList = studyData.studyObj.CompensationObject.participantsRated
+          const disputedParticipantsList = studyData.studyObj.CompensationObject.disputingParticipants
+          const allParticipantIdsSet = new Set<string>();
 
+          joinedParticipantsList.forEach((id:string) => allParticipantIdsSet.add(id));
+          awaitingApprovalParticipantsList.forEach((id:string) =>
+            allParticipantIdsSet.add(id)
+          );
+          paidParticipantsList.forEach((id:string) => allParticipantIdsSet.add(id));
+          disputedParticipantsList.forEach((id:string) => allParticipantIdsSet.add(id));
 
+          const allParticipantIds = Array.from(allParticipantIdsSet);
+          const userNamesDict = await fetchUserNames(allParticipantIds);
+          console.log(ratedParticipantsList)
+          const getParticipantsWithNames = (participantIds: string[]) =>
+            participantIds.map((participantId) => ({
+              userId: participantId,
+              name: userNamesDict[participantId] || "Unknown", // Use "Unknown" if name is not found
+              isRated: ratedParticipantsList.includes(participantId),
+          }));
+          setJoinedParticipants(getParticipantsWithNames(joinedParticipantsList));
+    setAwaitingApprovalParticipants(
+      getParticipantsWithNames(awaitingApprovalParticipantsList)
+    );
+    setPaidParticipants(getParticipantsWithNames(paidParticipantsList));
+    setDisputedParticipants(getParticipantsWithNames(disputedParticipantsList));
+    setMaxNoParticipants(studyData.maxNoParticipants);
+          
+        }
+      } catch (error) {
+        console.error("Error fetching studies:", error);
+      }
+    };
+    fetchData();
+  },[department, id, studyId])
+  
+
+  
+  
+  let rowList: ReactElement[] | string[] = ["No study Found"];
+  let paidList: ReactElement[] | string[] = ["No study Found"];
+  let disputeList: ReactElement[] | string[] = ["No study Found"];
+  let awaitingApproval: ReactElement[] | string[] = ["No study Found"];
+  
+  rowList = joinedParticipants.map((item:userItem, index) => (
+    <DeepHistoryRow key={index} participantId={item.userId} name={item.name} isRated={item.isRated} publisherId={id} department={department} studyId={studyId} username={username} />
+  ));
+  
+  paidList = paidParticipants.map((item:userItem, index) => (
+    <HistoryCardsStudy key={index} studyId={item.userId} title={item.name} />
+  ));
+  
+  disputeList = disputedParticipants.map((item:userItem, index) => (
+    <HistoryCardsStudy key={index} studyId={item.userId} title={item.name} />
+  ));
+  awaitingApproval = awaitingApprovalParticipants.map((item:userItem, index) => (
+    <Box key={index} sx={{ display: "flex", flexDirection: "row", marginLeft: "3em" }}>
+      <HistoryCardsStudy studyId={item.userId} title={item.name}  />
+      <HistorySmallButtons background="red" title="Details" fx={() => handleDetailsClick(item.userId)} />
+    </Box>
+  ));
+  const handleDetailsClick = (participantId:string) => {
+    router.push(`/viewParticipantDetails?uid=${participantId}&studyId=${studyId}`);
+  };
+    console.log(awaitingApproval.length);
 
     return (
-      <Box>
+        <Grid container > 
         <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} accountType={accountType?accountType:"Guest Type"}/>
-
-        <Grid container>
-          <Grid item sm={12} md={8} display={"flex"} flexDirection={"row"} marginBlockEnd={3}>
+        
+          <Grid item sm={12} md={8} sx={{width:'100%'}}>
               <SearchableList 
                 rowSpacing={0}
                 cardInputList={rowList}
@@ -107,64 +135,66 @@ export default function DeepHistoryScreen() {
                 marginTop={5} 
                 searchBarEnabled={false} 
                 progressBarEnabled={true}
-                joinedCount={15}
-                requiredCount={20}
+                joinedCount={rowList.length}
+                requiredCount={maxNoParticipants}
                 barTitle="Joined"
                 >  
               </SearchableList>
           </Grid>
 
           {/* Right hand side Paid components */}
-          <Grid item sm={12} md={3} display={"flex"} flexDirection={"column"} justifyContent={"center"} padding="1em">
-            <br />
-
-            <ProgressBar joinedCount={paidJoinedCount} requiredCount={paidRequiredCount} title="Paid" leftMargin={115} coverage={60}/>
-            
+          <Grid item xs={12} md={4} sx={{mt:5}}  >
+            <Grid container sx={{mt:10}}>
+              <Grid item xs={6} md={12}>
+              <ProgressBar joinedCount={paidList.length} requiredCount={maxNoParticipants} title="Paid" leftMargin={115} coverage={100}/>
+                <Box
+                  sx={{
+                    display:"flex", 
+                    flexDirection:"column", 
+                    overflow:"scroll", 
+                    maxHeight:"14em", 
+                    overflowX: "hidden",
+                    ml:2,
+                    width:'90%',
+                  }}>
+                    
+                    <br />
+                    {paidList}
+                </Box>
+              </Grid>
+              <Grid item xs={6} md={12}>
+              <ProgressBar joinedCount={disputeList.length} requiredCount={maxNoParticipants} title="Disputed" leftMargin={115} coverage={100}/>
             <Box
               sx={{
                 display:"flex", 
                 flexDirection:"column", 
                 overflow:"scroll", 
                 maxHeight:"14em", 
-                overflowX: "hidden"
-                
-              }}>
-                
-                <br />
-                {paidList}
-            </Box>
-            
-            <br />
-            <br />
-
-            <ProgressBar joinedCount={disputeJoinedCount} requiredCount={disputeRequiredCount} title="Disputed" leftMargin={115} coverage={60}/>
-            <Box
-              sx={{
-                display:"flex", 
-                flexDirection:"column", 
-                overflow:"scroll", 
-                maxHeight:"14em", 
-                overflowX: "hidden"
+                ml:2,
+                width:'90%',
                 
               }}>
                 
                 <br />
                 {disputeList}
             </Box>
-
+              </Grid>
+            </Grid>
           </Grid>
           
           {/* Approval components */}
-          <Grid item sm={12} md={4} display={"flex"} flexDirection={"column"} justifyContent="flex-start" marginLeft={"3%"}>
-            <ProgressBar title="Awaiting Approval" requiredCount={approvalRequiredCount} joinedCount={approvalJoinedCount} leftMargin={180} coverage={60} />
+          <Grid item xs={12} md={4} sx={{mt:5}} >
+            <ProgressBar title="Awaiting Approval" requiredCount={5} joinedCount={awaitingApproval.length} leftMargin={180} coverage={60} />
             
-            <Box sx={{display:"flex", flexDirection:"column", overflow:"scroll", maxHeight:"7em", overflowX:"hidden"}} >
+            <Box sx={{ml:0,width:'100%',display:"flex", 
+                    flexDirection:"column", 
+                    overflow:"scroll", 
+                    maxHeight:"14em"}} >
                   {awaitingApproval}
             </Box>
         
           </Grid>
         </Grid>
-      </Box>
     );
 
 }
