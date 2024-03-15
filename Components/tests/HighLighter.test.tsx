@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import HighlightDetector from '../Ethics/Highlighter';
+import HighlightDetector from '../Ethics/Highlighter.sx';
 
 describe('HighlightDetector component', () => {
     test('highlights and shows comment box on click', async () => {

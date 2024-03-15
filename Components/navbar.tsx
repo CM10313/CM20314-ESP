@@ -35,9 +35,8 @@ export default function Navbar ({name,rating,accountType }: NavBarProps) {
             alignItems: 'center',
              }}>
                       <Grid container columns={isMobile ? 12:14}>
-                      <Grid item xs={isMobile ? 3:2}><Button onClick={handleHomePageRedirect} style={{ color: '#F6F6F6', textDecoration: 'none',whiteSpace:'nowrap',overflow:'auto' }}  >Home</Button></Grid>
-                      <Grid item xs={isMobile ? 3:2}><Button onClick={handleHistoryPageRedirect} style={{ color: '#F6F6F6', textDecoration: 'none',whiteSpace:'nowrap',overflow:'auto' }} >History</Button></Grid>
-                      <Grid item xs={isMobile ? 3:2}><Button ><Link style={{ color: '#F6F6F6', textDecoration: 'none',whiteSpace:'nowrap',overflow:'auto' }} href={"/"}> Account</Link></Button></Grid>
+                      <Grid item xs={isMobile ? 4:3}><Button onClick={handleHomePageRedirect} style={{ color: '#F6F6F6', textDecoration: 'none',whiteSpace:'nowrap',overflow:'auto' }}  >Home</Button></Grid>
+                      <Grid item xs={isMobile ? 4:3}><Button onClick={handleHistoryPageRedirect} style={{ color: '#F6F6F6', textDecoration: 'none',whiteSpace:'nowrap',overflow:'auto' }} >History</Button></Grid>
                       </Grid>
           </Grid>
           

@@ -55,7 +55,7 @@ it('returns to home page on click', () => {
 
   // Expect that createNestedDocument is called with the correct data
   expect(require('next/router').useRouter().push).toHaveBeenCalledWith(
-    '/researchHome'
+    '/researcherHome'
   );
 });
 

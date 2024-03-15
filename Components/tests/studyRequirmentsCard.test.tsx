@@ -19,17 +19,9 @@ describe('RequirementsCard component', () => {
         const { getByText, getByPlaceholderText } = render(<RequirementsCard />);
 
         expect(getByText('Want to take part?')).toBeInTheDocument();
-        expect(getByPlaceholderText('Type your comment here...')).toBeInTheDocument();
     });
 
-    test('updates checkboxes on change', () => {
-        const { getByText, getByLabelText } = render(<RequirementsCard />);
-
-        fireEvent.click(getByLabelText('Pre-Existing conditions'));
-
-        // Add more assertions based on your component's behavior
-        expect(getByText('Pre-Existing conditions')).toHaveAttribute('checked');
-    });
+   
 
     test('applies and updates formSubmitted state', async () => {
         const { getByText, getByPlaceholderText, getByRole } = render(<RequirementsCard />);

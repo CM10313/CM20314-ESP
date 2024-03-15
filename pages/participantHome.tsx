@@ -28,7 +28,7 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
   const router = useRouter();
   const handleCardClick =  async (studyid: string,publisherId:string,department:string) => {
     // Push the user to the desired page using the title (replace '/advert/' with your desired route)
-    router.push(`/advertPreview?studyId=${studyid}&publisherId=${publisherId}&department=${department}&eventType='study'`);
+    router.push(`/advertPreview?studyId=${studyid}&publisherId=${publisherId}&department=${department}&eventType=study`);
       
       
   };

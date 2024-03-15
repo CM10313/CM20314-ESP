@@ -56,7 +56,7 @@ const ResearcherHistoryScreen: React.FC<{ testBypass1?: HistoryCardProps[], test
                                     publisherId: study.userId,
                                 };
                                 extractedHidden.push(hiddenStudy);
-                            } else if (study.studyData.studyObj.EthicsApprovalObject.status === "Waiting") {
+                            } else if (study.studyData.studyObj.EthicsApprovalObject.status === "Waiting"|| study.studyData.studyObj.EthicsApprovalObject.status==="In Review") {
                                 const waitingStudy: HistoryCardProps = {
                                     author: study.studyData.publisherName,
                                     title: study.studyData.title,
@@ -199,17 +199,6 @@ const ResearcherHistoryScreen: React.FC<{ testBypass1?: HistoryCardProps[], test
             </Grid>
             <Grid item sm={12} md={4}>
                 <Grid container>
-                        <Grid item sm={12} >
-                        <SearchableList
-                            rowSpacing={0}
-                            cardInputList={hiddenStudiesList}
-                            numberOfItemsPerRow={1}
-                            width={"100%"}
-                            title={"Hidden"}
-                            titleSize={45}
-                            marginTop={5} searchBarEnabled={true} progressBarEnabled={false}  >
-                        </SearchableList>
-                    </Grid>
                     <Grid item sm={12} >
                         <SearchableList
                             rowSpacing={0}
@@ -217,6 +206,17 @@ const ResearcherHistoryScreen: React.FC<{ testBypass1?: HistoryCardProps[], test
                             numberOfItemsPerRow={1}
                             width={"100%"}
                             title={"Awaiting Approval"}
+                            titleSize={45}
+                            marginTop={5} searchBarEnabled={true} progressBarEnabled={false}  >
+                        </SearchableList>
+                    </Grid>
+                    <Grid item sm={12} >
+                        <SearchableList
+                            rowSpacing={0}
+                            cardInputList={hiddenStudiesList}
+                            numberOfItemsPerRow={1}
+                            width={"100%"}
+                            title={"Hidden"}
                             titleSize={45}
                             marginTop={5} searchBarEnabled={true} progressBarEnabled={false}  >
                         </SearchableList>

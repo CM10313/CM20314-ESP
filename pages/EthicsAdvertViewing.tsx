@@ -20,6 +20,7 @@ import HighlightDetector from "../Components/Ethics/Highlighter";
 
 
 
+
 interface EthicsAdvertViewingProps {
     name: string;
     appliedDate: string;

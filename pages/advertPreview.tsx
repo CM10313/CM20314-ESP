@@ -275,7 +275,7 @@ const addUserToStudyAwaitingApproval = async ()=>{
     <>
      <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} accountType={accountType?accountType:"Guest Type"} />
             <TriangleBackground />
-            <HighlightDetector/>
+            {accountType!=="ethics"?(<HighlightDetector/>):null}
       <div style={{ height: '810px',display:'flex',justifyContent:'center',alignItems:'center' }}>
        <Box sx={{width:'90%',display:'flex',justifyContent:'center'}}>
         <Grid container rowSpacing={8} columnSpacing={4}sx={{height:'810px',mt:15}}>

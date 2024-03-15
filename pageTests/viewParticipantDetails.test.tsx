@@ -265,7 +265,8 @@ describe('ViewParticipantDetails', () => {
         preExisitng: '',
         allergies: '',
         disabilities: '',
-        medication: ''
+        medication: '',
+        hasHealthProps:true,
     }
     const demoProps={
         hasFaculty: true,
@@ -287,7 +288,8 @@ describe('ViewParticipantDetails', () => {
         income: '',
         age: '18',
         occupation: '',
-        hlofe: ''
+        hlofe: '',
+        hasDemoProps:true,
     }
     const otherProps={
         hasAccessToDevice: true,
@@ -303,7 +305,8 @@ describe('ViewParticipantDetails', () => {
         nearestCity: '',
         maxTravelTime: '',
         anonymityLevel: '',
-        accesRequirements: ''
+        accesRequirements: '',
+        hasOtherProps:true,
     }
   const {getByText}=render(
     
@@ -334,6 +337,7 @@ describe('ViewParticipantDetails', () => {
         allergies: undefined,
         disabilities: undefined,
         medication:undefined,
+        hasHealthProps:true,
     }
     const demoProps={
         hasFaculty: undefined,
@@ -356,6 +360,7 @@ describe('ViewParticipantDetails', () => {
         age: "21",
         occupation: undefined,
         hlofe:undefined,
+        hasDemoProps:true,
     }
     const otherProps={
         hasAccessToDevice: undefined,
@@ -372,6 +377,7 @@ describe('ViewParticipantDetails', () => {
         maxTravelTime: undefined,
         anonymityLevel: undefined,
         accesRequirements:undefined,
+        hasOtherProps:true,
     }
   const {getByText}=render(
     

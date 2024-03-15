@@ -1,6 +1,6 @@
 import React from 'react';
 import RequirementsCard from '../Components/studyRequirementsCard'
-import Highlighter from '../Components/Ethics/Highlighter';
+import Highlighter from '../Components/Ethics/Highlighter.sx';
 const Home: React.FC = () => {
   return (
 

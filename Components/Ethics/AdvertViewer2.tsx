@@ -3,7 +3,7 @@ import {    FeedbackListViewer , FeedbackViewingContainer, FeedbackViewingContai
 import { fetchDocumentById } from '../../firebase/firestore';
 
 import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
-import SentenceGrid from './SentenceGrid';
+import SentenceGrid2 from './SentenceGrid2';
 
 interface AdvertViewerProps {
     AdvertProps:{
@@ -100,19 +100,19 @@ AdvertProps
                             <Typography sx={{ml:3,color:"#FFFFFF",fontSize:18}}>Key Dates</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <SentenceGrid sentences={AdvertProps.dates} rowSpacing={0} numberOfItemsPerRow={1}></SentenceGrid>
+                            <SentenceGrid2 sentences={AdvertProps.dates} rowSpacing={0} numberOfItemsPerRow={1}></SentenceGrid2>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography sx={{ml:3,color:"#FFFFFF",fontSize:18}}>Related Fields</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <SentenceGrid sentences={AdvertProps.subjectRelatedFields} rowSpacing={0} numberOfItemsPerRow={2}></SentenceGrid>
+                            <SentenceGrid2 sentences={AdvertProps.subjectRelatedFields} rowSpacing={0} numberOfItemsPerRow={2}></SentenceGrid2>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography sx={{ml:3,color:"#FFFFFF",fontSize:18}}>Compensation</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <SentenceGrid sentences={AdvertProps.Compensation} rowSpacing={0} numberOfItemsPerRow={2}></SentenceGrid>
+                            <SentenceGrid2 sentences={AdvertProps.Compensation} rowSpacing={0} numberOfItemsPerRow={2}></SentenceGrid2>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography sx={{ml:3,color:"#FFFFFF",fontSize:18}}>Approved by Bath Ethics Team: {AdvertProps.approvalStatus}</Typography>
@@ -124,7 +124,7 @@ AdvertProps
                             <Typography sx={{ml:3,color:"#FFFFFF",fontSize:18}}>Contact Info</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <SentenceGrid sentences={AdvertProps.contactDetails} rowSpacing={0} numberOfItemsPerRow={1}></SentenceGrid>
+                            <SentenceGrid2 sentences={AdvertProps.contactDetails} rowSpacing={0} numberOfItemsPerRow={1}></SentenceGrid2>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography sx={{ml:3,color:"#FFFFFF",fontSize:18}}>External Link</Typography>

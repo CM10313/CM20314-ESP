@@ -95,13 +95,6 @@ const ResearchHome: React.FC = () => {
     onCardClick={handleCardClick} department={''}  />,
     // Add more StudyMediumCard components here as needed
   ];
-const handlePush = () => {
-    router.push('/viewParticipantDetails?uid=PNeqhkPm0Le0LcfOK1caYeVoCYB3&studyId=jd1kQsORcZkDgQnlZTjt');
-};//used to mock params  needed for participant view
-const handleDivPush = () => {
-  router.push('/diversityView?studyId=2XHxM1QPyu2Xmd7YsiaW');
-};//used to mock push for diversity view
-
   return (
     <>
      <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}  accountType={accountType?accountType:"Guest Type"}/>
@@ -123,7 +116,7 @@ const handleDivPush = () => {
                 <Box  sx={{display:'flex',justifyContent:'center',alignItems:'flex-start',flexDirection:'column',mt:10,height:'100%'}}>
                 <Typography fontSize={25} sx={{ color: '#C5C5C5', width: '90%',ml:isMobile?5:2}}>Want to publish something new</Typography>
                 <Box sx={{width:'100%',mt:5, display: 'flex', justifyContent: 'center', height: '100%', overflowY: 'scroll', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#1F5095', borderRadius: '5px' } }}>
-                    <AdvertCreate advertTypes={["Study","Webinar","Other"]} width={'90%'} height={400} textAreaContent={['A study requires participants to meet criteria and alows you to reject partipants. ~ Studies also require ethical approval from your departments ethics board before participants can join.',"A Webinar is a online hosted event, these are typically informational and use a link to zoom/teams etc to manage participants. ~ No particiapnt information is collected so setup is faster.",'Not sure what this is ?']}></AdvertCreate>
+                    <AdvertCreate advertTypes={["Study","Webinar"]} width={'90%'} height={400} textAreaContent={['A study requires participants to meet criteria and alows you to reject partipants. ~ Studies also require ethical approval from your departments ethics board before participants can join.',"A Webinar is a online hosted event, these are typically informational and use a link to zoom/teams etc to manage participants. ~ No particiapnt information is collected so setup is faster."]}></AdvertCreate>
                 </Box>
                 </Box>
                 
@@ -143,8 +136,6 @@ const handleDivPush = () => {
           </Box>
           </Grid>
         </Grid>
-        <Button variant="contained" onClick={handlePush}>View Page</Button>
-        <Button variant="contained" onClick={handleDivPush}>View Diversity</Button>
       </div>
     </>
   );
