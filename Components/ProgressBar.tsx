@@ -14,7 +14,7 @@ const ProgressBar: React.FC<progressBarProps> = ({ joinedCount, requiredCount, t
   const maxCount = requiredCount; // Set a maximum count for demonstration purposes
   const progress = (joinedCount / maxCount) * coverage ; // Calculate progress percentage
   const progressWidth = progress > coverage ? coverage : progress
-
+  console.log(joinedCount)
 
   return (
     <Grid container justifyContent="center">
@@ -58,11 +58,14 @@ const ProgressBar: React.FC<progressBarProps> = ({ joinedCount, requiredCount, t
               paddingRight: '8px', // Padding for the progress number
             }}
           >
-            <Typography variant="body1" sx={{ color: 'white' }}>
+            {((joinedCount!=0)&&(requiredCount!=0))?<Typography variant="body1" sx={{ color: 'white' }}>
               {joinedCount} / {requiredCount}
-            </Typography>
+            </Typography>:null}
           </Box>
         </Box>
+        {((joinedCount==0)||(requiredCount==0))?<Typography variant="body1" sx={{ color: 'black' }}>
+             There are no users in this category.
+            </Typography>:null}
       </Grid>
     </Grid>
   );

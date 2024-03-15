@@ -94,7 +94,8 @@ return (
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: 'linear-gradient(to right, #FFFFFF, #9F9F9F)'
+        background: 'linear-gradient(to right, #FFFFFF, #9F9F9F)',
+        
       }}
     > 
     <Grid

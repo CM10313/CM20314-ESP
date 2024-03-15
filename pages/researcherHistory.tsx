@@ -56,7 +56,7 @@ const ResearcherHistoryScreen: React.FC<{ testBypass1?: HistoryCardProps[], test
                                     publisherId: study.userId,
                                 };
                                 extractedHidden.push(hiddenStudy);
-                            } else if (study.studyData.studyObj.EthicsApprovalObject.status === "Waiting"|| study.studyData.studyObj.EthicsApprovalObject.status==="In Review") {
+                            } else if (study.studyData.studyObj.EthicsApprovalObject.status === "Waiting"|| study.studyData.studyObj.EthicsApprovalObject.status==="In review") {
                                 const waitingStudy: HistoryCardProps = {
                                     author: study.studyData.publisherName,
                                     title: study.studyData.title,
@@ -104,7 +104,7 @@ const ResearcherHistoryScreen: React.FC<{ testBypass1?: HistoryCardProps[], test
                                     publisherId: study.userId,
                                 };
                                 extractedHidden.push(hiddenStudy);
-                            } else if (study.studyData.EthicsApprovalObject.status === "Waiting") {
+                            } else if (study.studyData.EthicsApprovalObject.status === "Waiting"||study.studyData.EthicsApprovalObject.status === "In review") {
                                 const waitingStudy: HistoryCardProps = {
                                     author: study.studyData.publisherName,
                                     title: study.studyData.title,
