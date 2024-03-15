@@ -1,4 +1,4 @@
-# Welcom to `<<Project Name>>`
+# Welcome to `<<Project Name>>`
 ## Getting Started
 You will need the latest version of node installed to run this.
 Once you have node configured run:
