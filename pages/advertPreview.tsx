@@ -331,7 +331,7 @@ const addUserToStudyAwaitingApproval = async ()=>{
                         </Grid>
                         </Box> 
                     </Grid>
-                    {accountType!=="ethics"?(<>
+                    {accountType==="participant"?(<>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'start',mt:2}}>
                                <Button  onClick={addUserToStudyAwaitingApproval}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#84C287",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><DoneIcon></DoneIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Apply</Box></Grid></Grid></Button>
                     </Grid>

@@ -23,19 +23,26 @@ const SentenceGrid: React.FC<SentenceGridProps> = ({  sentences, rowSpacing, num
             {sentences?<CardGrouper
                 rowSpacing={rowSpacing}
                 cardInputList={sentences.map((sentence, index) => (
-                    <Box key={index} style={{ height: `${dynamicCardHeights[index]}px`, textAlign: 'start', minHeight:'40px', display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
-                        
-                            <Typography variant="body2" style={{ fontSize: 15,color:'FFFFFF' }}>
-                                {"- " +sentence}
-                            </Typography>
-                       
-                    </Box>
+                    
+                    <Card key={index} style={{ height: `${dynamicCardHeights[index]}px`, borderRadius: '20px', textAlign: 'center', marginBottom: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <CardContent style={{ padding: '10px' }}>
+                        <Typography variant="body2" style={{ fontWeight: 'bold', fontSize: 10 }}>
+                            {sentence}
+                        </Typography>
+                    </CardContent>
+                </Card>
                 ))}
                 numberOfItemsPerRow={numberOfItemsPerRow}
             />:null}
-           
         </div>
     );
 };
 
 export default SentenceGrid;
+//*<Box key={index} style={{ height: `${dynamicCardHeights[index]}px`, textAlign: 'start', minHeight:'40px', display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+                        
+//<Typography variant="body2" style={{ fontSize: 15,color:'FFFFFF' }}>
+//{"- " +sentence}
+//</Typography>
+
+//</Box>}

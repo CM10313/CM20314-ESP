@@ -9,6 +9,7 @@ import CardGrouper from './CardGrouping';
 import SearchBar from './SearchBar';
 import ProgressBar from './ProgressBar';
 import { Faculty } from '../DataState/UserExtraInfo';
+
 interface SearchableListProps {
   rowSpacing:number;
   cardInputList:ReactNode[];

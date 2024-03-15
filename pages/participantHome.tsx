@@ -17,13 +17,14 @@ import DisputeRow, { DisputeRowProps } from '../Components/pDisputeRow';
 import { departments, fetchData, getAllStudies } from '../Utils/RetrieveStudyData';
 import { StudentData } from './register';
 import CalendarCard, { CalendarCardProps, ItemProps } from '../Components/CalendarCard';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypass2?: DisputeRowProps[],testBypass3?: ItemProps[] }> = ({ testBypass1 = [], testBypass2 = [],testBypass3 = [] }) => {
   const [liveStudies, setLiveStudies] = useState<StudyMediumCardProps[]>(testBypass1);
   const [rejectedStudies, setRejectedStudies] = useState<DisputeRowProps[]>(testBypass2);
   const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
   const [upcomingStudies, setUpcomingStudies] = useState<ItemProps[]>(testBypass3);
+  const [isLoading, setIsLoading] = useState(true);
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
   const handleCardClick =  async (studyid: string,publisherId:string,department:string) => {
@@ -96,6 +97,7 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
   
           // Update the state with extracted rejected studies
           setUpcomingStudies(extractedUpcoming);
+          setIsLoading(false);
         } else {
           console.error("User info is undefined");
         }

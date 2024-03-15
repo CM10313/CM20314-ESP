@@ -82,7 +82,7 @@ const RegisterForm: React.FC = () => {
         await signUp(studentData.email, studentData.password);
         const {password, ...datawithoutpassword} = studentData;
         await addDocument('users', {...datawithoutpassword, accountType}, getUID());
-        router.push('/researchHome')
+        router.push('/')
       }
       catch (error) {
         if (error instanceof Error){
@@ -102,7 +102,7 @@ const RegisterForm: React.FC = () => {
         await signUp(researcherData.email, researcherData.password);
         const {password, ...datawithoutpassword} = researcherData;
         await addDocument('users', {...datawithoutpassword, accountType}, getUID());
-        router.push('/researchHome');
+        router.push('/');
       }
       catch (error) {
         if (error instanceof Error){
@@ -122,7 +122,7 @@ const RegisterForm: React.FC = () => {
         await signUp(ethicsData.email, ethicsData.password);
         const {password, ...datawithoutpassword} = ethicsData;
         await addDocument('users', {...datawithoutpassword, accountType}, getUID());
-        router.push('/researchHome')
+        router.push('/')
       }
       catch (error) {
         if (error instanceof Error){
