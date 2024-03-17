@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import FeedbackForms from "../Components/Ethics/FeedbackForms";
 import RequirementsCard from "../Components/studyRequirementsCard";
-import HighlightDetector from "../Components/Ethics/Highlighter.sx";
+import HighlightDetector from "../Components/Ethics/Highlighter";
 
 
 interface EthicsAdvertViewingProps {

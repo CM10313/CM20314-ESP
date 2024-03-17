@@ -17,6 +17,8 @@ import DisputeRow, { DisputeRowProps } from '../Components/pDisputeRow';
 import { departments, fetchData, getAllStudies } from '../Utils/RetrieveStudyData';
 import { StudentData } from './register';
 import CalendarCard, { CalendarCardProps, ItemProps } from '../Components/CalendarCard';
+import ParticipantAdvertScreen from './participantAdvertScreen';
+
 
 const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypass2?: DisputeRowProps[],testBypass3?: ItemProps[] }> = ({ testBypass1 = [], testBypass2 = [],testBypass3 = [] }) => {
   const [liveStudies, setLiveStudies] = useState<StudyMediumCardProps[]>(testBypass1);
@@ -25,11 +27,21 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
   const [upcomingStudies, setUpcomingStudies] = useState<ItemProps[]>(testBypass3);
   const isMobile = useMediaQuery('(max-width:1000px)')
   const router = useRouter();
-  const handleCardClick =  async (studyid: string,publisherId:string,department:string) => {
+  const handleCardClick = async (studyid: string, publisherId: string, department: string) => {
     // Push the user to the desired page using the title (replace '/advert/' with your desired route)
-    router.push(`/advertPreview?studyId=${studyid}&publisherId=${publisherId}&department=${department}&eventType=study`);
-      
-      
+    await router.push({
+      pathname: '/participantAdvertScreen',
+      query: {
+        name: username,
+        studyId: studyid,
+        researcherId: publisherId,
+        department: department,
+        appliedDate: '',
+        ReviewStatus: '',
+        profilePicture: ''
+      },
+
+    })
   };
  
   useEffect(() => {
@@ -94,11 +106,7 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
           });
   
           // Update the state with extracted rejected studies
-          const currentDate = new Date();
-          const filteredAndSortedUpcomingStudies = extractedUpcoming
-        .filter(study => new Date(study.date) >= currentDate)
-        .sort((a,b) => new Date(a.date) - new Date(b.date));
-          setUpcomingStudies(filteredAndSortedUpcomingStudies);
+          setUpcomingStudies(extractedUpcoming);
         } else {
           console.error("User info is undefined");
         }

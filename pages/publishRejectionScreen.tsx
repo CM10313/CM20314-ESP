@@ -3,22 +3,28 @@ import TriangleBackground from '../Components/TriangleBackground';
 import Navbar from '../Components/navbar';
 import { createFieldIfNotExists, fetchDocumentById, updateDocument } from '../firebase/firestore';
 import { Button } from '@mui/material';
+import { useRouter } from 'next/router';
 
 interface PublishRejectionScreenProps {
-    name: string;
-    studyDescription: string;
+   
 }
 
 const PublishRejectionScreen: React.FC<PublishRejectionScreenProps> = () => {
     const [userInput, setUserInput] = useState<string>('|');
     const [studyData, setStudyData] = useState<string>('');
 
+    const router = useRouter()
+
+    const studyId = router.query.studyId
+    const department = router.query.department
+    const ResearcherId = router.query.ResearcherId
+    const name = router.query.name
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const reason = await fetchDocumentById('departments/Computer Science/Researchers/swQ90URzscZLubKOh6t8hSAXr1V2/studies', 'N4oRJXCjasGZxN8RN7oO');
-                setStudyData(reason);
-                console.log(reason);
+                const currentStudyData = await fetchDocumentById(`departments/${department}/Researchers/${ResearcherId}/studies`, studyId);
+                setStudyData(currentStudyData);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -31,20 +37,36 @@ const PublishRejectionScreen: React.FC<PublishRejectionScreenProps> = () => {
         return console.log(true);
     }
 
-    function sendResolveRequest() {
-        createFieldIfNotExists('departments/Computer Science/Researchers/swQ90URzscZLubKOh6t8hSAXr1V2/studies', 'N4oRJXCjasGZxN8RN7oO' , 'studyObj.EthicsApprovcalObject.resolveDescription','string')
 
-        updateDocument('departments/Computer Science/Researchers/swQ90URzscZLubKOh6t8hSAXr1V2/studies', 'N4oRJXCjasGZxN8RN7oO', {
-            'studyObj.EthicsApprovalObject.resolveDescription': userInput
-        })
-        updateDocument('departments/Computer Science/Researchers/swQ90URzscZLubKOh6t8hSAXr1V2/studies', 'N4oRJXCjasGZxN8RN7oO', {
-            'studyObj.EthicsApprovalObject.status': 'resolve Requested'
+    const handleViewComments = () => {
+        router.push({
+            pathname: '/screenShotViewer',
+            query: {
+                studyId: studyId,
+                department: department,
+                ResearcherId: ResearcherId
+            },
+
         })
     }
+  
+    function sendResolveRequest() {
+
+        updateDocument(`departments/${department}/Researchers/${ResearcherId}/studies`, studyId, {
+        
+                'studyObj.EthicsApprovalObject.communicationHistory': [...studyData?.studyObj?.EthicsApprovalObject.communicationHistory,
+                          { description: userInput, name: name, date: new Date().toDateString() }],
+            
+     
+                'studyObj.EthicsApprovalObject.status': 'resolve Requested'
+        })
+        
+      }
+    
 
     return (
         <div>
-            <Navbar name={''} rating={0} accountType={''} />
+            <Navbar name={''} rating={0} accountType={''}/>
             <TriangleBackground />
 
             <div style={{ position: 'absolute', top: '5vh', left: '150vh'}}>
@@ -80,7 +102,7 @@ const PublishRejectionScreen: React.FC<PublishRejectionScreenProps> = () => {
                     padding: '20px',
                 }}
             >
-                <h1 style={{ color: '#FFFFFF', fontSize: '2.5rem', marginBottom: '20px' }}>{studyData.title}</h1>
+                <h1 style={{ color: '#FFFFFF', fontSize: '2.5rem', marginBottom: '20px' }}>{studyData?.title}</h1>
 
                 <div
                     style={{
@@ -103,12 +125,27 @@ const PublishRejectionScreen: React.FC<PublishRejectionScreenProps> = () => {
             <div style={smallBoxStyle}>
                 <p style={boxTitleStyle}>{title}</p>
                 <div style={textBoxStyle}>
-                    <p>{studyData.studyObj?.EthicsApprovalObject.RejectedReason}</p>
+                    <p>{studyData?.studyObj?.EthicsApprovalObject.RejectedReason}</p>
                 </div>
+                <Button
+                    onClick={handleViewComments}
+                    variant="contained"
+                    style={{
+                        marginTop: '15px',
+                        padding: '15px',
+                        borderRadius: '20px',
+                        width: '100%',
+                        cursor: 'pointer',
+                        backgroundColor: '#2896b5', // Change color as per your design
+                        color: '#ffffff', // Change color as per your design
+                        fontWeight: 'bold'
+                    }}
+                >
+                    View Comments
+                </Button>
             </div>
         );
     }
-
     function renderBigBox(title: string) {
         return (
             <div style={bigBoxStyle}>

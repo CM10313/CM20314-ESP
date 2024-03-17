@@ -9,7 +9,17 @@ const HiddenStudiesCards: React.FC<{ studyId: string, author:string, date:string
 
     const router = useRouter();
     const handleReview = () => {
-        router.push(`/review/${studyId}`);
+        router.push({
+            pathname: '/publishRejectionScreen',
+            query: {
+                studyId:studyId,
+                department:department,
+                ResearcherId:publisherId,
+                name:author
+             
+            },
+
+        })
     }
     const isMobile = useMediaQuery('(max-width:1000px)')
     return (
