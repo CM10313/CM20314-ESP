@@ -41,7 +41,9 @@ const ResearchHome: React.FC = () => {
     }
 
   }
-
+const handlePush=()=>{
+  router.push(`/editAdvert?studyId=jd1kQsORcZkDgQnlZTjt`)
+}
   const itemPropsArray = studiesCalendar.map(study => ({
     borderColor: "#1F5095", // Adjust based on your study object
     publisher: study.publisherName || "Default Publisher", // Adjust based on your study object
@@ -94,6 +96,7 @@ const studiesArray = studies.map((study,index) => (
             </Box>
           </Box>
           </Grid>
+          <Button onClick={handlePush}>push to study edit</Button>
         </Grid>
       </div>
     </>
