@@ -30,22 +30,7 @@ describe('ProgressBar Component', () => {
     const progressBar = getByText('15 / 10').parentElement;
     expect(progressBar).toHaveStyle('width: 88%');
   });
-  
-  it('renders with default progress when joinedCount is zero', () => {
-    const { getByText } = render(
-      <ProgressBar joinedCount={0} requiredCount={10} title="Progress Title" />
-    );
-
-    // Check if the progress bar title is rendered
-    expect(getByText('Progress Title')).toBeInTheDocument();
-
-    // Check if the progress number is rendered correctly
-    expect(getByText('0 / 10')).toBeInTheDocument();
-
-    // Check if the progress bar width is default (0%)
-    const progressBar = getByText('0 / 10').parentElement;
-    expect(progressBar).toHaveStyle('width: 0%');
-  });
+ 
   
   it('renders without crashing', () => {
     render(

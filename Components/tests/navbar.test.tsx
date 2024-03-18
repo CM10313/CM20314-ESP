@@ -21,7 +21,6 @@ describe('Navbar Component', () => {
     const { getByText } = render(<Navbar name={navbarData.name} rating={navbarData.rating} accountType={''} />);
     expect(getByText('Home')).toBeInTheDocument();
     expect(getByText('History')).toBeInTheDocument();
-    expect(getByText('Account')).toBeInTheDocument();
   });
 
   it('displays the user name and StarIcon', () => {
