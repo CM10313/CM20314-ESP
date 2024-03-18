@@ -45,7 +45,7 @@ const ResearcherHistoryScreen: React.FC<{ testBypass1?: HistoryCardProps[], test
                                     publisherId: study.userId,
                                 };
                                 extractedLive.push(liveStudy);
-                            } else if (study.studyData.studyObj.EthicsApprovalObject.status === "Disputed") {
+                            } else if (study.studyData.studyObj.EthicsApprovalObject.status === "Dispute") {
                                 const hiddenStudy: HistoryCardProps = {
                                     author: study.studyData.publisherName,
                                     title: study.studyData.title,
@@ -93,7 +93,7 @@ const ResearcherHistoryScreen: React.FC<{ testBypass1?: HistoryCardProps[], test
                                     publisherId: study.userId,
                                 };
                                 extractedLive.push(liveStudy);
-                            } else if (study.studyData.EthicsApprovalObject.status === "Disputed") {
+                            } else if (study.studyData.EthicsApprovalObject.status === "Dispute") {
                                 const hiddenStudy: HistoryCardProps = {
                                     author: study.studyData.publisherName,
                                     title: study.studyData.title,

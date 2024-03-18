@@ -51,6 +51,7 @@ export interface DiversityObject{
         rejectedByName:String;
         rejectionReason:String;
         changedContent:String;
+        communicationHistory:string[]
     }
     CompensationObject: {
         amount: string;
@@ -91,6 +92,7 @@ export const useStudyState = (): [StudyState, React.Dispatch<React.SetStateActio
         rejectedByName:"",
         rejectionReason:"",
         changedContent:"",
+        communicationHistory:[]
       },
       CompensationObject: {
           amount: "",

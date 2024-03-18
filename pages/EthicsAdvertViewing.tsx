@@ -3,20 +3,16 @@ import AdvertReviewOptions from "../Components/Ethics/AdvertReviewOptions";
 import AdvertViewer from "../Components/Ethics/AdvertViewer";
 import TriangleBackground from "../Components/TriangleBackground";
 import Navbar from "../Components/navbar";
-import {addDocument} from "../firebase/firestore";
 import  {createFieldIfNotExists} from "../firebase/firestore";
 import {fetchDocumentById} from "../firebase/firestore";
 import  {fetchDocuments} from "../firebase/firestore";
 import  {updateDocument} from "../firebase/firestore";
-import {updateDocumentWithArray} from "../firebase/firestore";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import FeedbackForms from "../Components/Ethics/FeedbackForms";
-
 import { useAuth } from "../Context/AuthContext";
+import Highlighter from "../Components/Ethics/Highlighter";
+import RequirementsCardForEthics from "../Components/studyRequrimentsCardForEthics";
 
-import RequirementsCard from "../Components/studyRequirementsCard";
-import HighlightDetector from "../Components/Ethics/Highlighter";
 
 
 
@@ -95,9 +91,11 @@ const EthicsAdvertViewing: React.FC = () => {
 
     }, []);
 
+
+
     return (
         <div>
-            <HighlightDetector/>
+            <Highlighter department={department} studyId={testAdvertCardProps.studyId} ResearcherId={storedStudyData?.publisherId}/>
             <TriangleBackground />
             <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} accountType={accountType?accountType:"Guest Type"}/>
             {testAdvertCardProps && storedStudyData && storedUserData && (
@@ -122,7 +120,7 @@ const EthicsAdvertViewing: React.FC = () => {
 
             {testAdvertCardProps && storedStudyData && storedUserData && (
                 <div style={{ marginTop: '-10px' }}>
-                    <AdvertReviewOptions AdvertCardProps={testAdvertCardProps} ResearcherId={storedStudyData?.publisherId} Department={storedStudyData?.department} />
+                    <AdvertReviewOptions AdvertCardProps={testAdvertCardProps} ResearcherId={storedStudyData?.publisherId} Department={storedStudyData?.department} communicationsList={storedStudyData?.studyObj.EthicsApprovalObject.communicationHistory} />
                 </div>
             )}
             <div>
@@ -147,14 +145,10 @@ const EthicsAdvertViewing: React.FC = () => {
                     View Current Sample Demographics
                 </Button>
 
-                <div style={{ position: 'absolute', top: '150px', right: '75px' }}>
-                    <RequirementsCard />
+                <div style={{ position: 'absolute', top: '140px', right: '75px' }}>
+                    <RequirementsCardForEthics />
                 </div>
-                
 
-                {/* {testAdvertCardProps && storedStudyData && (
-                    <FeedbackForms destinationUserId={storedStudyData?.publisherId} destinationName={storedUserData?.username} />
-                )} */}
             </div>
         </div>
     );

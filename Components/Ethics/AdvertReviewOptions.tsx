@@ -3,24 +3,30 @@ import ApprovalCard from './ApprovalCard';
 import RejectionCard from './RejectionCard';
 import EthicsAdvertCard, { EthicsAdvertCardProps } from './EthicsAdvertCard';
 import { useRouter } from 'next/router';
-import { updateDocument } from '../../firebase/firestore';
+import { fetchDocumentById, updateDocument } from '../../firebase/firestore';
 import { useAuth } from '../../Context/AuthContext';
+import ResolveDescription, { Reason } from './ResolveDescription';
+
 
 interface AdvertReviewOptionsProps {
     AdvertCardProps: EthicsAdvertCardProps;
-    ResearcherId: string
-    Department:string
+    ResearcherId: string;
+    Department: string;
+    communicationsList: Reason[];
 }
 
-
-const updateStudyStatus = async (department: any, researcherID: any, departmentStudyId: any, docStatus: any , rejectionReason: any) => {
+const updateStudyStatus = async (department: any, researcherID: any, departmentStudyId: any, docStatus: any, rejectionReason: any, username: any) => {
     try {
+        const currentData = await fetchDocumentById(`departments/${department}/Researchers/${researcherID}/studies`, departmentStudyId);
+
         await updateDocument(
             `departments/${department}/Researchers/${researcherID}/studies`,
             departmentStudyId,
             {
                 'studyObj.EthicsApprovalObject.status': docStatus,
                 'studyObj.EthicsApprovalObject.RejectedReason': rejectionReason,
+                'studyObj.EthicsApprovalObject.communicationHistory': [...currentData?.studyObj.EthicsApprovalObject.communicationHistory,
+                { description: rejectionReason, name: username, date: new Date().toDateString() }]
             }
         );
         console.log('Document updated successfully!');
@@ -29,23 +35,20 @@ const updateStudyStatus = async (department: any, researcherID: any, departmentS
     }
 };
 
-const AdvertReviewOptions: React.FC<AdvertReviewOptionsProps> = ({ AdvertCardProps , ResearcherId , Department}) => {
+const AdvertReviewOptions: React.FC<AdvertReviewOptionsProps> = ({ AdvertCardProps, ResearcherId, Department, communicationsList }) => {
     const router = useRouter();
-    const { isLoggedIn, username, department, overallRating, accountType, id, setAuth } = useAuth();
-
-    const [permanantDisabled,setPermanantDisabled] = useState<boolean>(false)
+    const [permanantDisabled, setPermanantDisabled] = useState<boolean>(false);
     const [ApproveDisabled, setApproveDisabled] = useState<boolean>(true);
 
-    useEffect(() => {
-        const updatedClickedAccept = router.query.clickedAccept
-        setApproveDisabled((updatedClickedAccept==='false'))
-       
-    
-        
-    }, [router.query.clickedAccept,router.query.clickedReject]);
-    return (
-        <div>
+    const {username} = useAuth()
 
+    useEffect(() => {
+        const updatedClickedAccept = router.query.clickedAccept;
+        setApproveDisabled(updatedClickedAccept === 'false');
+    }, [router.query.clickedAccept, router.query.clickedReject]);
+
+    return (
+        <div style={{ position: 'relative' }}>
             <div
                 style={{
                     display: 'flex',
@@ -57,19 +60,16 @@ const AdvertReviewOptions: React.FC<AdvertReviewOptionsProps> = ({ AdvertCardPro
                 <div style={{ flex: '1', marginRight: '10px' }}>
                     <ApprovalCard
                         onApprove={() => {
-                            
                             updateStudyStatus(
                                 Department,
                                 ResearcherId,
                                 AdvertCardProps.studyId,
                                 'Accept',
-                                ''
+                                '',
+                                username
                             );
-                            setPermanantDisabled(true)
-                            
-                            // Additional logic if needed
+                            setPermanantDisabled(true);
                         }}
-                    
                         disabled={permanantDisabled ? true : !ApproveDisabled}
                     />
                 </div>
@@ -81,13 +81,26 @@ const AdvertReviewOptions: React.FC<AdvertReviewOptionsProps> = ({ AdvertCardPro
                                 ResearcherId,
                                 AdvertCardProps.studyId,
                                 'Dispute',
-                                reason
+                                reason,
+                                username
                             );
-                            setPermanantDisabled(true)
+                            setPermanantDisabled(true);
                         }}
-                        disabled={permanantDisabled ?  true : ApproveDisabled}
+                        disabled={permanantDisabled ? true : ApproveDisabled}
                     />
                 </div>
+            </div>
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: '140px',
+                    right: '55px',
+                }}
+            >
+               
+            <ResolveDescription disabled={false} reasons={communicationsList} />
+            
+
             </div>
             <div
                 style={{

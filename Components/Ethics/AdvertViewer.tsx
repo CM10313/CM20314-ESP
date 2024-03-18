@@ -88,15 +88,15 @@ const AdvertViewer: React.FC<AdvertViewerProps> = ({
 
                 <div>
                     <div style={{ margin: '15px' }}>
-                        <SentenceGrid2 sentences={subjectRelatedFields} rowSpacing={1} numberOfItemsPerRow={3} />
+                        <SentenceGrid2 sentences={subjectRelatedFields} rowSpacing={1} numberOfItemsPerRow={3} title = {'Related Fields'}/>
                     </div>
 
                     <div style={{ margin: '15px' }}>
-                        <SentenceGrid2 sentences={Compensation} rowSpacing={1} numberOfItemsPerRow={1} />
+                        <SentenceGrid2 sentences={Compensation} rowSpacing={1} numberOfItemsPerRow={1} title={'Compensation'} />
                     </div>
 
                     <div style={{ margin: '15px', fontStyle: 'sans-serif' }}>
-                        <SentenceGrid2 sentences={contactDetailsAndExtLinks}rowSpacing={1} numberOfItemsPerRow={2} />
+                        <SentenceGrid2 sentences={contactDetailsAndExtLinks}rowSpacing={1} numberOfItemsPerRow={2} title = {'Contact Details and External Links'}/>
                     </div>
 
                     {ResearcherFeedBack?<div style={{ margin: '15px' }}>
