@@ -1,5 +1,5 @@
 import React, { use, useEffect, useState } from 'react';
-import { addMultipleDocuments, clearCollection, deleteDocument, fetchAllStudiesByDepartment, fetchDocumentById, setupDatabaseListener, updateDocument } from '../../firebase/firestore';
+import { addMultipleDocuments, clearCollection, deleteDocument, fetchAllEventsByDepartment, fetchDocumentById, setupDatabaseListener, updateDocument } from '../../firebase/firestore';
 import AdvertViewer from './AdvertViewer';
 import { useRouter } from 'next/router';
 import { Refresh } from '@mui/icons-material';
@@ -68,7 +68,14 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
     
     const handleRemove = async() => {
         // await deleteDocument('Studies' , studyId)
+
+        const Researcher = await fetchDocumentById('Studies',studyId).ResearcherID
+
         await updateDocument('Studies', studyId, { Status: 'Rejected' })
+
+        await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`,studyId,{
+            'studyObj.EthicsApprovalObject.status' : 'Rejected'
+        })
     }
 
     
@@ -77,18 +84,35 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
         setClickedReView((prevState) => !prevState);
         setOriginalColor('#0c6a7d');
 
+        const Researcher = await fetchDocumentById('Studies', studyId).ResearcherID
+
         
         if (studyStatus === 'Waiting'){
+
             await updateDocument('Studies',studyId, {Status:'In review'})
-            setClickedView(false)
+
+            await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+                'studyObj.EthicsApprovalObject.status': 'In review'
+            })
+            setClickedView
+            (false)
         }
         else if(studyStatus==='In review'){
+
             await updateDocument('Studies', studyId, { Status: 'Waiting' })
+
+            await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+                'studyObj.EthicsApprovalObject.status': 'Waiting'
+            })
             setClickedView(false)
             setOriginalColor('#0c6a7d');
         }
         else {
             await updateDocument('Studies', studyId, { Status: 'Waiting' })
+
+            await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+                'studyObj.EthicsApprovalObject.status': 'Waiting'
+            })
             setClickedView(false)
 }
         
@@ -169,12 +193,27 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
 
 
     const handleResolve = async () => { 
-          updateDocument('Studies', studyId, { Status: 'In review' })
+
+        const Researcher = await fetchDocumentById('Studies', studyId).ResearcherID
+
+        await updateDocument('Studies', studyId, { Status: 'In review' })
+
+        await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+            'studyObj.EthicsApprovalObject.status': 'In review'
+        })
     };
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
+
+        const Researcher = await fetchDocumentById('Studies', studyId).ResearcherID
+
         if (clickedReject){
-            updateDocument('Studies', studyId, { Status: 'Dispute' })
+
+            await updateDocument('Studies', studyId, { Status: 'Dispute' })
+
+            await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+                'studyObj.EthicsApprovalObject.status': 'Dispute'
+            })
             setClickedView(false);
             setClickedAccept(false);
             setClickedReject(false)
@@ -182,7 +221,13 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
             setConfirmVisible(false)
         }
         if (clickedAccept) {
-            updateDocument('Studies', studyId, { Status: 'Accept' })
+            await updateDocument('Studies', studyId, { Status: 'Accept' })
+
+            await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+                'studyObj.EthicsApprovalObject.status': 'Accept'
+            })
+
+
             setClickedView(false);
             setClickedAccept(false);
             setClickedReject(false);
