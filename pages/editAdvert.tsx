@@ -42,7 +42,16 @@ enum UserType{
  
  
   const handleHomeDirect =()=>{
-    router.push('/researcherHome');
+    router.push({
+        pathname: '/publishRejectionScreen',
+        query: {
+            studyId:studyId,
+            department:department,
+            ResearcherId:id,
+            name:username,
+        },
+
+    })
   }
   let studyId = '';
 

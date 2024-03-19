@@ -94,7 +94,7 @@ const studiesArray = studies.map((study,index) => (
           <Grid item xs={isMobile?12:4.5} >
           <Box  sx={{height:'100%'}}>
           <Box  sx={{display:'flex',justifyContent:'center',mt:10,height:'100%'}}>
-            <Calendar cardInputList={itemPropsArray} publisherId={id} department={department} />
+            <Calendar cardInputList={itemPropsArray}/>
             </Box>
           </Box>
           </Grid>

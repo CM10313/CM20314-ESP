@@ -26,6 +26,7 @@ const ResearcherHistoryScreen: React.FC<{ testBypass1?: HistoryCardProps[], test
         const getHistoryInfo = async () => {
             try {
                 const allDepartmentStudies: any = await fetchAllEventsByDepartment(researcherDepartment,'studies');
+                console.log(allDepartmentStudies)
                 const allDepartmentWebinars: any = await fetchAllEventsByDepartment(researcherDepartment,'webinars');
                 if (allDepartmentStudies) {
                     const extractedLive: HistoryCardProps[] = [];

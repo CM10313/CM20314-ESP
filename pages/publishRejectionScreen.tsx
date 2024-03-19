@@ -4,7 +4,7 @@ import Navbar from '../Components/navbar';
 import { createFieldIfNotExists, fetchDocumentById, updateDocument } from '../firebase/firestore';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
-
+import { useAuth } from '../Context/AuthContext';
 interface PublishRejectionScreenProps {
    
 }
@@ -12,7 +12,7 @@ interface PublishRejectionScreenProps {
 const PublishRejectionScreen: React.FC<PublishRejectionScreenProps> = () => {
     const [userInput, setUserInput] = useState<string>('|');
     const [studyData, setStudyData] = useState<string>('');
-
+    const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
     const router = useRouter()
 
     const studyId = router.query.studyId
@@ -49,7 +49,9 @@ const PublishRejectionScreen: React.FC<PublishRejectionScreenProps> = () => {
 
         })
     }
-  
+    const handleEditStudyRedirect=()=>{
+        router.push(`/editAdvert?studyId=${studyId}`);
+    }
     function sendResolveRequest() {
 
         updateDocument(`departments/${department}/Researchers/${ResearcherId}/studies`, studyId, {
@@ -66,7 +68,7 @@ const PublishRejectionScreen: React.FC<PublishRejectionScreenProps> = () => {
 
     return (
         <div>
-            <Navbar name={''} rating={0} accountType={''}/>
+            <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}  accountType={accountType?accountType:"Guest Type"}/>
             <TriangleBackground />
 
             <div style={{ position: 'absolute', top: '5vh', left: '150vh'}}>
@@ -175,6 +177,17 @@ const PublishRejectionScreen: React.FC<PublishRejectionScreenProps> = () => {
                 >
                     Send Resolve Request
                 </Button>
+                <Button onClick={handleEditStudyRedirect}
+                    variant="contained"
+                    style={{
+                        marginTop: '15px',
+                        padding: '15px',
+                        borderRadius: '20px',
+                        width: '100%',
+                        cursor: 'pointer',
+                        backgroundColor: 'green',
+                        fontWeight: 'bold'
+                    }}>Edit study</Button>
             </div>
 
             
