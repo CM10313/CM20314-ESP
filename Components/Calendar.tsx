@@ -7,7 +7,7 @@ interface CalendarProps {
     cardInputList: ItemProps[] | Promise<ItemProps[]>; // Adjust the type to accept both ItemProps array and Promise of ItemProps array
 }
 
-export default function Calendar({ cardInputList }: CalendarProps) {
+export default function Calendar({ cardInputList}: CalendarProps) {
     const [currentList, setCurrentList] = useState<ItemProps[]>([]);
 
     useEffect(() => {

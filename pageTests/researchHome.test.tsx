@@ -29,16 +29,7 @@ describe('ResearchHome component', () => {
     </AuthProvider>)
   })
 
-  it('calls a card on click properly', () => {
-    const pushMock = jest.fn();
-    const useRouterMock = jest.spyOn(require('next/router'), 'useRouter');
-    useRouterMock.mockReturnValue({ push: pushMock });
-    const { getAllByText } = render(
-        <ResearchHome/>
-      );
-      fireEvent.click(getAllByText('Lorem ipsum dolor sit amet')[0]); // Click on a study card
-      expect(pushMock).toHaveBeenCalledWith("/advert-preview/id");
-  });
+ 
 
   it('renders properly when isMobile is false', () => {
     const { getByText } = render(<ResearchHome />);

@@ -41,14 +41,18 @@ const ResearchHome: React.FC = () => {
     }
 
   }
-
+const handlePush=()=>{
+  router.push(`/editAdvert?studyId=jd1kQsORcZkDgQnlZTjt`)
+}
   const itemPropsArray = studiesCalendar.map(study => ({
     borderColor: "#1F5095", // Adjust based on your study object
     publisher: study.publisherName || "Default Publisher", // Adjust based on your study object
     location: study.location || "Default Location", // Adjust based on your study object
     date: study.preliminaryDate || "No Date Provided", // Adjust based on your study object
     title: study.title || "No Title", // Adjust based on your study object
-    id: study.id // Assuming id is directly available
+    id: study.id, // Assuming id is directly available
+    publisherId:study.publisherId,
+    department:study.department,
 }));
 const studiesArray = studies.map((study,index) => (
   <StudyMediumCard key={index} name={username} rating={overallRating} title={study.title} borderColour={'#1F5095'} onCardClick={()=>handleCardClick(study.id,id,department)} department={department} id={study.id} publisherId={id}></StudyMediumCard>
@@ -90,10 +94,11 @@ const studiesArray = studies.map((study,index) => (
           <Grid item xs={isMobile?12:4.5} >
           <Box  sx={{height:'100%'}}>
           <Box  sx={{display:'flex',justifyContent:'center',mt:10,height:'100%'}}>
-            <Calendar cardInputList={itemPropsArray} />
+            <Calendar cardInputList={itemPropsArray} publisherId={id} department={department} />
             </Box>
           </Box>
           </Grid>
+          <Button onClick={handlePush}>push to study edit</Button>
         </Grid>
       </div>
     </>

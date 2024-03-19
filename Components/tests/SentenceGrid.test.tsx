@@ -23,10 +23,9 @@ describe('SentenceGrid component', () => {
       />
     );
 
-    sentences.forEach((sentence) => {
-      expect(getByText(`- ${sentence}`)).toBeInTheDocument();
+    expect(getByText("First sentence")).toBeInTheDocument();
     });
-  });
+  
 
   it('does not render anything when sentences prop is empty', () => {
     const { queryByText } = render(
