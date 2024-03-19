@@ -23,6 +23,7 @@ type StudyData = {
 };
 
 const EthicsBoardHomeLayout: React.FC = () => {
+    const {isLoggedIn, setAuth, username, overallRating, department, id,accountType} = useAuth();
     const [studyData, setStudyData] = useState<any[]>([]);
     const [mergedData, setMergedData] = useState<any[]>([]);
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 
 interface Reason {
@@ -20,13 +20,13 @@ const ResolveDescription: React.FC<ResolveDescriptionProps> = ({ disabled, reaso
             setCurrentReasonIndex(currentReasonIndex - 1);
         }
     };
-
+    console.log(reasons)
     const handleNext = () => {
         if (currentReasonIndex < reasons.length - 1) {
             setCurrentReasonIndex(currentReasonIndex + 1);
         }
     };
-
+  
     return (
         <Box
             sx={{
@@ -45,11 +45,11 @@ const ResolveDescription: React.FC<ResolveDescriptionProps> = ({ disabled, reaso
                 justifyContent: 'space-between', // Space evenly
             }}
         >
-            <Typography variant="body1" sx={{ marginBottom: '20px', fontWeight: 'bold' , fontFamily: 'Roboto, sans-serif',  fontSize : 20}}>
+           {reasons!=undefined?( <><Typography variant="body1" sx={{ marginBottom: '20px', fontWeight: 'bold' , fontFamily: 'Roboto, sans-serif',  fontSize : 20}}>
                 Researcher / Ethics Communication
             </Typography>
             <Box sx={{ marginBottom: '20px', overflowY: 'auto', height: '250px', width: '350px' }}>
-                <Typography variant="body1" sx={{ marginBottom: '20px', backgroundColor: 'white', border: '4px solid black', borderRadius: '10px', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-line' }}>
+               <Typography variant="body1" sx={{ marginBottom: '20px', backgroundColor: 'white', border: '4px solid black', borderRadius: '10px', padding: '10px', wordWrap: 'break-word', whiteSpace: 'pre-line' }}>
                     <div style={{ backgroundColor: 'purple', border: '5px black solid', borderRadius: '10px', textAlign: 'center', marginBottom: '10px', color: 'white', fontWeight: 'bold' }}>Message by {reasons.length !=0 ? reasons[currentReasonIndex].name : ''}</div>
                     {reasons.length != 0 ? reasons[currentReasonIndex].description : ''}
                 </Typography>
@@ -64,7 +64,9 @@ const ResolveDescription: React.FC<ResolveDescriptionProps> = ({ disabled, reaso
             </Box>
             <Typography variant="body2" sx={{ textAlign: 'center' }}>
                 {reasons.length != 0 ? reasons[currentReasonIndex].date : ''}
-            </Typography>
+            </Typography></>):<><Typography variant="body1" sx={{ marginBottom: '20px', fontWeight: 'bold' , fontFamily: 'Roboto, sans-serif',  fontSize : 20}}>
+               There are no previous edits
+            </Typography></>}
         </Box>
     );
 };

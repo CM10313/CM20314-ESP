@@ -67,7 +67,6 @@ describe('ViewParticipantDetails', () => {
       });
  
   it('fetches user data and study requirements', async () => {
-    // Mock the response data
     const joinedStudiesData: JoinedProps[] = [
         {
           publisher: "name",
@@ -109,23 +108,19 @@ describe('ViewParticipantDetails', () => {
       
       const userInfo = {
         disputedStudies:[{id:"id3",department:"department",publisherId:"pubId3"}],
-        joinedStudies:[{id:"id1",department:"department",publisherId:"pubId1"},{id:"id2",department:"department",publisherId:"pubId2"}],
+        joinedStudies:[{id:"id",department:"department",publisherId:"pubId1"},{id:"id2",department:"department",publisherId:"pubId2"}],
        
       };
-    // Mock the fetchDocumentById function to resolve with userInfo
+  
     require('../firebase/firestore').fetchDocumentById.mockResolvedValueOnce(userInfo);
-
-    // Mock the fetchDocumentById function to resolve with rejected studies data
     require('../firebase/firestore').fetchDocumentById.mockResolvedValueOnce(joinedStudiesData);
     require('../firebase/firestore').fetchDocumentById.mockResolvedValueOnce(disputedStudiesData);
     // Mock the useState hook to provide mock state and set functions
     (React.useState as jest.Mock).mockImplementationOnce(() => [[], jest.fn()]); // Mocking setRejectedStudies here
 
-    // Render the component
     const {getByText}=render(<ParticipantHistory />);
-
-    // Assert that fetchDocumentById is called with correct arguments
     expect(require('../firebase/firestore').fetchDocumentById).toHaveBeenCalledWith('users', expect.anything());
+    expect(getByText("location")).toBeInTheDocument;
   });
 
   it('renders without crashing with context', () => {
