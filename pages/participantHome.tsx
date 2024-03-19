@@ -65,7 +65,7 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
           rejectedStudiesData.forEach((study: any) => {
             const rejectedProps: DisputeRowProps = {
               studyTitle: study.title || "No Title",
-              studyId: study.Id || "No Id",
+              studyId: study.id || "No Id",
               publisher: study.publisherName || "No Publisher",
               date: study.preliminaryDate || "No date",
               buttonTitle:"See Study",
@@ -84,11 +84,13 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
           upcomingStudiesData.forEach((study: any) => {
             const upcomingProps: ItemProps = {
               title: study.title || "No Title",
-              id: study.Id || "No Id",
+              id: study.id || "No Id",
               publisher: study.publisherName || "No Publisher",
               date: study.preliminaryDate || "No date",
               location: study.location || "No Location",
               borderColor:(study.publisherRating >=4 )?"#D7BE69":"#C6CFD8",
+              publisherId:study.publisherId,
+              department:study.department,
             }
             extractedUpcoming.push(upcomingProps);
           });
@@ -120,7 +122,6 @@ useEffect(() => {
         departmentStudies.forEach((studyList: any) => { // Using 'any' temporarily, replace with appropriate type
           // Iterate over studies in the current study list
           studyList.forEach((study: any) => {
-            console.log(study)
             const status = study.hasOwnProperty('studyObj') && study.studyObj !== null ? study.studyObj.EthicsApprovalObject.status : study.EthicsApprovalObject.status;
             // Extract the data you need from the study object and create StudyMediumCardProps
 
@@ -191,7 +192,9 @@ useEffect(() => {
     date: study.date,
     id: study.id,
     borderColor:study.borderColor,
-  }))}
+    publisherId:study.publisherId,
+    department:study.department,
+  }))} 
 />
                     </Box>
                   </Box>

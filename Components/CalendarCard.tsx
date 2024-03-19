@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
     date:string;
     title:string;
     id:string;
+    publisherId:string;
+    department:string;
   }
   export interface CalendarCardProps {
    item:ItemProps;
@@ -20,14 +22,14 @@ import { useRouter } from "next/router";
     
     
     const router = useRouter();
+    const handleCardClick =  (studyid: string) => {
+        // Push the user to the desired page using the title (replace '/advert/' with your desired route)
+        router.push(`/advertPreview?studyId=${studyid}&publisherId=${item.publisherId}&department=${item.department}&eventType=study&status=Accept`);    
+      };
     
-    const handleClick = (id:number) => {
-        console.log(id);
-        router.push(`/advert-preview/${id}`)
-     }
 
     return (
-        <Card onClick={() => handleClick(0)}
+        <Card onClick={()=>handleCardClick(item.id)}
             sx={{ 
                 display:"flex", 
                 flexDirection:"row", 
