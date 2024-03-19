@@ -22,6 +22,7 @@ type StudyData = {
 };
 
 const EthicsBoardHomeLayout: React.FC = () => {
+    const {isLoggedIn, setAuth, username, overallRating, department, id,accountType} = useAuth();
     const [studyData, setStudyData] = useState<any[]>([]);
     const [mergedData, setMergedData] = useState<any[]>([]);
 
@@ -29,7 +30,7 @@ const EthicsBoardHomeLayout: React.FC = () => {
         const fetchData = async () => {
             try {
                 await clearCollection('Studies');
-                const DepartmentStudiesData = await fetchAllEventsByDepartment('Computer Science','studies');
+                const DepartmentStudiesData = await fetchAllEventsByDepartment(department,'studies');
                 console.log(DepartmentStudiesData);
                 if (DepartmentStudiesData) {
                     // Map and extract specific fields

@@ -17,7 +17,10 @@ jest.mock('next/router', () => ({
     push: jest.fn(),
   }),
 }));
-
+jest.mock('../firebase/firestore', () => ({
+  ...jest.requireActual('../firebase/firestore'), 
+  updateDocument: jest.fn(),
+}));
 
 jest.mock('@mui/material', () => {
     const actual = jest.requireActual('@mui/material');
@@ -26,32 +29,24 @@ jest.mock('@mui/material', () => {
       useMediaQuery: jest.fn(),
     };
   });
-  
-  // Mock the fetchDocumentById function
+ 
   jest.mock('../firebase/firestore', () => ({
     fetchDocumentById: jest.fn(),
   }));
-  jest.mock('../firebase/firestore', () => ({
-    ...jest.requireActual('../firebase/firestore'), // Keep other functions as they are
-    updateDocument: jest.fn(),
-  }));
   
-  // Mock the getAllStudies function
+  
   jest.mock('../Utils/RetrieveStudyData', () => ({
     getAllStudies: jest.fn(),
   }));
 
-  // Mock the useState hook
   jest.mock('react', () => {
     const originalModule = jest.requireActual('react');
     return {
       ...originalModule,
-      useState: jest.fn(initialValue => [initialValue, jest.fn()]), // Mock the useState hook
+      useState: jest.fn(initialValue => [initialValue, jest.fn()]), 
     };
   });
-  jest.mock('../firebase/firestore', () => ({
-    fetchDocumentById: jest.fn(),
-  }));
+
   
 
 describe('Advert Preview', () => {

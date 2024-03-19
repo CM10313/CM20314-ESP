@@ -59,7 +59,6 @@ describe('SearchableList Component', () => {
     
     
       it('searches by name', () => {
-        // Prepare some mock card items
         const cardInputList = [
             <StudyMediumCard
             key="0"
@@ -81,8 +80,6 @@ describe('SearchableList Component', () => {
             borderColour="#1F5095"
             onCardClick={(title: string) => { } } department={'Computer Science'} id={''} publisherId={''}      />
         ];
-    
-        // Render the SearchableList component
         const { getByPlaceholderText, getByText,getByTestId } = render(
           <SearchableList
             rowSpacing={1}
@@ -93,14 +90,10 @@ describe('SearchableList Component', () => {
             titleSize={20}
             marginTop={10} searchBarEnabled={true} progressBarEnabled={false}          />
         );
-    
-        // Simulate typing in the search input field
         const searchInput = getByPlaceholderText('Search');
         fireEvent.change(searchInput, { target: { value: 'first' } });
         const searchIcon = getByTestId('search-icon');
         fireEvent.click(searchIcon);
-    
-        // Check if the items containing 'Item' in their titles are rendered
         expect(getByText('first')).toBeInTheDocument();
       });
   it('renders without crashing', () => {

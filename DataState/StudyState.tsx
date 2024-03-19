@@ -35,7 +35,16 @@ export interface DiversityObject{
     rejectedByID:String;
     rejectedByName:String;
     rejectionReason:String;
+    changedContent:String;
+    highlightScreenShots:{ key1: string, key2: string }[];
+    communicationHistory:Reason[];
   }
+  interface Reason {
+    name:string;
+    description:string;
+    date:string;
+}
+
   export interface StudyState {
     DiversityObject: {
         hasGender: boolean;
@@ -51,7 +60,8 @@ export interface DiversityObject{
         rejectedByName:String;
         rejectionReason:String;
         changedContent:String;
-        communicationHistory:string[]
+        highlightScreenShots:{ key1: string, key2: string }[];
+        communicationHistory:Reason[]
     }
     CompensationObject: {
         amount: string;
@@ -92,7 +102,8 @@ export const useStudyState = (): [StudyState, React.Dispatch<React.SetStateActio
         rejectedByName:"",
         rejectionReason:"",
         changedContent:"",
-        communicationHistory:[]
+        communicationHistory:[],
+        highlightScreenShots:[],
       },
       CompensationObject: {
           amount: "",

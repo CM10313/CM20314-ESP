@@ -15,7 +15,7 @@ const ScreenshotViewer: React.FC = () => {
         const fetchData = async () => {
             try {
                 // Fetch data from Firestore
-                const data = await fetchDocumentById(
+                const data:any = await fetchDocumentById(
                     `departments/${department}/Researchers/${ResearcherId}/studies`,
                     studyId
                 );
