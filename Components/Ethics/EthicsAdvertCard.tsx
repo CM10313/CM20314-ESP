@@ -69,11 +69,12 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
     const handleRemove = async() => {
         // await deleteDocument('Studies' , studyId)
 
-        const Researcher = await fetchDocumentById('Studies',studyId).ResearcherID
+        const ResearcherData = await fetchDocumentById('Studies', studyId)
+        const Researcherid = ResearcherData?.ResearcherID
 
         await updateDocument('Studies', studyId, { Status: 'Rejected' })
 
-        await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`,studyId,{
+        await updateDocument(`departments/${department}/Researchers/${Researcherid}/studies`,studyId,{
             'studyObj.EthicsApprovalObject.status' : 'Rejected'
         })
     }
@@ -84,14 +85,16 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
         setClickedReView((prevState) => !prevState);
         setOriginalColor('#0c6a7d');
 
-        const Researcher = await fetchDocumentById('Studies', studyId).ResearcherID
+        const ResearcherData = await fetchDocumentById('Studies', studyId)
+        const Researcherid = ResearcherData?.ResearcherID
+       
 
         
         if (studyStatus === 'Waiting'){
 
             await updateDocument('Studies',studyId, {Status:'In review'})
 
-            await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+            await updateDocument(`departments/${department}/Researchers/${Researcherid}/studies`, studyId, {
                 'studyObj.EthicsApprovalObject.status': 'In review'
             })
             setClickedView
@@ -101,7 +104,7 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
 
             await updateDocument('Studies', studyId, { Status: 'Waiting' })
 
-            await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+            await updateDocument(`departments/${department}/Researchers/${Researcherid}/studies`, studyId, {
                 'studyObj.EthicsApprovalObject.status': 'Waiting'
             })
             setClickedView(false)
@@ -110,7 +113,7 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
         else {
             await updateDocument('Studies', studyId, { Status: 'Waiting' })
 
-            await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+            await updateDocument(`departments/${department}/Researchers/${Researcherid}/studies`, studyId, {
                 'studyObj.EthicsApprovalObject.status': 'Waiting'
             })
             setClickedView(false)
@@ -194,24 +197,26 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
 
     const handleResolve = async () => { 
 
-        const Researcher = await fetchDocumentById('Studies', studyId).ResearcherID
+        const ResearcherData = await fetchDocumentById('Studies', studyId)
+        const Researcherid = ResearcherData?.ResearcherID
 
         await updateDocument('Studies', studyId, { Status: 'In review' })
 
-        await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+        await updateDocument(`departments/${department}/Researchers/${Researcherid}/studies`, studyId, {
             'studyObj.EthicsApprovalObject.status': 'In review'
         })
     };
 
     const handleConfirm = async () => {
 
-        const Researcher = await fetchDocumentById('Studies', studyId).ResearcherID
+        const ResearcherData = await fetchDocumentById('Studies', studyId)
+        const Researcherid = ResearcherData?.ResearcherID
 
         if (clickedReject){
 
             await updateDocument('Studies', studyId, { Status: 'Dispute' })
 
-            await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+            await updateDocument(`departments/${department}/Researchers/${Researcherid}/studies`, studyId, {
                 'studyObj.EthicsApprovalObject.status': 'Dispute'
             })
             setClickedView(false);
@@ -223,7 +228,7 @@ const EthicsAdvertCard: React.FC<EthicsAdvertCardProps> = ({
         if (clickedAccept) {
             await updateDocument('Studies', studyId, { Status: 'Accept' })
 
-            await updateDocument(`departments/${department}/Researchers/${Researcher}/studies`, studyId, {
+            await updateDocument(`departments/${department}/Researchers/${Researcherid}/studies`, studyId, {
                 'studyObj.EthicsApprovalObject.status': 'Accept'
             })
 

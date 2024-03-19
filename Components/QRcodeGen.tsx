@@ -22,6 +22,7 @@ const QRCodeGenerator: React.FC<QrCodeProps> = ({ participantId, ResearcherId, s
                 setStoredUserName(user?.username);
                 const bankDetails = user?.bankInfoObj.BankDetails;
                 setStoredUserBankData(bankDetails);
+                console.log(bankDetails)
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }

@@ -32,6 +32,7 @@ const Paypal : React.FC <transactionProps> = ({ResearcherId , department , parti
         
             const study = await fetchDocumentById(`departments/${department}/Researchers/${ResearcherId}/studies`, studyId)
             setStoredStudyData(study)
+            
         } catch (error) {
             console.error('Error fetching user data:', error);
         }
@@ -52,43 +53,48 @@ const Paypal : React.FC <transactionProps> = ({ResearcherId , department , parti
         };
     }, []);
 
+    const [paypalRendered, setPaypalRendered] = useState(false);
+
     useEffect(() => {
-        if (sdkReady && window.paypal) {
+        if (sdkReady && window.paypal && storedStudyData && storedUser && !paypalRendered) {
             window.paypal.Buttons({
-                    createOrder: (data:any, actions:any) => {
-                        return actions.order.create({
-                            intent: "CAPTURE",
-                            purchase_units: [
-                                {
-                                    description: "Participant Payment",
-                                    amount: {
-                                        currency_code: "GBP",
-                                        value: parseFloat(storedStudyData.CompensationObject.amount)
-                                    },
-                                    shipping_preference: "NO_SHIPPING",
-                                    payee: {
-                                        email_address: storedUser.email // Recipient's email address
-                                    }
+                createOrder: (data: any, actions: any) => {
+                    return actions.order.create({
+                        intent: "CAPTURE",
+                        purchase_units: [
+                            {
+                                description: "Participant Payment",
+                                amount: {
+                                    currency_code: "GBP",
+                                    value: parseFloat(storedStudyData?.studyObj?.CompensationObject?.amount)
                                 },
-                            ],
-                        });
-                    },
-                    onApprove: async (data:any, actions:any) => {
-                        const order = await actions.order.capture();
-                        console.log(order);
-                    },
-                    onError: (err:any) => {
-                        console.log(err);
-                    },
-                    style: {
-                        layout: "vertical",
-                        disableFunding: "card"
-                    },
-                    commit: "complete", // Change button text to "Complete Payment"
-                })
+                                shipping_preference: "NO_SHIPPING",
+                                payee: {
+                                    email_address: storedUser.email // Recipient's email address
+                                }
+                            },
+                        ],
+                    });
+                },
+                onApprove: async (data: any, actions: any) => {
+                    const order = await actions.order.capture();
+                    console.log(order);
+                },
+                onError: (err: any) => {
+                    console.log(err);
+                },
+                style: {
+                    layout: "vertical",
+                    disableFunding: "card"
+                },
+                commit: "complete", // Change button text to "Complete Payment"
+            })
                 .render(paypalRef.current);
+
+            // Set the flag to true once the PayPal button is rendered
+            setPaypalRendered(true);
         }
-    }, [sdkReady]);
+    }, [sdkReady, storedStudyData, storedUser, paypalRendered]);
 
     return (
         <div>
