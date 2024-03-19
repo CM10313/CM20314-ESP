@@ -12,6 +12,7 @@ import  {clearCollection} from '../firebase/firestore';
 import {setupDatabaseListener} from '../firebase/firestore';
 import SearchableList from '../Components/SearchableList';
 import { useAuth } from '../Context/AuthContext';
+import { departments } from '../Utils/RetrieveStudyData';
 
 type StudyData = {
     name: string;
@@ -25,6 +26,8 @@ const EthicsBoardHomeLayout: React.FC = () => {
     const {isLoggedIn, setAuth, username, overallRating, department, id,accountType} = useAuth();
     const [studyData, setStudyData] = useState<any[]>([]);
     const [mergedData, setMergedData] = useState<any[]>([]);
+
+    const{department} = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {

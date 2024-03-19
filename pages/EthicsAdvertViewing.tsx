@@ -67,6 +67,7 @@ const EthicsAdvertViewing: React.FC = () => {
     };
 
     useEffect(() => {
+    
         const fetchDataAndStore = async () => {
             try {
                 const result = await fetchData();
@@ -88,6 +89,8 @@ const EthicsAdvertViewing: React.FC = () => {
         };
 
         fetchDataAndStore();
+
+        console.log(storedUserData?.reviewObject.reviews)
 
     }, []);
 
@@ -113,7 +116,7 @@ const EthicsAdvertViewing: React.FC = () => {
                             "Closing date: " + storedStudyData?.closingDate,
                         ]}
                         contactDetailsAndExtLinks={[storedUserData.email, storedUserData.phoneNumber, storedStudyData.externalLink]}
-                        ResearcherFeedBack={storedUserData.Feedback}
+                        ResearcherFeedBack={storedUserData?.reviewObject.reviews}
                     />
                 </div>
             )}
