@@ -39,9 +39,9 @@ export default function SearchBar({
         backgroundColor: '#F7F7F7',
         borderRadius: '5px',
         border: '2px solid #8BB7CF',
-        p: 0.5, // Padding
+        padding: 0.5,
         height:'26px',
-        width:'240px',
+        width:'350px',
       }}
     >
       <Button onClick={handleSearchButtonClick}>

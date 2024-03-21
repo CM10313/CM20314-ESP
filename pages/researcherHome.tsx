@@ -60,26 +60,26 @@ const studiesArray = studies.map((study,index) => (
 
   return (
     <>
-     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0}  accountType={accountType?accountType:"Guest Type"}/>
+     <Navbar name={ username ?username : 'Guest'} rating={overallRating? overallRating: 0} />
             <TriangleBackground />
       <div style={{ height: '810px' }}>
-        <Grid container spacing={2} sx={{height:'100%'}}>
+        <Grid container spacing={0} sx={{height:'100%'}}>
           {/* First Column */}
           <Grid item xs={isMobile?12:4.5} sx={{display:'flex',justifyContent:'center'}}>
-          <SearchableList  cardInputList={studiesArray} numberOfItemsPerRow={2} rowSpacing={2} width={'1000px'} title={'Published'} titleSize={45} marginTop={10} searchBarEnabled={true} progressBarEnabled={false} ></SearchableList>
+          <SearchableList  cardInputList={studiesArray} numberOfItemsPerRow={2} rowSpacing={2} width={'1000px'} title={'Published Studies'} titleSize={45} marginTop={10} searchBarEnabled={true} progressBarEnabled={false} ></SearchableList>
           </Grid>
           {/* Second Column */}
           <Grid item xs={isMobile?12:3} sx={{display:'flex',justifyContent:'center'}}>
 
           <Grid container spacing={0} sx={{height:'100%',display:'flex'}}>
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                
-
                 <Box  sx={{height:'100%'}}>
                 <Box  sx={{display:'flex',justifyContent:'center',alignItems:'flex-start',flexDirection:'column',mt:10,height:'100%'}}>
-                <Typography fontSize={25} sx={{ color: '#C5C5C5', width: '90%',ml:isMobile?5:2}}>Want to publish something new</Typography>
-                <Box sx={{width:'100%',mt:5, display: 'flex', justifyContent: 'center', height: '100%', overflowY: 'scroll', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#1F5095', borderRadius: '5px' } }}>
-                    <AdvertCreate advertTypes={["Study","Webinar"]} width={'90%'} height={400} textAreaContent={['A study requires participants to meet criteria and alows you to reject partipants. ~ Studies also require ethical approval from your departments ethics board before participants can join.',"A Webinar is a online hosted event, these are typically informational and use a link to zoom/teams etc to manage participants. ~ No particiapnt information is collected so setup is faster."]}></AdvertCreate>
+                <Box sx={{width:'100%', display: 'flex', justifyContent: 'center', height: '100%', overflowY: 'scroll', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#1F5095', borderRadius: '5px' } }}>
+                    <AdvertCreate advertTypes={["Study","Webinar","Other"]} width={'100%'} height={450} textAreaContent={[
+                      "A study involves selecting participants who fit certain requirements, and you can dismiss those who don't qualify. Before starting, your study must get ethical approval from your department's ethics board.",
+                    "A webinar is an online event that provides information and is usually conducted through platforms like Zoom or Teams to organize attendees. Participant details are not collected, the setup is faster.",
+                    'Create another type of event.']}></AdvertCreate>
                 </Box>
                 </Box>
                 
@@ -94,11 +94,10 @@ const studiesArray = studies.map((study,index) => (
           <Grid item xs={isMobile?12:4.5} >
           <Box  sx={{height:'100%'}}>
           <Box  sx={{display:'flex',justifyContent:'center',mt:10,height:'100%'}}>
-            <Calendar cardInputList={itemPropsArray}/>
+            <Calendar cardInputList={itemPropsArray} />
             </Box>
           </Box>
           </Grid>
-          <Button onClick={handlePush}>push to study edit</Button>
         </Grid>
       </div>
     </>
