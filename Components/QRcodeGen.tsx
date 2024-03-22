@@ -74,7 +74,7 @@ const QRCodeGenerator: React.FC<QrCodeProps> = ({ participantId, ResearcherId, s
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' , marginTop:'-50px'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginTop: '-50px' }}>
             <div style={{ marginTop: '20px', fontSize: '25px', fontWeight: 'bold', color: '#333' }}>{timerExpired ? '' : `Scan to pay`}</div>
             {generateQRCodeData()}
             <div style={{ marginTop: '10px', marginRight: '10px', fontSize: '18px', fontWeight: 'bold', color: '#333' }}>{timerExpired ? '' : `Time remaining: ${formatTime(timeRemaining)}`}</div>
@@ -83,8 +83,8 @@ const QRCodeGenerator: React.FC<QrCodeProps> = ({ participantId, ResearcherId, s
 }
 
 const qrContainerStyle = {
-    backgroundColor: '#f0f0f0', 
-    padding: '20px', 
+    backgroundColor: '#f0f0f0',
+    padding: '20px',
     borderRadius: '10px',
 };
 

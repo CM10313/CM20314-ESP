@@ -83,7 +83,40 @@ const AdvertPreview: React.FC<{ testBypass1?: StudyProps, testBypass2?:Requireme
   //const [healthProps, setHealthProps]=useState<HealthDisplayProps>(testBypass1);
   //const [demographicProps,setDemographicProps]=useState<DemoGraphicDisplayProps>(testBypass2);
   //const [ otherProps, setOtherProps]=useState<OtherRequirementDisplayProps>(testBypass3);
+
+
+ const [formSubmitted, setFormSubmitted] = useState(false)
+ const [awaitingApprovalList, setAwaitingApprovalList] = useState<any[]>([]);
+
   const router = useRouter();
+
+    useEffect(() => {
+        // Fetch the data from the database
+        const fetchData = async () => {
+
+            if (accountType === 'participant'){ 
+            try {
+                const documentData: any = await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`, studyId);
+                if (documentData) {
+                    setAwaitingApprovalList(documentData?.studyObj.awaitingApprovalParticipants)
+                }
+
+
+              } catch (error) {
+                  console.error('Error fetching data:', error);
+             }
+          };
+       }
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (awaitingApprovalList) {
+            setFormSubmitted(awaitingApprovalList.includes(id));
+        }
+    }, [awaitingApprovalList, id]);
+
+
 let studyId = '';
 let department ='';
 let publisherId ='';
@@ -100,6 +133,7 @@ if (typeof window !== 'undefined') {
 }
 const eventIsStudy = eventType == "study";
 const isApproved = status == "Accept";
+
 const addUserToStudyAwaitingApproval = async ()=>{
     try{
         const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
@@ -107,8 +141,9 @@ const addUserToStudyAwaitingApproval = async ()=>{
         const updatedAwaitingApprovalList = [...currentAwaitingApprovalList,id];
         const updatedStudyDoc = {...studyData};
         updatedStudyDoc.studyObj.awaitingApprovalParticipants = updatedAwaitingApprovalList;
-        updateDocument(`departments/${department}/Researchers/${publisherId}/studies`,studyId,updatedStudyDoc);
-        router.push("/participantHome");
+        updateDocument(`departments/${department}/Researchers/${publisherId}/studies`,studyId,updatedStudyDoc)
+        setFormSubmitted(true)
+
         } catch (error) {
         // Handle any errors that occur during the process
         console.error("Error editing user status in study", error);
@@ -119,6 +154,7 @@ const addUserToStudyAwaitingApproval = async ()=>{
   }
   
   useEffect (()=>{
+    console.log(accountType)
     const fetchStudyData = async ()=> {
         const studyData:any= await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`,studyId);
         const userData:any= await fetchDocumentById("users",publisherId );
@@ -281,14 +317,26 @@ const addUserToStudyAwaitingApproval = async ()=>{
         <Grid container rowSpacing={8} columnSpacing={4}sx={{height:'810px',mt:15}}>
         {eventIsStudy&&(<><Grid item xs={isMobile?12:8}><AdvertViewer2 AdvertProps={studyProps} ></AdvertViewer2></Grid> 
             <Grid item xs={isMobile?12:4}>
-            <Box sx={{width:"100%",maxWidth:'800px',height:"600px",overflowY:"auto",backgroundColor:"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}>
+            <Box sx={{width:"100%",maxWidth:'800px',height:"600px",overflowY:"auto",backgroundColor: formSubmitted ? "green":"#FFFFFF",border:"5px solid #C6CFD8",boxShadow:'0px 4px 0px 4px #00000040',borderRadius:'5px'}}>
                 <Grid container sx={{display:'flex'}}>
                     <Grid item xs={12}>
+                        {!formSubmitted && (
                         <Typography fontSize={40} sx={{color:'#C5C5C5',ml:3,mt:1}}>Want to take part ?</Typography>
+                        )}
+
+                        {formSubmitted && (
+                            <Typography fontSize={40} sx={{ color: 'white', ml: 3, mt: 1 }}> Thank you for your interest</Typography>
+                        )}
                     </Grid>
                     <Grid item xs={12}>
+                        {!formSubmitted && (
                         <Typography fontSize={18} sx={{color:'#C5C5C5',ml:3,mt:1}}>This study requires your data, any field listed below will be made available to the publisher when you join.</Typography>
-                    </Grid>
+                        )}
+
+                        {formSubmitted && (
+                            <Typography fontSize={18} sx={{ color: 'white', ml: 3, mt: 1 }}>The researcher will review you application and get back to you as soon as possible</Typography>
+                        )}
+                        </Grid>
                     <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>
                        <Box sx={{width:'80%',height:'330px',backgroundColor:'#DAE1E9',padding:2,overflowY:'scroll',display:'flex',justifyContent:'center', '&::-webkit-scrollbar': { width: '8px' }, '&::-webkit-scrollbar-thumb': { backgroundColor: '#1F5095', borderRadius: '5px' } }}>
                        <Grid container sx={{display:'flex',justifyContent:'center'}}>
@@ -333,8 +381,10 @@ const addUserToStudyAwaitingApproval = async ()=>{
                     </Grid>
                     {accountType==="participant"?(<>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'start',mt:2}}>
-                               <Button  onClick={addUserToStudyAwaitingApproval}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#84C287",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><DoneIcon></DoneIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Apply</Box></Grid></Grid></Button>
-                    </Grid>
+                         {!formSubmitted && (                
+                            <Button  onClick={addUserToStudyAwaitingApproval}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#84C287",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><DoneIcon></DoneIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Apply</Box></Grid></Grid></Button>
+                          )}
+                           </Grid>
                     <Grid item xs={6} sx={{display:'flex',justifyContent:'start',mt:2}}>
                                <Button onClick={homepageRedirect}variant="contained" sx={{width:"145px",borderRadius:"5px",backgroundColor:"#CD386B",ml:1}}><Grid container><Grid item xs={3} sx={{display:'flex',justifyContent:'center'}}><CloseIcon></CloseIcon></Grid><Grid item xs={9} sx={{display:'flex',justifyContent:'start'}}><Box sx={{ml:1}}>Exit</Box></Grid></Grid></Button>
                     </Grid></>):null}

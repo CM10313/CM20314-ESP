@@ -27,8 +27,6 @@ const EthicsBoardHomeLayout: React.FC = () => {
     const [studyData, setStudyData] = useState<any[]>([]);
     const [mergedData, setMergedData] = useState<any[]>([]);
 
-    const{department} = useAuth()
-
     useEffect(() => {
         const fetchData = async () => {
             try {

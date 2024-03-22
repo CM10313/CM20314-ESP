@@ -10,6 +10,28 @@ interface CalendarProps {
 export default function Calendar({ cardInputList }: CalendarProps) {
     const [currentList, setCurrentList] = useState<ItemProps[]>([]);
 
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const currentDate = new Date();
+    const currentMonth = months[currentDate.getMonth()]; // Get the current month as a string
+    const currentDay = currentDate.getDate()
+
+
+    function getDaySuffix(day: number) {
+        if (day >= 11 && day <= 13) {
+            return "th";
+        }
+        switch (day % 10) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+        }
+    }
+
     useEffect(() => {
         if (Array.isArray(cardInputList)) {
             setCurrentList(cardInputList);
@@ -37,8 +59,8 @@ export default function Calendar({ cardInputList }: CalendarProps) {
                             borderTopLeftRadius: "0.5em",
                         }}>
 
-                        <Typography sx={{ fontSize: "70px", padding: "0.1em" }}> 30th </Typography>
-                        <Typography sx={{ fontSize: "25px", padding: "0.1em" }}> Nov </Typography>
+                        <Typography sx={{ fontSize: "70px", padding: "0.1em" }}> {currentDay}{getDaySuffix(currentDay)} </Typography>
+                        <Typography sx={{ fontSize: "25px", padding: "0.1em" }}> {currentMonth} </Typography>
                     </Grid>
 
                     <Grid item

@@ -23,6 +23,10 @@ const DeepHistoryRow: React.FC<{ participantId: string, name: string, isRated: b
          
             const study = await fetchDocumentById(`departments/${department}/Researchers/${publisherId}/studies`, studyId)
             setStoredStudyData(study)
+
+            const userPaid = study?.studyObj.CompensationObject.paidParticipants.includes(participantId)
+            console.log(userPaid)
+            setPayClicked(userPaid)
         } catch (error) {
             console.error('Error fetching user data:', error);
         }

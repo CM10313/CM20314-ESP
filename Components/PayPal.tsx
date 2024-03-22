@@ -1,46 +1,39 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { fetchDocumentById } from "../firebase/firestore";
- 
-declare global {
-    interface Window {
-            paypal?: any;
-        }
 
-    interface transactionProps {
-        studyId: string;
-        ResearcherId: string;
-        department: string;
-        participantId: string;
-
-    }
+interface TransactionProps {
+    studyId: string;
+    ResearcherId: string;
+    department: string;
+    participantId: string;
 }
 
-
-const Paypal : React.FC <transactionProps> = ({ResearcherId , department , participantId ,studyId}) => {
+const Paypal: React.FC<TransactionProps> = ({ ResearcherId, department, participantId, studyId }) => {
     const [sdkReady, setSdkReady] = useState(false);
-    const [paymentError, setPaymentError] = useState(null);
-    const paypalRef = useRef();
-
+    const [paymentError, setPaymentError] = useState<string | null>(null);
+    const paypalRef = useRef<HTMLDivElement>(null);
 
     const [storedUser, setStoredUser] = useState<any>(null);
     const [storedStudyData, setStoredStudyData] = useState<any>(null);
-
-    const fetchData = async () => {
-        try {
-            const user = await fetchDocumentById('users', participantId);
-            setStoredUser(user);
-        
-            const study = await fetchDocumentById(`departments/${department}/Researchers/${ResearcherId}/studies`, studyId)
-            setStoredStudyData(study)
-            
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-    };
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const user = await fetchDocumentById('users', participantId);
+                const study = await fetchDocumentById(`departments/${department}/Researchers/${ResearcherId}/studies`, studyId);
+                setStoredUser(user);
+                setStoredStudyData(study);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setPaymentError('Error fetching data');
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchData();
-    }, []);
+    }, [ResearcherId, department, participantId, studyId]);
 
     useEffect(() => {
         const script = document.createElement("script");
@@ -53,10 +46,21 @@ const Paypal : React.FC <transactionProps> = ({ResearcherId , department , parti
         };
     }, []);
 
-    const [paypalRendered, setPaypalRendered] = useState(false);
+    useEffect(() => {
+        console.log("Stored User:", storedUser);
+    }, [storedUser]);
 
     useEffect(() => {
-        if (sdkReady && window.paypal && storedStudyData && storedUser && !paypalRendered) {
+        console.log("Stored Study Data:", storedStudyData);
+    }, [storedStudyData]);
+
+    useEffect(() => {
+        
+        if (sdkReady && window.paypal && storedStudyData && storedUser && paypalRef.current) {
+            // Render PayPal button
+            const userEmail = storedUser.email
+            console.log(storedUser.email)
+            console.log(userEmail)
             window.paypal.Buttons({
                 createOrder: (data: any, actions: any) => {
                     return actions.order.create({
@@ -66,11 +70,11 @@ const Paypal : React.FC <transactionProps> = ({ResearcherId , department , parti
                                 description: "Participant Payment",
                                 amount: {
                                     currency_code: "GBP",
-                                    value: parseFloat(storedStudyData?.studyObj?.CompensationObject?.amount)
+                                    value: storedStudyData?.studyObj.CompensationObject.amount
                                 },
                                 shipping_preference: "NO_SHIPPING",
                                 payee: {
-                                    email_address: storedUser.email // Recipient's email address
+                                    email_address: userEmail // Recipient's email address
                                 }
                             },
                         ],
@@ -90,16 +94,17 @@ const Paypal : React.FC <transactionProps> = ({ResearcherId , department , parti
                 commit: "complete", // Change button text to "Complete Payment"
             })
                 .render(paypalRef.current);
-
-            // Set the flag to true once the PayPal button is rendered
-            setPaypalRendered(true);
         }
-    }, [sdkReady, storedStudyData, storedUser, paypalRendered]);
+    }, [sdkReady, storedStudyData, storedUser]);
 
     return (
         <div>
             {paymentError && <p>{paymentError}</p>}
-            <div ref={paypalRef}></div>
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                <div ref={paypalRef}></div>
+            )}
         </div>
     );
 };

@@ -26,19 +26,19 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
   const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
   const [upcomingStudies, setUpcomingStudies] = useState<ItemProps[]>(testBypass3);
   const isMobile = useMediaQuery('(max-width:1000px)')
+  
   const router = useRouter();
   const handleCardClick = async (studyid: string, publisherId: string, department: string) => {
     // Push the user to the desired page using the title (replace '/advert/' with your desired route)
     await router.push({
-      pathname: '/participantAdvertScreen',
+      pathname: '/advertPreview',
       query: {
-        name: username,
+
         studyId: studyid,
-        researcherId: publisherId,
+        publisherId: publisherId,
         department: department,
-        appliedDate: '',
-        ReviewStatus: '',
-        profilePicture: ''
+        eventType:'study',
+        status:'Accept'
       },
 
     })
@@ -48,42 +48,49 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
     const getRejectedStudies = async () => {
       try {
         // Fetch user information
-        const userInfo: any = await fetchDocumentById('users',id);
+        const userInfo = await fetchDocumentById('users', id);
         if (userInfo) { // Check if userInfo is not undefined
+  
           let tempRejected: Promise<any>[] = [];
           const extractedRejections: DisputeRowProps[] = [];
-          const rejectedStudyKey = userInfo.rejectedStudies || [];
+          const rejectedStudyKey = userInfo?.rejectedStudies || [];
+
           let tempUpcoming: Promise<any>[] = [];
           const extractedUpcoming: ItemProps[] = [];
-          const upcomingStudyKey = userInfo.joinedStudies || [];
+          const upcomingStudyKey = userInfo?.joinedStudies || [];
+
+          
           // Fetch data for each rejected study
+
+          
+
           rejectedStudyKey.forEach((studyKey: any) => {
-            const studyId = studyKey.id || "No Id";
-            const studyPublisherId = studyKey.publisherId || "No Publisher ID"
-            const studyDepartment = studyKey.department || "No Department"
+            const studyId = studyKey?.rejectedStudyId || "No Id";
+            const studyPublisherId = studyKey?.publisherId || "No Publisher ID"
+            const studyDepartment = studyKey?.department || "No Department"
             tempRejected.push(fetchDocumentById(`departments/${studyDepartment}/Researchers/${studyPublisherId}/studies/`,studyId));
           });
           upcomingStudyKey.forEach((studyKey: any) => {
-            const studyId = studyKey.id || "No Id";
-            const studyPublisherId = studyKey.publisherId || "No Publisher ID"
-            const studyDepartment = studyKey.department || "No Department"
+            const studyId = studyKey?.id || "No Id";
+            const studyPublisherId = studyKey?.publisherId || "No Publisher ID"
+            const studyDepartment = studyKey?.department || "No Department"
             tempUpcoming.push(fetchDocumentById(`departments/${studyDepartment}/Researchers/${studyPublisherId}/studies/`,studyId));
           });
   
           // Wait for all promises to resolve
           const rejectedStudiesData = await Promise.all(tempRejected);
-          console.log(rejectedStudiesData)
           // Process fetched data and create DisputeRowProps objects
-          rejectedStudiesData.forEach((study: any) => {
+
+          rejectedStudiesData?.forEach((study: any) => {
             const rejectedProps: DisputeRowProps = {
-              studyTitle: study.title || "No Title",
-              studyId: study.Id || "No Id",
-              publisher: study.publisherName || "No Publisher",
-              date: study.preliminaryDate || "No date",
+              studyTitle: study?.title || "No Title",
+              studyId: study?.id || "No Id",
+              publisher: study?.publisherName || "No Publisher",
+              date: study?.preliminaryDate || "No date",
               buttonTitle:"See Study",
-              department:study.department,
-              publisherId:study.publisherId,
-              buttonFunction:()=>handleCardClick(study.id,study.publisherId,study.department),
+              department:study?.department,
+              publisherId:study?.publisherId,
+              buttonFunction:()=>handleCardClick(study?.id,study?.publisherId,study?.department),
             }
             extractedRejections.push(rejectedProps);
           });
@@ -91,16 +98,19 @@ const ParticipantHome: React.FC<{ testBypass1?: StudyMediumCardProps[], testBypa
           // Update the state with extracted rejected studies
           setRejectedStudies(extractedRejections);
 
+
+      
+
           const upcomingStudiesData = await Promise.all(tempUpcoming);
           // Process fetched data and create DisputeRowProps objects
           upcomingStudiesData.forEach((study: any) => {
             const upcomingProps: ItemProps = {
-              title: study.title || "No Title",
-              id: study.Id || "No Id",
-              publisher: study.publisherName || "No Publisher",
-              date: study.preliminaryDate || "No date",
-              location: study.location || "No Location",
-              borderColor:(study.publisherRating >=4 )?"#D7BE69":"#C6CFD8",
+              title: study?.title || "No Title",
+              id: study?.Id || "No Id",
+              publisher: study?.publisherName || "No Publisher",
+              date: study?.preliminaryDate || "No date",
+              location: study?.location || "No Location",
+              borderColor:(study?.publisherRating >=4 )?"#D7BE69":"#C6CFD8",
             }
             extractedUpcoming.push(upcomingProps);
           });
@@ -121,25 +131,24 @@ useEffect(() => {
   const fetchStudyList = async () => {
     try {
       const studyDict = await getAllStudies(true,true,true);
-      console.log(studyDict)
+      
       const extractedStudies: StudyMediumCardProps[] = [];
       for (const departmentStudies of Object.values(studyDict)) {
         // Iterate over studies in the current department
         departmentStudies.forEach((studyList: any) => { // Using 'any' temporarily, replace with appropriate type
           // Iterate over studies in the current study list
           studyList.forEach((study: any) => {
-            console.log(study)
-            const status = study.hasOwnProperty('studyObj') && study.studyObj !== null ? study.studyObj.EthicsApprovalObject.status : study.EthicsApprovalObject.status;
+            const status = study?.hasOwnProperty('studyObj') && study?.studyObj !== null ? study?.studyObj.EthicsApprovalObject.status : study?.EthicsApprovalObject.status;
             // Extract the data you need from the study object and create StudyMediumCardProps
 
             const studyProps: StudyMediumCardProps = {
-              name: study.publisherName || "No name for publisher", // Ensure you have a default value if properties are missing professor name
-              rating: study.publisherRating || 0 , // Example rating, adjust accordingly
-              department:study.department || "No department",
-              title: study.title || "No Title", // Ensure you have a default value if properties are missing
-              borderColour: (study.publisherRating >=4 )?"#D7BE69":"#C6CFD8", // Example border colour, adjust accordingly
-              id:study.id || "No id",
-              publisherId:study.publisherId || "No publisher id",
+              name: study?.publisherName || "No name for publisher", // Ensure you have a default value if properties are missing professor name
+              rating: study?.publisherRating || 0 , // Example rating, adjust accordingly
+              department:study?.department || "No department",
+              title: study?.title || "No Title", // Ensure you have a default value if properties are missing
+              borderColour: (study?.publisherRating >=4 )?"#D7BE69":"#C6CFD8", // Example border colour, adjust accordingly
+              id:study?.id || "No id",
+              publisherId:study?.publisherId || "No publisher id",
               onCardClick: handleCardClick // Assuming handleCardClick is defined somewhere
             };
             // Add the created StudyMediumCardProps to extractedStudies
@@ -175,14 +184,14 @@ useEffect(() => {
           <SearchableList  cardInputList={liveStudies.map((study, index) => (
         <StudyMediumCard
           key={index}
-          name={study.name}
-          rating={study.rating}
-          title={study.title}
-          id={study.id}
-          publisherId={study.publisherId}
-          department={study.department}
-          borderColour={study.borderColour}
-          onCardClick={study.onCardClick}
+          name={study?.name}
+          rating={study?.rating}
+          title={study?.title}
+          id={study?.id}
+          publisherId={study?.publisherId}
+          department={study?.department}
+          borderColour={study?.borderColour}
+          onCardClick={study?.onCardClick}
         />
       ))} numberOfItemsPerRow={4} rowSpacing={2} width={'1000px'} title={'Live Studies'} titleSize={45} marginTop={3} searchBarEnabled={true} progressBarEnabled={false} ></SearchableList>
           </Grid>
@@ -193,12 +202,12 @@ useEffect(() => {
                     <Box  sx={{display:'flex',justifyContent:'center',mt:7,height:'100%'}}>
                     <Calendar
   cardInputList={upcomingStudies.map((study, index) => ({
-    publisher: study.publisher,
-    location: study.location,
-    title: study.title,
-    date: study.date,
-    id: study.id,
-    borderColor:study.borderColor,
+    publisher: study?.publisher,
+    location: study?.location,
+    title: study?.title,
+    date: study?.date,
+    id: study?.id,
+    borderColor:study?.borderColor,
   }))}
 />
                     </Box>
@@ -208,7 +217,7 @@ useEffect(() => {
                 <Box sx={{ml:isMobile?0:-7}}>
                 <SearchableList
                       rowSpacing={0}
-                      cardInputList={rejectedStudies.map((study,index)=>(<DisputeRow key={index} studyTitle={study.studyTitle} publisher={study.publisher} date={study.date} studyId={study.studyId} buttonTitle='View Study' department={study.department} publisherId={study.publisherId} buttonFunction={()=>handleCardClick(study.studyId,study.publisherId,study.department)}></DisputeRow>))}
+                      cardInputList={rejectedStudies.map((study,index)=>(<DisputeRow key={index} studyTitle={study?.studyTitle} publisher={study?.publisher} date={study?.date} studyId={study?.studyId} buttonTitle='View Study' department={study?.department} publisherId={study?.publisherId} buttonFunction={()=>handleCardClick(study?.studyId,study?.publisherId,study?.department)}></DisputeRow>))}
                       numberOfItemsPerRow={1}
                       width={"100%"}
                       title={"Rejections"}

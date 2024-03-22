@@ -11,7 +11,7 @@ import HistoryCardsStudy from "../Components/historyCardsStudy";
 
 
 const ResearcherHistoryScreen: React.FC<{ testBypass1?: HistoryCardProps[], testBypass2?:HistoryCardProps[], testBypass3?:HistoryCardProps[]}> = ({ testBypass1 = [], testBypass2 = [],testBypass3 = []}) => {
-    const {isLoggedIn,setAuth,username,overallRating,id,accountType} = useAuth();
+    const {isLoggedIn,setAuth,username,overallRating,id,accountType,department} = useAuth();
 
     const [studies, setStudies] = useState<HistoryCardProps[]>(testBypass1); // State to store fetched studies
     const [hiddenStudies, setHiddenStudies] =useState<HistoryCardProps[]>(testBypass2);
@@ -20,7 +20,7 @@ const ResearcherHistoryScreen: React.FC<{ testBypass1?: HistoryCardProps[], test
     const [hiddenWebinars, setHiddenWebinars] =useState<HistoryCardProps[]>(testBypass2);
     const [waitingWebinars, setWaitingWebinars] =useState<HistoryCardProps[]>(testBypass3);
     const researcherId = "9XCri3v9uFTN5RgDQVszan3iKp23" // id
-    const researcherDepartment = "Computer Science"
+    const researcherDepartment = department
 
     useEffect(() => {
         const getHistoryInfo = async () => {

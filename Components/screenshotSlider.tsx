@@ -32,11 +32,8 @@ const ScreenshotSlider = ({ imageUrls }) => {
         >
             {imageUrls.map((url, index) => (
                 <SwiperSlide key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-<<<<<<< HEAD
+
                     <img src={url} alt={`Image ${index + 1}`} style={{ width: '100%', height: '100%' }} />
-=======
-                    <img src={url} alt={`Image ${index + 1}`} style={{ width: '100%', maxHeight: '100%' }} />
->>>>>>> fa860caea45eb0c2d29b855c212ef1401d15ede1
                 </SwiperSlide>
             ))}
         </Swiper>
