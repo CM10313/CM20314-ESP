@@ -20,8 +20,8 @@ export default function Navbar ({name,rating }: NavBarProps) {
           display:"flex", 
           justifyContent: "space-between",
           alignItems: 'center',
-          backgroundColor: '#0B254A', 
-          color: '#0B254A', 
+          backgroundColor: '#1F5095', 
+          color: '#1F5095', 
           mt: -1,
           width:'100%',
           height:'40px'}}
@@ -33,9 +33,9 @@ export default function Navbar ({name,rating }: NavBarProps) {
             alignItems: 'center',
              }}>
                       <Grid container columns={isMobile ? 12:14}>
-                      <Grid item xs={isMobile ? 3:2}><Button ><Link style={{ color: '#C5C5C5', textDecoration: 'none' }}  href={"/researchHome"}>Home</Link></Button></Grid>
-                      <Grid item xs={isMobile ? 3:2}><Button><Link style={{ color: '#F6F6F6', textDecoration: 'none',whiteSpace:'nowrap',overflow:'auto' }}  href={"/researcherHistory"}>History</Link></Button></Grid>
-                      <Grid item xs={isMobile ? 3:2}><Button ><Link style={{ color: '#F6F6F6', textDecoration: 'none',whiteSpace:'nowrap',overflow:'auto' }} href={"/"}> Account</Link></Button></Grid>
+                      <Grid item xs={isMobile ? 3:2}><Button ><Link style={{fontWeight:'bold', textDecoration: 'none', color: '#F6F6F6', fontSize: '20px' }}  href={"/researchHome"}>Home</Link></Button></Grid>
+                      <Grid item xs={isMobile ? 3:2}><Button><Link style={{ fontWeight:'bold', textDecoration: 'none', color: '#F6F6F6', fontSize: '20px',whiteSpace:'nowrap',overflow:'auto' }}  href={"/researcherHistory"}>History</Link></Button></Grid>
+                      <Grid item xs={isMobile ? 3:2}><Button ><Link style={{ fontWeight:'bold', textDecoration: 'none', color: '#F6F6F6', fontSize: '20px',whiteSpace:'nowrap',overflow:'auto' }} href={"/"}> Account</Link></Button></Grid>
                       </Grid>
           </Grid>
           
