@@ -198,7 +198,7 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass,dep
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 10 }}>
             <Grid container sx={{ width: '100%', display: 'flex', justifyContent: 'center', rowGap: 0 }}>
                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <FormDialogue width={770} height={540} currentPage={0} onFormSubmit={() => handleStudySubmit()} hasBorderRadius={true} canSubmit={!Boolean(submitError)||jestBypass}>
+                    <FormDialogue width={1000} height={1000} currentPage={0} onFormSubmit={() => handleStudySubmit()} hasBorderRadius={true} canSubmit={!Boolean(submitError)||jestBypass}>
                         <Box sx={{width:'100%',height:'100%',mt:4}}>
                             <Grid
                                 container
@@ -332,20 +332,65 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass,dep
                               },}}
                         />
                                 </Grid>
-                            <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',mt:-2}}>
-                                <Typography fontSize={12}>
-                                    {"Don't want to continue ?"}
-                                    <Button sx ={{color:'black'}} onClick={handleHomeRedirect}>
-                                        <Typography component="span" fontWeight="bold" fontSize={12}>
-                                            Click Here
-                                        </Typography>
-                                    </Button> 
-                                </Typography>
-                            </Grid>
                             </Grid>
                         </Box>
                         <Box sx={{mt:4}}>
                         <Grid
+                                container
+                                rowSpacing={4}
+                                justifyContent="center"
+                                sx={{display:'flex',width:'100%'}}
+                                > 
+                                <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
+                                    <Typography fontSize={30}><Box>Related Fields</Box></Typography>
+                                </Grid>
+                                <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
+                                    <TextField
+                                        label="£ Compensation "
+                                        variant="outlined"
+                                        value={studyObj.CompensationObject.amount}
+                                        onChange={(e) => updateStudyState("CompensationObject", "amount", e.target.value)}
+                                        sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9',borderRadius:1}}
+                                    />
+                                </Grid>
+                                <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
+                                <TextField
+                                    label="Compensation Description"
+                                    variant="outlined"
+                                    type="compensation description"
+                                    value={studyObj.CompensationObject.description}
+                                    onChange={(e) => updateStudyState("CompensationObject", "description", e.target.value)}
+                                    sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9',borderRadius:1}} 
+                                    inputProps={{
+                                        min: 0,  
+                                        max: 99,  
+                                    }}
+                                />
+                                </Grid>
+                                <Grid item xs={isMobile?12:6} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+                                <Box sx={{backgroundColor:'#DAE1E9',width:'80%'}}> 
+                                <TextField
+                                    label="Field Name"
+                                    variant="outlined"
+                                    value={extraFieldName}
+                                    onChange={handleExtraFieldChange}
+                                    sx={{ width: '100%', padding: 0, backgroundColor: '#DAE1E9' }}
+                                    />
+                                </Box>
+                                </Grid>
+                                
+                                
+                                <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center'}}><Box sx={{backgroundColor: '#DAE1E9',width:'80%',borderRadius:'5px',border:'1px solid gray'}}><Typography sx={{overflowY:'auto',height:'110px',width:'100%',ml:2,mt:1,mr:2}}>{relatedFields.join(', ')}</Typography></Box></Grid>
+                                
+                                <Grid item xs={isMobile ? 12 : 6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',flexDirection: 'column', width: '80%' }}>
+                                <Button variant='contained' onClick={handleAddExtraField} sx={{ width: '80%', height: '50px', backgroundColor: '#0B254A' }}>Add Field</Button>
+                                <Button variant='contained' onClick={handleRemoveExtraField} sx={{ width: '80%', height: '50px', backgroundColor: '#0B254A', mt: 1, mb: 2 }}>Remove Field</Button>
+                                </Grid>
+                                <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',mt:-2}}>
+                                
+                            </Grid>
+                            </Grid>
+                            <Grid
                                 container
                                 rowSpacing={4}
                                 justifyContent="center"
@@ -422,78 +467,6 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass,dep
                         
                                 </Grid>
                                 <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',mt:-2}}>
-                                <Typography fontSize={12}>
-                                    {"Don't want to continue ?"}
-                                    <Button sx ={{color:'black'}} onClick={handleHomeRedirect}>
-                                        <Typography component="span" fontWeight="bold" fontSize={12}>
-                                            Click Here
-                                        </Typography>
-                                    </Button> 
-                                </Typography>
-                            </Grid>
-                            </Grid>
-                        </Box>
-                        <Box sx={{mt:4}}>
-                        <Grid
-                                container
-                                rowSpacing={4}
-                                justifyContent="center"
-                                sx={{display:'flex',width:isMobile?'100%':'540px'}}
-                                > 
-                                <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
-                                    <Typography fontSize={30}><Box>Related Fields</Box></Typography>
-                                </Grid>
-                                <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
-                                    <TextField
-                                        label="£ Compensation "
-                                        variant="outlined"
-                                        value={studyObj.CompensationObject.amount}
-                                        onChange={(e) => updateStudyState("CompensationObject", "amount", e.target.value)}
-                                        sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9',borderRadius:1}}
-                                    />
-                                </Grid>
-                                <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
-                                <TextField
-                                    label="Compensation Description"
-                                    variant="outlined"
-                                    type="compensation description"
-                                    value={studyObj.CompensationObject.description}
-                                    onChange={(e) => updateStudyState("CompensationObject", "description", e.target.value)}
-                                    sx={{width:'80%',padding:0,backgroundColor:'#DAE1E9',borderRadius:1}} 
-                                    inputProps={{
-                                        min: 0,  
-                                        max: 99,  
-                                    }}
-                                />
-                                </Grid>
-                                <Grid item xs={isMobile?12:6} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
-                                <Box sx={{backgroundColor:'#DAE1E9',width:'80%'}}> 
-                                <TextField
-                                    label="Field Name"
-                                    variant="outlined"
-                                    value={extraFieldName}
-                                    onChange={handleExtraFieldChange}
-                                    sx={{ width: '100%', padding: 0, backgroundColor: '#DAE1E9' }}
-                                    />
-                                </Box>
-                                </Grid>
-                                
-                                
-                                <Grid item xs={isMobile?12:6} sx={{display:'flex',justifyContent:'center'}}><Box sx={{backgroundColor: '#DAE1E9',width:'80%',borderRadius:'5px',border:'1px solid gray'}}><Typography sx={{overflowY:'auto',height:'110px',width:'100%',ml:2,mt:1,mr:2}}>{relatedFields.join(', ')}</Typography></Box></Grid>
-                                
-                                <Grid item xs={isMobile ? 12 : 6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',flexDirection: 'column', width: '80%' }}>
-                                <Button variant='contained' onClick={handleAddExtraField} sx={{ width: '80%', height: '50px', backgroundColor: '#0B254A' }}>Add Field</Button>
-                                <Button variant='contained' onClick={handleRemoveExtraField} sx={{ width: '80%', height: '50px', backgroundColor: '#0B254A', mt: 1, mb: 2 }}>Remove Field</Button>
-                                </Grid>
-                                <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',mt:-2}}>
-                                <Typography fontSize={12}>
-                                    {"Don't want to continue ?"}
-                                    <Button sx ={{color:'black'}} onClick={handleHomeRedirect}>
-                                        <Typography component="span" fontWeight="bold" fontSize={12}>
-                                            Click Here
-                                        </Typography>
-                                    </Button> 
-                                </Typography>
                             </Grid>
                             </Grid>
                         </Box>
@@ -508,7 +481,7 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass,dep
                                     <Typography fontSize={30}>Required Data</Typography>
                                 </Grid>
                                 <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%',width:'100%'}}>
-                                <Box sx={{backgroundColor:'#DAE1E9',width:'100%',height:'240px',overflowY:'auto',overflowX: 'hidden'}}> 
+                                <Box sx={{backgroundColor:'#DAE1E9',width:'100%',height:'1000px',overflowY:'auto',overflowX: 'hidden'}}> 
                                 <FormControl component="fieldset" sx={{width:'100%',display: 'flex',justifyContent:'center'}}>
                                 <FormLabel sx={{margin:2,color:'#000000'}}><Typography fontWeight={'bold'}>Demographic</Typography></FormLabel>
                                     <Box sx ={{width:"100%",display: 'flex',justifyContent:'center',}}>
@@ -650,14 +623,7 @@ export default function StudyDialog({ onSubmit,handleHomeRedirect,jestBypass,dep
                                     <Box sx={{display:'flex',alignItems:'center',height:'100px'}}><Typography fontSize={16}>Once published you may edit or delete the study as you wish until participants are registered, at which point the study is fixed.</Typography></Box>
                                 </Grid>
                                 <Grid item xs={12} sx={{display:'flex',justifyContent:'center',height:'100%'}}>
-                                <Typography fontSize={12}>
-                                    {"Don't want to continue ?"}
-                                    <Button sx ={{color:'black'}} onClick={handleHomeRedirect}>
-                                        <Typography component="span" fontWeight="bold" fontSize={12}>
-                                            Click Here
-                                        </Typography>
-                                    </Button> 
-                                </Typography>
+                                
                             </Grid>
                             </Grid>
                         </Box>
